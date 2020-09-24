@@ -8,7 +8,7 @@ $ yarn install
 ## Run
 ### Develop
 ```
-$ yarn start
+$ yarn dev
 ```
 
 ### Production
