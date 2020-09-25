@@ -22,17 +22,17 @@ router.get('/:cep', function (req, res, next) {
       .then(function (response) {
         if (response.data) {
           if (response.data.erro)
-            res.status(statusHeader.BAD_REQUEST).send({ 'message': 'cep não encontrado' });
+            res.status(statusHeader.BAD_REQUEST).json({ 'message': 'cep não encontrado' });
           else
-            res.status(statusHeader.OK).send(response.data);
+            res.status(statusHeader.OK).json(response.data);
         } else
-          res.status(statusHeader.SERVER_ERROR).send({ 'erro': 'ops! houve um problema' });
+          res.status(statusHeader.SERVER_ERROR).json({ 'erro': 'ops! houve um problema' });
       })
       .catch(function (error) {
-        res.status(statusHeader.BAD_REQUEST).send({ 'message': 'cep não encontrado' });
+        res.status(statusHeader.BAD_REQUEST).json({ 'message': 'cep não encontrado' });
       });
   } else
-    res.status(statusHeader.BAD_REQUEST).send({ 'message': 'cep inválido' });
+    res.status(statusHeader.BAD_REQUEST).json({ 'message': 'cep inválido' });
 });
 
 module.exports = router;
