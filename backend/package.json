@@ -17,7 +17,8 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
-    "node-sass-middleware": "0.11.0"
+    "node-sass-middleware": "0.11.0",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.4",
