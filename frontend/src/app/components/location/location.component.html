@@ -1,13 +1,13 @@
 <div class="container">
 
     <div class="row mt-5">
-        <div class="col-xl-6 col-md-6 col-sm-12">
+        <div class="col-xl-5 col-md-5 col-sm-12">
             <div class="col-xl-12 mb-4">
                 <div class="card text-center border-0 bg-dark redondo">
                     <div class="card-body">
                         <h5 class="card-title color font mb-5">Informações do CEP</h5>
                         <mat-form-field>
-                            <mat-label>CEP</mat-label>
+                            <mat-label class="text-white">CEP</mat-label>
                             <input matInput name="cep" [(ngModel)]="cep" placeholder="Digite o seu CEP" mask="00000-000" required type="text">
                         </mat-form-field>
                     </div>
@@ -42,41 +42,4 @@
             </div>
         </div>
     </div>
-
-
-    <!-- <div class="row">
-      <div class="col-4 col-12-sm">
-          <mat-card>
-              <mat-card-header>
-                  <mat-card-title>Informações do CEP</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                  <div class="row">
-                      <div class="col-1">
-                          <mat-form-field>
-                              <mat-label>CEP</mat-label>
-                              <input matInput name="cep" [(ngModel)]="cep" placeholder="Digite o seu CEP" mask="00000-000" required type="text">
-                          </mat-form-field>
-                      </div>
-                  </div>
-              </mat-card-content>
-              <mat-card-actions class="center">
-                  <button mat-raised-button color="info" (click)="consultarCep()">Consultar CEP</button>
-              </mat-card-actions>
-          </mat-card>
-      </div>
-      <div class="col-6 col-12-sm" *ngIf="location !== null">
-      </div>
-  </div>
-  <div class="row" *ngIf="location !== null">
-      <div class="col-12">
-          <div *ngIf="location.latitude === undefined">
-              <mat-spinner class="center"></mat-spinner>
-              <p class="center">Carregando Maps</p>
-          </div>
-          <agm-map *ngIf="location.latitude !== undefined" [latitude]="location.latitude" [longitude]="location.longitude" [zoom]="16">
-              <agm-marker [latitude]="location.latitude" [longitude]="location.longitude"></agm-marker>
-          </agm-map>
-      </div>
-  </div> -->
 </div>

@@ -1,37 +1,24 @@
-<!-- <mat-card *ngIf="location !== null">
-    <p>CEP: {{location.cep}}</p>
-    <p>Logradouro: {{location.logradouro}}</p>
-    <p *ngIf="location.complemento !== ''">Complemento: {{location.complemento}}</p>
-    <p>Bairro: {{location.bairro}}</p>
-    <p>Localidade: {{location.localidade}}</p>
-    <p>UF: {{location.uf}}</p>
-    <p>Código IBGE: {{location.ibge}}</p>
-    <p *ngIf="location.gia !== ''">Código GIA: {{location.gia}}</p>
-</mat-card>
- -->
-
-<mat-card *ngIf="location !== null">
+<mat-card>
     <label class="color">CEP</label>
     <input type="text" class="form-control inputLine mb-2" placeholder="CEP" disabled value="{{location.cep}}">
     <label class="color">Logradouro</label>
     <input type="text" class="form-control inputLine mb-2" placeholder="Logradouro" disabled value="{{location.logradouro}}">
     <label class="color" *ngIf="location.complemento !== ''">Complemento</label>
-    <input type="text" class="form-control inputLine mb-2" placeholder="Complemento" disabled value="{{location.complemento}}" *ngIf=" location.complemento !=='' ">
-    <label class="color ">Bairro</label>
-    <input type="text " class="form-control inputLine mb-2 " placeholder="Bairro " disabled value="{{location.bairro}} ">
+    <input type="text" class="form-control inputLine mb-2" placeholder="Complemento" disabled value="{{location.complemento}}" *ngIf=" location.complemento !==''">
+    <label class="color">Bairro</label>
+    <input type="text" class="form-control inputLine mb-2" placeholder="Bairro" disabled value="{{location.bairro}}">
     <label class="color ">Localidade</label>
-    <input type="text " class="form-control inputLine mb-2 " placeholder="Localidade " disabled value="{{location.localidade}} ">
-    <label class="color ">UF</label>
-    <input type="text " class="form-control inputLine mb-2 " placeholder="UF " disabled value="{{location.uf}} ">
-    <div class="row mb-2 ">
-        <div class="col-xl-6 ">
-            <label class="color ">IBGE</label>
-            <input type="text " class="form-control inputLine " placeholder="IBGE " disabled value="{{location.ibge}} ">
+    <input type="text" class="form-control inputLine mb-2" placeholder="Localidade" disabled value="{{location.localidade}}">
+    <label class="color">UF</label>
+    <input type="text" class="form-control inputLine mb-2" placeholder="UF" disabled value="{{location.uf}}">
+    <div class="row mb-2">
+        <div class="col-xl-6">
+            <label class="color">IBGE</label>
+            <input type="text" class="form-control inputLine" placeholder="IBGE" disabled value="{{location.ibge}}">
         </div>
-        <div class="col-xl-6 ">
-            <label class="color " *ngIf="location.gia !=='' ">GIA</label>
-            <input type="text " class="form-control inputLine " placeholder="GIA " disabled value="{{location.gia}} " *ngIf="location.gia !=='' ">
+        <div class="col-xl-6">
+            <label class="color" *ngIf="location.gia !==''">GIA</label>
+            <input type="text" class="form-control inputLine" placeholder="GIA" disabled value="{{location.gia}}" *ngIf="location.gia !==''">
         </div>
     </div>
-
 </mat-card>
