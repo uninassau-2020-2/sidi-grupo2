@@ -9,6 +9,4 @@ export class Location {
   gia: string;
   ddd: string;
   siafi: string;
-  latitude: number;
-  longitude: number;
 }
