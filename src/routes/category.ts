@@ -7,7 +7,11 @@ import { checkRole } from "../middlewares/checkRole";
 const router = Router();
 
 //Get all categories
-router.get("/", [checkJwt, checkRole([UserRole.ADMIN])], CategoryController.listAll);
+router.get(
+  "/",
+  [checkJwt, checkRole([UserRole.ADMIN])],
+  CategoryController.listAll
+);
 
 //Get one category
 router.get(
@@ -17,7 +21,11 @@ router.get(
 );
 
 //Create a new category
-router.post("/", [checkJwt, checkRole([UserRole.ADMIN])], CategoryController.newCategory);
+router.post(
+  "/",
+  [checkJwt, checkRole([UserRole.ADMIN])],
+  CategoryController.newCategory
+);
 
 //Edit one category
 router.patch(

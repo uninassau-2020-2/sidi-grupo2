@@ -28,7 +28,7 @@ export class User {
   @Length(4, 100)
   password: string;
 
-  @Column({type: "enum", enum: UserRole, default: UserRole.SELLER})
+  @Column({ type: "enum", enum: UserRole, default: UserRole.SELLER })
   @IsNotEmpty()
   role: string;
 

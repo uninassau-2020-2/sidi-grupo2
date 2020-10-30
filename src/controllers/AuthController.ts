@@ -5,7 +5,7 @@ import { validate } from "class-validator";
 
 import { User } from "../entity/User";
 import config from "../config/config";
-import { ErrorHandler } from '../helpers/ErrorHandler';
+import { ErrorHandler } from "../helpers/ErrorHandler";
 
 class AuthController {
   static login = async (req: Request, res: Response) => {
@@ -22,12 +22,12 @@ class AuthController {
     try {
       user = await userRepository.findOneOrFail({ where: { username } });
     } catch (error) {
-      res.status(401).json({data: "usuário não encontrado"});
+      res.status(401).json({ data: "usuário não encontrado" });
     }
 
     //Check if encrypted password match
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
-      res.status(401).json({data: "dados inválidos"});
+      res.status(401).json({ data: "dados inválidos" });
       return;
     }
 
@@ -39,7 +39,7 @@ class AuthController {
     );
 
     //Send the jwt in the response
-    res.status(200).json({user,token});
+    res.status(200).json({ user, token });
   };
 
   static changePassword = async (req: Request, res: Response) => {

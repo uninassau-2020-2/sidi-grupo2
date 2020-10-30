@@ -1,4 +1,4 @@
-import { Product } from './Product';
+import { Product } from "./Product";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -12,7 +12,7 @@ import {
 } from "typeorm";
 import { Length } from "class-validator";
 // import * as bcrypt from "bcryptjs";
-  
+
 @Entity()
 @Unique(["name"])
 export class Category {
@@ -26,11 +26,11 @@ export class Category {
   @Length(3, 100)
   name: string;
 
-  @ManyToOne(() => Category, project => project.id)
+  @ManyToOne(() => Category, (project) => project.id)
   @JoinColumn({ name: "id_category" })
-  category?: Category
+  category?: Category;
 
-  @OneToMany(() => Product, product => product.category)
+  @OneToMany(() => Product, (product) => product.category)
   products: Product[];
 
   @Column()

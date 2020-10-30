@@ -6,13 +6,12 @@ import { Product } from "../entity/Product";
 import { User } from "../entity/User";
 import { Category } from "../entity/Category";
 
-class ProductController{
-
+class ProductController {
   static listAll = async (req: Request, res: Response) => {
     //Get products from database
     const productRepository = getRepository(Product);
     const products = await productRepository.find({
-      relations: ['user', 'category'],
+      relations: ["user", "category"],
     });
 
     //Send the products object
@@ -26,20 +25,28 @@ class ProductController{
     const categoryRepository = getRepository(Product);
     try {
       const category = await categoryRepository.findOneOrFail(id, {
-        relations: ['user']
+        relations: ["user"],
       });
       res.json(category);
     } catch (error) {
-      res.status(404).json({data: "categoria não encontrada"});
+      res.status(404).json({ data: "categoria não encontrada" });
     }
   };
 
   static newProduct = async (req: Request, res: Response) => {
     //Get parameters from the body
-    let { name, description, amount, sale_price, cost_price, measuredUnit, id_category} = req.body;
-    const user = new User() 
+    let {
+      name,
+      description,
+      amount,
+      sale_price,
+      cost_price,
+      measuredUnit,
+      id_category,
+    } = req.body;
+    const user = new User();
     user.id = res.locals.jwtPayload.userId;
-   
+
     const category = new Category();
     category.id = id_category;
 
@@ -52,7 +59,7 @@ class ProductController{
     product.cost_price = cost_price;
     product.measured_unit = measuredUnit;
     product.category = category;
-    
+
     //Validade if the parameters are ok
     const errors = await validate(product);
     if (errors.length > 0) {
@@ -67,7 +74,7 @@ class ProductController{
       const categoryCreate = await categoryRepository.save(product);
       res.status(201).json(categoryCreate);
     } catch (e) {
-      res.status(409).json({data: "produto já existe"});
+      res.status(409).json({ data: "produto já existe" });
       return;
     }
   };
@@ -113,7 +120,7 @@ class ProductController{
   // static deleteCategory = async (req: Request, res: Response) => {
   //   //Get the ID from the url
   //   const id = req.params.id;
- 
+
   //   const categoryRepository = getRepository(Category);
   //   let category: Category;
   //   try {
@@ -128,6 +135,6 @@ class ProductController{
   //     res.status(200).json(category);
   //   });
   // };
-};
+}
 
 export default ProductController;

@@ -1,13 +1,17 @@
 import { Router } from "express";
 import UserController from "../controllers/UserController";
-import { UserRole } from './../entity/User';
+import { UserRole } from "./../entity/User";
 import { checkJwt } from "../middlewares/checkJwt";
 import { checkRole } from "../middlewares/checkRole";
 
 const router = Router();
 
 //Get all users
-router.get("/", [checkJwt, checkRole([UserRole.ADMIN])], UserController.listAll);
+router.get(
+  "/",
+  [checkJwt, checkRole([UserRole.ADMIN])],
+  UserController.listAll
+);
 
 // Get one user
 router.get(
@@ -17,7 +21,11 @@ router.get(
 );
 
 //Create a new user
-router.post("/", [checkJwt, checkRole([UserRole.ADMIN])], UserController.newUser);
+router.post(
+  "/",
+  [checkJwt, checkRole([UserRole.ADMIN])],
+  UserController.newUser
+);
 
 //Edit one user
 router.patch(

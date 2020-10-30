@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response } from "express";
 
 export class ErrorHandler extends Error {
   public statusCode: number;

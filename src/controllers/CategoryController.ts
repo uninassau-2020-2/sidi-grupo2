@@ -4,12 +4,13 @@ import { validate } from "class-validator";
 
 import { Category } from "../entity/Category";
 
-class CategoryController{
-
+class CategoryController {
   static listAll = async (req: Request, res: Response) => {
     //Get users from database
     const categoryRepository = getRepository(Category);
-    const categories = await categoryRepository.find({ relations: ["category"] });
+    const categories = await categoryRepository.find({
+      relations: ["category"],
+    });
 
     //Send the users object
     res.json(categories);
@@ -23,11 +24,11 @@ class CategoryController{
     try {
       const category = await categoryRepository.findOneOrFail(id, {
         select: ["id", "name"],
-        relations: ['category']
+        relations: ["category"],
       });
       res.json(category);
     } catch (error) {
-      res.status(404).json({data: "categoria não encontrada"});
+      res.status(404).json({ data: "categoria não encontrada" });
     }
   };
 
@@ -52,7 +53,7 @@ class CategoryController{
       const categoryCreate = await categoryRepository.save(category);
       res.status(201).json(categoryCreate);
     } catch (e) {
-      res.status(409).json({data: "categoria já existe"});
+      res.status(409).json({ data: "categoria já existe" });
       return;
     }
   };
@@ -71,7 +72,7 @@ class CategoryController{
       category = await categoryRepository.findOneOrFail(id);
     } catch (error) {
       //If not found, send a 404 response
-      res.status(404).json({data: "categoria não encontrada"});
+      res.status(404).json({ data: "categoria não encontrada" });
       return;
     }
 
@@ -90,7 +91,7 @@ class CategoryController{
       //After all send a 204 (no content, but accepted) response
       res.status(204).send();
     } catch (e) {
-      res.status(409).json({category: "categoria já existe"});
+      res.status(409).json({ category: "categoria já existe" });
       return;
     }
   };
@@ -98,21 +99,21 @@ class CategoryController{
   static deleteCategory = async (req: Request, res: Response) => {
     //Get the ID from the url
     const id = req.params.id;
- 
+
     const categoryRepository = getRepository(Category);
     let category: Category;
     try {
       category = await categoryRepository.findOneOrFail(id);
     } catch (error) {
-      res.status(404).json({data:"categoria não encontrada"});
+      res.status(404).json({ data: "categoria não encontrada" });
       return;
     }
 
     //After all send a 204 (no content, but accepted) response
-    await categoryRepository.delete(id).then(remove =>{
+    await categoryRepository.delete(id).then((remove) => {
       res.status(200).json(category);
     });
   };
-};
+}
 
 export default CategoryController;
