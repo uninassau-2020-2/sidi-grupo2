@@ -1,11 +1,10 @@
-import { MeasuredUnit } from "./../entity/Product";
 import { IsEnum } from "class-validator";
 import { Router } from "express";
 import { celebrate, Joi } from "celebrate";
 import ProductController from "../controllers/ProductController";
-import { UserRole } from "./../entity/User";
 import { checkJwt } from "../middlewares/checkJwt";
 import { checkRole } from "../middlewares/checkRole";
+import { UserRole } from "../enum";
 
 const router = Router();
 

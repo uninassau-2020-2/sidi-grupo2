@@ -9,12 +9,7 @@ import {
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
 import * as bcrypt from "bcryptjs";
-
-export enum UserRole {
-  ADMIN = "admin",
-  SELLER = "seller",
-}
-
+import { UserRole } from "../enum";
 @Entity()
 @Unique(["username"])
 export class User {

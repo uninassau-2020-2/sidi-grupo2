@@ -11,21 +11,17 @@ import {
   Length,
   IsEnum,
   IsDecimal,
-  IsNotEmpty,
   ValidateNested,
+  IsBoolean,
+  Min,
   IsEmpty,
-  IsDefined,
-  IsInstance,
+  IsBooleanString,
+  ValidateIf,
+  IsOptional,
 } from "class-validator";
 import { Category } from "./Category";
 import { User } from "./User";
-
-export enum MeasuredUnit {
-  GRAMS = "grams",
-  MILLILITRES = "millilitres",
-  KILOGRAM = "kilogram",
-  LITRE = "litre",
-}
+import { MeasuredUnit } from "../enum";
 
 @Entity()
 export class Product {
@@ -51,7 +47,7 @@ export class Product {
   @IsDecimal({ decimal_digits: "0,2" })
   costPrice: string;
 
-  @Column({ type: "enum", enum: MeasuredUnit, default: MeasuredUnit.GRAMS })
+  @Column({ type: "enum", enum: MeasuredUnit, default: MeasuredUnit.GR })
   @IsEnum(MeasuredUnit)
   measuredUnit: string;
 
@@ -65,6 +61,18 @@ export class Product {
   // @ValidateNested({ message: "categoria não pode ficar vazia" })
   @ValidateNested()
   category: Category;
+
+  @Column({ default: true })
+  @IsBoolean()
+  active: Boolean;
+
+  @Column()
+  @Length(13, 15)
+  barCorde: string;
+
+  @Column()
+  @Length(3, 200)
+  brand: string;
 
   @Column()
   @CreateDateColumn()

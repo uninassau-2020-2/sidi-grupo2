@@ -43,17 +43,10 @@ class ProductController {
       costPrice,
       measuredUnit,
       categoryId,
+      barCode,
+      active = true,
+      brand,
     } = req.body;
-
-    let category: Category;
-    try {
-      category = await getRepository(Category).findOneOrFail(categoryId, {
-        select: ["name"],
-        relations: [""],
-      });
-    } catch (e) {
-      return res.status(400).json({ data: "categoria não encontrada" });
-    }
 
     let product = new Product();
     product.name = name;
@@ -63,7 +56,9 @@ class ProductController {
     product.salePrice = salePrice;
     product.costPrice = costPrice;
     product.measuredUnit = measuredUnit;
-    product.category = category;
+    product.barCorde = barCode;
+    product.brand = brand;
+    product.active = active == "true";
 
     //Validade if the parameters are ok
     const errors = await validate(product);
@@ -71,11 +66,18 @@ class ProductController {
       res.status(400).json(errors);
       return;
     }
+    let category: Category;
+    try {
+      category = await getRepository(Category).findOneOrFail(categoryId);
+    } catch (e) {
+      return res.status(400).json({ data: "categoria não encontrada" });
+    }
 
     //Try to save. If fails, the product is already in use
     const productRepository = getRepository(Product);
     try {
       //If all ok, send 201 response
+      product.category = category;
       const categoryCreate = await productRepository.save(product);
       res.status(201).json(categoryCreate);
     } catch (e) {

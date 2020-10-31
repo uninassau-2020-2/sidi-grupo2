@@ -1,6 +1,6 @@
 import { Router } from "express";
 import CategoryController from "../controllers/CategoryController";
-import { UserRole } from "../entity/User";
+import { UserRole } from "../enum";
 import { checkJwt } from "../middlewares/checkJwt";
 import { checkRole } from "../middlewares/checkRole";
 
