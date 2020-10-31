@@ -113,10 +113,10 @@ class UserController {
       res.status(404).send("User not found");
       return;
     }
-    userRepository.delete(id);
+    userRepository.softDelete(id);
 
     //After all send a 204 (no content, but accepted) response
-    res.status(204).send();
+    res.status(200).json(user);
   };
 }
 

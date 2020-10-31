@@ -12,7 +12,7 @@ class AuthController {
     //Check if username and password are set
     let { username, password } = req.body;
     if (!(username && password)) {
-      res.status(400).json();
+      res.status(400).json({ data: "campos incorretos" });
       // throw new ErrorHandler(400, 'The email address already exists');
     }
 
@@ -71,7 +71,7 @@ class AuthController {
     user.password = newPassword;
     const errors = await validate(user);
     if (errors.length > 0) {
-      res.status(400).send(errors);
+      res.status(400).json(errors);
       return;
     }
     //Hash the new password and save

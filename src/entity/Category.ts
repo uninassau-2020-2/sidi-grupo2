@@ -9,6 +9,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import { Length } from "class-validator";
 // import * as bcrypt from "bcryptjs";
@@ -20,17 +21,20 @@ export class Category {
   id: number;
 
   @Column({ nullable: true })
-  id_category: number;
+  categoryId: number;
 
   @Column()
   @Length(3, 100)
   name: string;
 
   @ManyToOne(() => Category, (project) => project.id)
-  @JoinColumn({ name: "id_category" })
+  @JoinColumn({ name: "categoryId" })
   category?: Category;
 
-  @OneToMany(() => Product, (product) => product.category)
+  @OneToMany(() => Product, (product) => product.category, {
+    cascade: ["soft-remove"],
+    eager: true,
+  })
   products: Product[];
 
   @Column()
@@ -40,4 +44,8 @@ export class Category {
   @Column()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column()
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

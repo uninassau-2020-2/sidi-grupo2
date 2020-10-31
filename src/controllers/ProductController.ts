@@ -39,39 +39,44 @@ class ProductController {
       name,
       description,
       amount,
-      sale_price,
-      cost_price,
+      salePrice,
+      costPrice,
       measuredUnit,
-      id_category,
+      categoryId,
     } = req.body;
-    const user = new User();
-    user.id = res.locals.jwtPayload.userId;
 
-    const category = new Category();
-    category.id = id_category;
+    let category: Category;
+    try {
+      category = await getRepository(Category).findOneOrFail(categoryId, {
+        select: ["name"],
+        relations: [""],
+      });
+    } catch (e) {
+      return res.status(400).json({ data: "categoria não encontrada" });
+    }
 
     let product = new Product();
     product.name = name;
     product.description = description;
-    product.user = user;
+    product.user = { id: res.locals.jwtPayload.userId } as User;
     product.amount = parseInt(amount);
-    product.sale_price = sale_price;
-    product.cost_price = cost_price;
-    product.measured_unit = measuredUnit;
+    product.salePrice = salePrice;
+    product.costPrice = costPrice;
+    product.measuredUnit = measuredUnit;
     product.category = category;
 
     //Validade if the parameters are ok
     const errors = await validate(product);
     if (errors.length > 0) {
-      res.status(400).send(errors);
+      res.status(400).json(errors);
       return;
     }
 
     //Try to save. If fails, the product is already in use
-    const categoryRepository = getRepository(Product);
+    const productRepository = getRepository(Product);
     try {
       //If all ok, send 201 response
-      const categoryCreate = await categoryRepository.save(product);
+      const categoryCreate = await productRepository.save(product);
       res.status(201).json(categoryCreate);
     } catch (e) {
       res.status(409).json({ data: "produto já existe" });

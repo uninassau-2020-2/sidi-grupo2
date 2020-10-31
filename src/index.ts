@@ -4,6 +4,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as helmet from "helmet";
 import * as cors from "cors";
+import * as compression from "compression";
 import { ValidationError } from "class-validator";
 import { isCelebrateError } from "celebrate";
 // import * as methodOverride from 'method-override';
@@ -19,6 +20,7 @@ createConnection()
 
     app.use(cors());
     app.use(helmet());
+    app.use(compression());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(express.static("public"));
@@ -39,7 +41,6 @@ createConnection()
         res: express.Response,
         next: express.NextFunction
       ) => {
-        console.log("err", err);
         if (isCelebrateError(err)) {
           // Logger.error('Error: %o', err);
           res.status(400).json({ error: "Invalid data" }).end();

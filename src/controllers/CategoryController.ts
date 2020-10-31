@@ -8,9 +8,7 @@ class CategoryController {
   static listAll = async (req: Request, res: Response) => {
     //Get users from database
     const categoryRepository = getRepository(Category);
-    const categories = await categoryRepository.find({
-      relations: ["category"],
-    });
+    const categories = await categoryRepository.find();
 
     //Send the users object
     res.json(categories);
@@ -34,11 +32,10 @@ class CategoryController {
 
   static newCategory = async (req: Request, res: Response) => {
     //Get parameters from the body
-    let { name, category_id } = req.body;
+    let { name, categoryId } = req.body;
     let category = new Category();
     category.name = name;
-    category.id_category = category_id;
-
+    category.categoryId = categoryId;
     //Validade if the parameters are ok
     const errors = await validate(category);
     if (errors.length > 0) {
@@ -63,11 +60,12 @@ class CategoryController {
     const id = req.params.id;
 
     //Get values from the body
-    const { name, category_id } = req.body;
+    const { name, categoryId } = req.body;
 
     //Try to find category on database
     const categoryRepository = getRepository(Category);
-    let category;
+    let category: Category;
+
     try {
       category = await categoryRepository.findOneOrFail(id);
     } catch (error) {
@@ -78,7 +76,7 @@ class CategoryController {
 
     //Validate the new values on model
     category.name = name;
-    category.id_category = category_id;
+    category.category = categoryId;
     const errors = await validate(category);
     if (errors.length > 0) {
       res.status(400).send(errors);
@@ -105,12 +103,13 @@ class CategoryController {
     try {
       category = await categoryRepository.findOneOrFail(id);
     } catch (error) {
+      console.log("error", error);
       res.status(404).json({ data: "categoria não encontrada" });
       return;
     }
 
     //After all send a 204 (no content, but accepted) response
-    await categoryRepository.delete(id).then((remove) => {
+    categoryRepository.softDelete(id).then(() => {
       res.status(200).json(category);
     });
   };
