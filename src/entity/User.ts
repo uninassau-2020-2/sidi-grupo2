@@ -8,6 +8,7 @@ import {
   DeleteDateColumn,
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator";
+import { Exclude } from "class-transformer";
 import * as bcrypt from "bcryptjs";
 import { UserRole } from "../enum";
 @Entity()
@@ -22,6 +23,7 @@ export class User {
 
   @Column()
   @Length(4, 100)
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @Column({ type: "enum", enum: UserRole, default: UserRole.SELLER })
@@ -38,6 +40,7 @@ export class User {
 
   @Column()
   @DeleteDateColumn()
+  @Exclude()
   deletedAt?: Date;
 
   hashPassword() {

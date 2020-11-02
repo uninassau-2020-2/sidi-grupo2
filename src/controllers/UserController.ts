@@ -13,7 +13,7 @@ class UserController {
     });
 
     //Send the users object
-    res.send(users);
+    res.json(users);
   };
 
   static getOneById = async (req: Request, res: Response) => {

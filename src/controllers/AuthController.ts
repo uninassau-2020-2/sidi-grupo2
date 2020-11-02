@@ -6,6 +6,7 @@ import { validate } from "class-validator";
 import { User } from "../entity/User";
 import config from "../config/config";
 import { ErrorHandler } from "../helpers/ErrorHandler";
+import { classToPlain } from "class-transformer";
 
 class AuthController {
   static login = async (req: Request, res: Response) => {
@@ -20,7 +21,9 @@ class AuthController {
     const userRepository = getRepository(User);
     let user: User;
     try {
-      user = await userRepository.findOneOrFail({ where: { username } });
+      user = await userRepository.findOneOrFail({
+        where: { username },
+      });
     } catch (error) {
       res.status(401).json({ data: "usuário não encontrado" });
     }
@@ -37,9 +40,8 @@ class AuthController {
       config.jwtSecret,
       { expiresIn: "1h" }
     );
-
     //Send the jwt in the response
-    res.status(200).json({ user, token });
+    res.status(200).json(classToPlain({ ...user, token }));
   };
 
   static changePassword = async (req: Request, res: Response) => {
