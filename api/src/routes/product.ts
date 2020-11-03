@@ -1,4 +1,3 @@
-import { IsEnum } from "class-validator";
 import { Router } from "express";
 import { celebrate, Joi } from "celebrate";
 import ProductController from "../controllers/ProductController";
@@ -42,18 +41,18 @@ router.post(
   ProductController.newProduct
 );
 
-// //Edit one category
-// router.patch(
-//   "/:id([0-9]+)",
-//   [checkJwt, checkRole(["ADMIN", "SELLER"])],
-//   CategoryController.editCategory
-// );
+//Edit one category
+router.patch(
+  "/:id([0-9]+)",
+  [checkJwt, checkRole([UserRole.ADMIN])],
+  ProductController.editProduct
+);
 
-// //Delete one category
-// router.delete(
-//   "/:id([0-9]+)",
-//   [checkJwt, checkRole(["ADMIN"])],
-//   CategoryController.deleteCategory
-// );
+//Delete one category
+router.delete(
+  "/:id([0-9]+)",
+  [checkJwt, checkRole([UserRole.ADMIN])],
+  ProductController.deleteCategory
+);
 
 export default router;
