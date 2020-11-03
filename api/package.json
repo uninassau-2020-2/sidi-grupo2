@@ -31,7 +31,7 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "start": "tsnd --respawn ./src/index.ts",
+    "start": "ts-node-dev --inspect --exit-child --respawn src/index.ts",
     "prod": "tsc && node ./build/app.js",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
     "migration:revert": "ts-node node_modules/.bin/typeorm migration:revert"
