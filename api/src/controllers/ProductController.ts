@@ -29,7 +29,7 @@ class ProductController {
       });
       res.json(category);
     } catch (error) {
-      res.status(404).json({ data: "categoria não encontrada" });
+      res.status(404).json({ data: "produto não encontrado" });
     }
   };
 
@@ -70,7 +70,7 @@ class ProductController {
     try {
       category = await getRepository(Category).findOneOrFail(categoryId);
     } catch (e) {
-      return res.status(400).json({ data: "categoria não encontrada" });
+      return res.status(400).json({ data: "produto não encontrado" });
     }
 
     //Try to save. If fails, the product is already in use
@@ -159,7 +159,7 @@ class ProductController {
     try {
       product = await productRepository.findOneOrFail(id);
     } catch (error) {
-      res.status(404).json({data:"categoria não encontrada"});
+      res.status(404).json({data:"produto não encontrado"});
       return;
     }
 
