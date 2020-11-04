@@ -89,7 +89,7 @@ class CategoryController {
       //After all send a 204 (no content, but accepted) response
       res.status(204).send();
     } catch (e) {
-      res.status(409).json({ category: "categoria já existe" });
+      res.status(409).json({ data: "categoria já existe" });
       return;
     }
   };

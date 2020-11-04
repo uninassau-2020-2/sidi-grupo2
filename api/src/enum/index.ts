@@ -19,3 +19,9 @@ export enum UserRole {
   ADMIN = "admin",
   SELLER = "seller",
 }
+
+export enum FormOfPayment{
+  DEBIT_CARD = "debit_card",
+  CREDIT_CARD = "credit_card",
+  CASH = "cash",
+}

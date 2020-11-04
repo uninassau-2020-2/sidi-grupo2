@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { validate } from "class-validator";
 
-import { Provider } from './../entity/Provider';
+import { Provider } from "./../entity/Provider";
 import { User } from "../entity/User";
 
 export default class ProviderController {
@@ -39,7 +39,7 @@ export default class ProviderController {
       site,
       zipcode,
       street,
-      number ,
+      number,
       neighborhood,
       city,
       uf,
@@ -47,7 +47,7 @@ export default class ProviderController {
     } = req.body;
 
     let provider = new Provider();
-    provider.user =  { id: res.locals.jwtPayload.userId } as User;
+    provider.user = { id: res.locals.jwtPayload.userId } as User;
     provider.cnpj = cnpj;
     provider.companyName = companyName;
     provider.fantasyName = fantasyName;
@@ -95,7 +95,7 @@ export default class ProviderController {
       site,
       zipcode,
       street,
-      number ,
+      number,
       neighborhood,
       city,
       uf,
@@ -114,26 +114,25 @@ export default class ProviderController {
     }
 
     //Validate the new values on model
-    cnpj && (provider.cnpj = cnpj)
-    companyName && (provider.companyName = companyName)
-    fantasyName && (provider.fantasyName = fantasyName)
-    stateRegistration && (provider.stateRegistration = stateRegistration)
-    email && (provider.email = email)
-    site && (provider.site = site)
-    zipcode && (provider.zipcode = zipcode)
-    street && (provider.street = street)
-    number && (provider.number = parseInt(number))
-    neighborhood && (provider.neighborhood = neighborhood)
-    city && (provider.city = city)
-    uf && (provider.uf = uf)
-    phone && (provider.phone = phone)
+    cnpj && (provider.cnpj = cnpj);
+    companyName && (provider.companyName = companyName);
+    fantasyName && (provider.fantasyName = fantasyName);
+    stateRegistration && (provider.stateRegistration = stateRegistration);
+    email && (provider.email = email);
+    site && (provider.site = site);
+    zipcode && (provider.zipcode = zipcode);
+    street && (provider.street = street);
+    number && (provider.number = parseInt(number));
+    neighborhood && (provider.neighborhood = neighborhood);
+    city && (provider.city = city);
+    uf && (provider.uf = uf);
+    phone && (provider.phone = phone);
 
     const errors = await validate(provider);
     if (errors.length > 0) {
       res.status(400).send(errors);
       return;
     }
-
 
     try {
       //If all ok, send 201 response
@@ -154,12 +153,12 @@ export default class ProviderController {
     try {
       provider = await providerRepository.findOneOrFail(id);
     } catch (error) {
-      res.status(404).json({data:"fornecedor não encontrado"});
+      res.status(404).json({ data: "fornecedor não encontrado" });
       return;
     }
 
     //After all send a 204 (no content, but accepted) response
-    await providerRepository.delete(id).then(() =>{
+    await providerRepository.delete(id).then(() => {
       res.status(200).json(provider);
     });
   };
