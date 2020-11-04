@@ -8,9 +8,11 @@ import {
   UpdateDateColumn,
   ManyToOne,
   DeleteDateColumn,
+  OneToMany,
 } from "typeorm";
-import { IsDecimal, IsEnum, IsOptional } from "class-validator";
+import { IsDecimal, IsEnum } from "class-validator";
 import { User } from "./User";
+import { SaleToProduct } from "./SaleToProduct";
 // import * as bcrypt from "bcryptjs";
 
 @Entity()
@@ -32,6 +34,9 @@ export class Sale {
 
   @ManyToOne(() => User, { nullable: false })
   user: User;
+
+  @OneToMany(() => SaleToProduct, (saleToProduct) => saleToProduct.sale)
+  saleToProducts!: SaleToProduct[];
 
   @Column()
   @CreateDateColumn()

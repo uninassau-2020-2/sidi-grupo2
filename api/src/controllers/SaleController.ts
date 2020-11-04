@@ -1,9 +1,10 @@
+import { SaleToProduct } from "./../entity/SaleToProduct";
+import { Product } from "./../entity/Product";
 import { Sale } from "./../entity/Sale";
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getManager, getRepository } from "typeorm";
 import { validate } from "class-validator";
 
-import { Category } from "../entity/Category";
 import { User } from "../entity/User";
 
 export default class SaleController {
@@ -31,7 +32,7 @@ export default class SaleController {
 
   static newSale = async (req: Request, res: Response) => {
     //Get parameters from the body
-    let { formOfPayment, total, change } = req.body;
+    let { formOfPayment, total, change, products } = req.body;
     const sale = new Sale();
     sale.formOfPayment = formOfPayment;
     sale.total = total;
@@ -45,14 +46,36 @@ export default class SaleController {
       return;
     }
 
-    //Try to save. If fails, the username is already in use
-    const saleRepository = getRepository(Sale);
     try {
+      interface IProduct {
+        productId: string;
+        amount: string;
+      }
+
+      await getManager().transaction(async (transactionalEntityManager) => {
+        const newSale = await transactionalEntityManager
+          .getRepository(Sale)
+          .save(sale);
+        const saleProduct: Array<SaleToProduct> = products.map(
+          (product: IProduct) => {
+            console.log("product", product);
+            return {
+              productId: parseInt(product.productId),
+              saleId: newSale.id,
+              amount: parseInt(product.amount) || 1,
+            } as SaleToProduct;
+          }
+        );
+
+        await transactionalEntityManager
+          .getRepository(SaleToProduct)
+          .save(saleProduct);
+      });
+
       //If all ok, send 201 response
-      const saleCreate = await saleRepository.save(sale);
-      res.status(201).json(saleCreate);
+      res.status(201).json({ data: "deu certo" });
     } catch (e) {
-      res.status(409).json({ data: "venda já existe" });
+      res.status(409).json({ data: "algum produto é inexistente" });
       return;
     }
   };

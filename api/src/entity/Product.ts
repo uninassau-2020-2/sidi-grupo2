@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   DeleteDateColumn,
+  OneToMany,
 } from "typeorm";
 import {
   Length,
@@ -18,6 +19,7 @@ import { Category } from "./Category";
 import { User } from "./User";
 import { Provider } from "./Provider";
 import { MeasuredUnit } from "../enum";
+import { SaleToProduct } from "./SaleToProduct";
 
 @Entity()
 export class Product {
@@ -72,6 +74,9 @@ export class Product {
   @Column()
   @Length(3, 200)
   brand: string;
+
+  @OneToMany(() => SaleToProduct, (saleToProduct) => saleToProduct.product)
+  saleToProducts!: SaleToProduct[];
 
   @Column()
   @CreateDateColumn()
