@@ -13,14 +13,10 @@ import {
   IsDecimal,
   ValidateNested,
   IsBoolean,
-  Min,
-  IsEmpty,
-  IsBooleanString,
-  ValidateIf,
-  IsOptional,
 } from "class-validator";
 import { Category } from "./Category";
 import { User } from "./User";
+import { Provider } from "./Provider";
 import { MeasuredUnit } from "../enum";
 
 @Entity()
@@ -53,6 +49,9 @@ export class Product {
 
   @ManyToOne(() => User)
   user: User;
+
+  @ManyToOne(() => Provider)
+  provider: Provider;
 
   @ManyToOne(() => Category, (category) => category.products, {
     nullable: false,
