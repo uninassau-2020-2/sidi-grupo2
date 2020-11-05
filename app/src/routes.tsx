@@ -8,17 +8,19 @@ const { Navigator, Screen } = createStackNavigator();
 
 import Login from "./screen/login/LoginScreen";
 import Register from "./screen/login/RegisterScreen";
-import Home from "./screen/main/HomeScreen";
+import MainStack from "./screen/main/MainStack";
 
 export default function Routes() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
         <Navigator
-          screenOptions={{
-            headerTitleStyle: { alignSelf: "center" },
-            cardStyle: { backgroundColor: "#f2f3f5" },
-          }}
+          screenOptions={
+            {
+              // headerTitleStyle: { alignSelf: "center" },
+              // cardStyle: { backgroundColor: "#fff" },
+            }
+          }
         >
           <Screen
             name="Login"
@@ -32,7 +34,7 @@ export default function Routes() {
           />
           <Screen
             name="Home"
-            component={Home}
+            component={MainStack}
             options={{ title: "Início", headerShown: false }}
           />
         </Navigator>
