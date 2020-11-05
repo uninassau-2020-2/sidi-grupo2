@@ -34,7 +34,7 @@ const DATA_PRODUCT: Array<IUsers> = [
   {
     name: "Daniel",
     id: 3,
-    acessNivel: "admin",
+    acessNivel: "fornecedor",
   },
   {
     name: "Leticia",

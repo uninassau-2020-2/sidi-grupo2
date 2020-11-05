@@ -29,7 +29,7 @@ const DATA_PRODUCT: Array<IProduct> = [
     codigo: 48755961528, 
   },
   {
-    name: "Biscoito",
+    name: "Creme",
     id: 1,
     unitOfMeasurement: "unidade",
     price: 1.4,

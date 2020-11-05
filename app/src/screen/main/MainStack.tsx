@@ -14,7 +14,7 @@ export default function App() {
       <Tab.Screen name="Vendas" component={Home} />
       <Tab.Screen name="Produtos" component={Product} />
       <Tab.Screen name="Usuários" component={Users} />
-      <Tab.Screen name="Perfil" component={Users} />
+      <Tab.Screen name="Perfil" component={Home} />
     </Tab.Navigator>
   );
 }
