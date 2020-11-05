@@ -8,12 +8,16 @@ import {
 } from "react-native";
 import { FlatList, RectButton, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { List } from 'react-native-paper';
+import { Card, Title, Paragraph } from 'react-native-paper';
+
 
 interface IProduct {
   name: string;
   id: number;
   unitOfMeasurement: string;
   price: number;
+  codigo: number;
 }
 
 const DATA_PRODUCT: Array<IProduct> = [
@@ -22,15 +26,38 @@ const DATA_PRODUCT: Array<IProduct> = [
     id: 1,
     unitOfMeasurement: "litro",
     price: 2.4,
+    codigo: 48755961528, 
+  },
+  {
+    name: "Biscoito",
+    id: 1,
+    unitOfMeasurement: "unidade",
+    price: 1.4,
+    codigo: 48755961528, 
   },
 ];
 
+
 export default function HomeScreen() {
+  const [expanded, setExpanded] = React.useState(true);
+
+  const handlePress = () => setExpanded(!expanded);
+
   const renderItemList = ({ item, index }: ListRenderItemInfo<IProduct>) => (
-    <TouchableOpacity style={styles.itemList}>
-      <Text>{item.name}</Text>
-      <Text>{item.unitOfMeasurement}</Text>
-      <Text>R${item.price}</Text>
+    
+    <TouchableOpacity>
+      <List.Accordion
+        title={item.name}
+        description={item.codigo}
+        >
+        <Card>
+          <Card.Content>
+            <Title>{item.name}</Title>
+            <Paragraph>{item.unitOfMeasurement}</Paragraph>
+            <Paragraph>R${item.price}</Paragraph>
+          </Card.Content>
+        </Card>
+      </List.Accordion>
     </TouchableOpacity>
   );
 
