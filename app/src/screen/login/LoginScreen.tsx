@@ -3,15 +3,17 @@ import {
   StyleSheet,
   SafeAreaView,
   Text,
-  TextInput,
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
   Animated,
+  Image,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { RectButton } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { TextInput } from 'react-native-paper';
+
 
 export default function LoginScreen() {
   const [offset] = useState(new Animated.ValueXY({ x: 0, y: 95 }));
@@ -38,11 +40,7 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <View>
-          <Text>Login</Text>
-          <StatusBar style="auto" />
-        </View>
-
+      <Text style={styles.title}>Login</Text>
         <Animated.View
           style={[
             styles.container,
@@ -77,7 +75,7 @@ export default function LoginScreen() {
             onPress={handleToNavigateToRegister}
           >
             <View accessible>
-              <Text style={styles.registerText}>Criar Conta</Text>
+              <Text style={styles.registerText}>Esqueceu a senha ?</Text>
             </View>
           </RectButton>
         </Animated.View>
@@ -91,7 +89,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#191919",
   },
   containerLogo: {
     flex: 1,
@@ -110,7 +107,6 @@ const styles = StyleSheet.create({
     color: "#222",
     fontSize: 17,
     borderRadius: 7,
-    padding: 10,
   },
   btnSubmit: {
     backgroundColor: "#35AAFF",
@@ -128,6 +124,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   registerText: {
-    color: "#FFF",
+    color: "#5c657e",
+  },
+  cardImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: "stretch",
+  },
+  title: {
+    margin: 12,
+    marginTop: 24,
+    fontSize: 24,
+    color: "#5c657e",
+    fontWeight: "bold",
   },
 });
