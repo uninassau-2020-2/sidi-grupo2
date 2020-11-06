@@ -8,9 +8,8 @@ import {
 } from "react-native";
 import { FlatList, RectButton, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { List } from 'react-native-paper';
-import { Card, Title, Paragraph } from 'react-native-paper';
-
+import { List } from "react-native-paper";
+import { Card, Title, Paragraph } from "react-native-paper";
 
 interface IProduct {
   name: string;
@@ -26,30 +25,25 @@ const DATA_PRODUCT: Array<IProduct> = [
     id: 1,
     unitOfMeasurement: "litro",
     price: 2.4,
-    codigo: 48755961528, 
+    codigo: 48755961528,
   },
   {
     name: "Creme",
     id: 1,
     unitOfMeasurement: "unidade",
     price: 1.4,
-    codigo: 48755961528, 
+    codigo: 48755961528,
   },
 ];
-
 
 export default function HomeScreen() {
   const [expanded, setExpanded] = React.useState(true);
 
   const handlePress = () => setExpanded(!expanded);
 
-  const renderItemList = ({ item, index }: ListRenderItemInfo<IProduct>) => (
-    
+  const renderItemList = (item: IProduct, index: number) => (
     <TouchableOpacity>
-      <List.Accordion
-        title={item.name}
-        description={item.codigo}
-        >
+      <List.Accordion title={item.name} description={item.codigo}>
         <Card>
           <Card.Content>
             <Title>{item.name}</Title>
@@ -62,11 +56,9 @@ export default function HomeScreen() {
   );
 
   const renderListOfProduct = () => (
-    <FlatList
-      keyExtractor={(item, index) => String(index)}
-      data={DATA_PRODUCT}
-      renderItem={renderItemList}
-    />
+    <List.Section title="Accordions">
+      {DATA_PRODUCT.map((item, index) => renderItemList(item, index))}
+    </List.Section>
   );
 
   return (

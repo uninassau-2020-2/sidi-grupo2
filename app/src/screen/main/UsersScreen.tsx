@@ -9,10 +9,7 @@ import {
 } from "react-native";
 import { FlatList, RectButton, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DataTable } from 'react-native-paper';
-import { Appbar } from 'react-native-paper';
-import { Avatar } from 'react-native-paper';
-
+import { DataTable } from "react-native-paper";
 
 interface IUsers {
   name: string;
@@ -20,7 +17,7 @@ interface IUsers {
   acessNivel: string;
 }
 
-const DATA_PRODUCT: Array<IUsers> = [
+const DATA_USERS: Array<IUsers> = [
   {
     name: "fellip",
     id: 1,
@@ -51,36 +48,28 @@ const DATA_PRODUCT: Array<IUsers> = [
     id: 6,
     acessNivel: "Vendedor",
   },
-  
 ];
 
 export default function UsersScreen() {
-
   const renderItemList = ({ item, index }: ListRenderItemInfo<IUsers>) => (
-
-    <TouchableOpacity>
-      <DataTable>
-      <DataTable.Row>
-      
-          <DataTable.Cell>
-          <Image
-            source={{
-             uri: `https://ui-avatars.com/api/?name=${item.name}`,
+    <DataTable.Row>
+      <DataTable.Cell>
+        <Image
+          source={{
+            uri: `https://ui-avatars.com/api/?name=${item.name}`,
           }}
-            style={styles.cardImage}
-          />
-          </DataTable.Cell>
-          <DataTable.Cell >{item.name}</DataTable.Cell>
-          <DataTable.Cell numeric>{item.acessNivel}</DataTable.Cell>
-        </DataTable.Row>
-      </DataTable>
-    </TouchableOpacity>
+          style={styles.cardImage}
+        />
+      </DataTable.Cell>
+      <DataTable.Cell>{item.name}</DataTable.Cell>
+      <DataTable.Cell numeric>{item.acessNivel}</DataTable.Cell>
+    </DataTable.Row>
   );
 
   const renderListOfProduct = () => (
     <FlatList
       keyExtractor={(item, index) => String(index)}
-      data={DATA_PRODUCT}
+      data={DATA_USERS}
       renderItem={renderItemList}
     />
   );
@@ -88,14 +77,16 @@ export default function UsersScreen() {
   return (
     <SafeAreaView>
       <Text style={styles.title}>Usuarios</Text>
+      <ScrollView>
         <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>Id</DataTable.Title>
-          <DataTable.Title >Nome</DataTable.Title>
-          <DataTable.Title numeric>Cargo</DataTable.Title>
-        </DataTable.Header>
+          <DataTable.Header>
+            <DataTable.Title>Id</DataTable.Title>
+            <DataTable.Title>Nome</DataTable.Title>
+            <DataTable.Title numeric>Cargo</DataTable.Title>
+          </DataTable.Header>
+          {renderListOfProduct()}
         </DataTable>
-       <ScrollView>{renderListOfProduct()}</ScrollView> 
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -119,14 +110,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 6,
     backgroundColor: "#c1c4cb",
-
   },
   textList: {
     justifyContent: "space-between",
     flexDirection: "row",
     padding: 6,
     margin: 12,
-
   },
   cardImage: {
     width: 30,
