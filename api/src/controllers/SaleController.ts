@@ -29,6 +29,14 @@ export default class SaleController {
       res.status(404).json({ data: "venda não encontrada" });
     }
   };
+  /**
+   * TODO
+   * @param req
+   * @param res
+   */
+  static listMySale = async (req: Request, res: Response) => {
+    const userCurrrent = { id: res.locals.jwtPayload.userId } as User;
+  };
 
   static newSale = async (req: Request, res: Response) => {
     //Get parameters from the body

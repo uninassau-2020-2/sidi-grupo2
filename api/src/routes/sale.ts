@@ -6,11 +6,18 @@ import { checkRole } from "../middlewares/checkRole";
 
 const router = Router();
 
-//Get all categories
+//Get all sales
 router.get(
   "/",
   [checkJwt, checkRole([UserRole.ADMIN])],
   SaleController.listAll
+);
+
+//Get all user sales
+router.get(
+  "/me",
+  [checkJwt, checkRole([UserRole.ADMIN, UserRole.SELLER])],
+  SaleController.listMySale
 );
 
 //Get one sale
@@ -23,7 +30,7 @@ router.get(
 //Create a new Sale
 router.post(
   "/",
-  [checkJwt, checkRole([UserRole.ADMIN])],
+  [checkJwt, checkRole([UserRole.ADMIN, UserRole.SELLER])],
   SaleController.newSale
 );
 
