@@ -8,20 +8,22 @@ import {
   KeyboardAvoidingView,
   Animated,
   TouchableOpacity,
+  TextInput,
+
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { RectButton } from "react-native-gesture-handler";
-import { TextInput } from "react-native-paper";
-import { Avatar } from "react-native-paper";
+import { Avatar } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/native";
+import * as Animatable from 'react-native-animatable';
+import { Ionicons } from '@expo/vector-icons';
 
-import { NavigationContainer, StackActions } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
 
 export default function ForgotpassScreen() {
+  
   const navigation = useNavigation();
 
-  function handleToNavigateToRegister() {
+  function handleToNavigateToNewPassword() {
     navigation.navigate("NewCredention");
   }
   const [offset] = useState(new Animated.ValueXY({ x: 0, y: 95 }));
@@ -36,94 +38,89 @@ export default function ForgotpassScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.background}>
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <Avatar.Icon style={styles.logo} size={80} icon="lock" />
-        <Text style={styles.title}>Recuperar Senha</Text>
-        <Text style={styles.subTitle}>
-          forneça o e-mail de sua conta para qual deseja alterar sua senha
-        </Text>
-        <Animated.View
-          style={[
-            styles.container,
-            {
-              transform: [{ translateY: offset.y }],
-            },
-          ]}
-        >
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            autoCorrect={false}
-            onChangeText={() => {}}
-          />
-
-          <TouchableOpacity
-            style={styles.btnSubmit}
-            onPress={handleToNavigateToRegister}
-          >
-            <Text style={styles.submitText}>Proximo</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <Animatable.View
+     style={styles.container}
+     animation="fadeInUpBig"
+     >
+      <View style={styles.header}>
+        <Text style={styles.text_header}>Recuperar               senha</Text>
+      </View>
+        <View style={styles.footer}>
+          <Text style={styles.text_footer}>E-MAIL</Text>
+          <View style={styles.action}>
+            <Ionicons name="md-mail" size={20} color="gray" />
+              <TextInput 
+                placeholder="E-mail de recuperação..."
+                style={styles.textInput}
+              />
+          </View>        
+          <View style={styles.button}>
+            <TouchableOpacity 
+            style={styles.signIn}
+            onPress={handleToNavigateToNewPassword}
+            >
+            <Text style={[styles.textSign,{color:"#fff"}]}>Enviar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+    </Animatable.View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logo: {
-    justifyContent: "center",
-    marginTop: 60,
-    backgroundColor: "#fff",
-  },
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
+    backgroundColor: "#F2F2f2"
   },
-  input: {
-    backgroundColor: "#FFF",
-    width: "90%",
-    marginBottom: 15,
-    color: "#222",
-    fontSize: 17,
-    borderRadius: 7,
+  header:{
+    flex: 1,
+    justifyContent:"flex-end",
+    paddingHorizontal:20,
+    paddingBottom:50,
   },
-  btnSubmit: {
-    backgroundColor: "#35AAFF",
-    width: "90%",
-    height: 45,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 7,
+  footer:{
+    flex: 1,
+    backgroundColor: "white",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
   },
-  submitText: {
-    color: "#FFF",
-    fontSize: 18,
-  },
-  btnRegister: {
-    marginTop: 10,
-  },
-  registerText: {
-    color: "#FFF",
-  },
-  title: {
-    margin: 12,
-    marginTop: 24,
-    fontSize: 24,
-    color: "#5c657e",
+  text_header:{
+    color: "#05375a",
     fontWeight: "bold",
+    fontSize: 30,
   },
-  subTitle: {
-    margin: 12,
-    marginTop: 0,
+  text_footer: {
+    color: "gray",
     fontSize: 18,
-    color: "#5c657e",
   },
-});
+  action:{
+    flexDirection: "row",
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f2f2f2",
+    paddingBottom: 5,
+  },
+  textInput:{
+    flex: 1,
+    paddingLeft: 10,
+    color: "#05375a"
+  },
+  button:{
+    alignItems: "center",
+    marginTop: 50
+  },
+  signIn:{
+    width: "100%",
+    height:50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius:10,
+    backgroundColor: "#05375a"
+  },
+  textSign:{
+    fontSize: 18,
+    fontWeight: "bold",
+  }
+})

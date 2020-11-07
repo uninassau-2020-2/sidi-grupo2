@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     flexDirection: "row",
-    backgroundColor: "#A6A6A6",
+    backgroundColor: "#05375a"
   },
   textSign: {
     color: "#fff",

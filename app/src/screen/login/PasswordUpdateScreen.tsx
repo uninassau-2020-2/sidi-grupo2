@@ -9,8 +9,12 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
-import { Avatar } from "react-native-paper";
+import { StatusBar } from "expo-status-bar";
+import { RectButton } from "react-native-gesture-handler";
+import { TextInput } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/native";
+import * as Animatable from 'react-native-animatable';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function PasswordUpdateScreen() {
   const [offset] = useState(new Animated.ValueXY({ x: 0, y: 95 }));
@@ -31,69 +35,73 @@ export default function PasswordUpdateScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.background}>
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <Text style={styles.title}>Senha atualizada</Text>
-        <Avatar.Icon style={styles.logo} size={80} icon="check" />
-        <Text style={styles.subTitle}>Sua senha foi atualizada !</Text>
-
-        <TouchableOpacity
-          style={styles.btnSubmit}
-          onPress={handleToNavigateToLogin}
-        >
-          <Text style={styles.submitText}>Confirmar</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <Animatable.View
+     style={styles.container}
+     animation="fadeInUpBig"
+     >
+      <View style={styles.header}>
+        <Text style={styles.text_header}>Senha alterada com sucesso!</Text>
+      </View>
+        <View style={styles.footer}>
+          <View style={styles.action}>
+            <Ionicons name="md-checkmark-circle" size={120} color="green" />
+          </View>
+          <View style={styles.button}>
+            <TouchableOpacity 
+            style={styles.signIn}
+            onPress={handleToNavigateToLogin}
+            >
+              <Text style={[styles.textSign,{color:"#fff"}]}>Fazer login</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+    </Animatable.View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
+    backgroundColor: "#F2F2f2"
   },
-  btnSubmit: {
-    backgroundColor: "#35AAFF",
-    width: "90%",
-    height: 45,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 7,
-    marginTop: 20,
+  header:{
+    flex: 1,
+    justifyContent:"flex-end",
+    paddingHorizontal:20,
+    paddingBottom:50,
   },
-  submitText: {
-    color: "#FFF",
-    fontSize: 18,
+  footer:{
+    flex: 2,
+    backgroundColor: "white",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
   },
-  btnRegister: {
-    marginTop: 10,
-  },
-  registerText: {
-    color: "#FFF",
-  },
-  title: {
-    margin: 12,
-    marginTop: -80,
-    fontSize: 24,
-    color: "#5c657e",
+  text_header:{
+    color: "#05375a",
     fontWeight: "bold",
+    fontSize: 30,
   },
-  logo: {
+  action:{
+    marginTop: 10,
+    paddingBottom: 5,
+    alignItems: "center", 
+  },
+  button:{
+    alignItems: "center",
+    marginTop: 50
+  },
+  signIn:{
+    width: "100%",
+    height:50,
     justifyContent: "center",
-    marginTop: 20,
+    alignItems: "center",
+    borderRadius:10,
+    backgroundColor: "#05375a"
   },
-  subTitle: {
-    margin: 12,
-    marginTop: 25,
+  textSign:{
     fontSize: 18,
-    color: "#5c657e",
-  },
-});
+    fontWeight: "bold",
+  }
+})

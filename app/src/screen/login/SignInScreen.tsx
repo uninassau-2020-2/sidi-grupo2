@@ -11,14 +11,18 @@ import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 
 export default function LoginScreen() {
+
   const navigation = useNavigation();
 
-  function handleToNavigateToLogin() {
+  function handleToNavigateToHome() {
     navigation.navigate("Home");
   }
 
   return (
-    <Animatable.View style={styles.container} animation="fadeInUpBig">
+    <Animatable.View
+     style={styles.container}
+     animation="fadeInUpBig"
+     >
       <View style={styles.header}>
         <Text style={styles.text_header}>Bem vindo ReiCangaço!</Text>
       </View>
@@ -51,7 +55,7 @@ export default function LoginScreen() {
         <View style={styles.button}>
           <TouchableOpacity
             style={styles.signIn}
-            onPress={handleToNavigateToLogin}
+            onPress={handleToNavigateToHome}
           >
             <Text style={[styles.textSign, { color: "#fff" }]}>Entrar</Text>
           </TouchableOpacity>
@@ -110,8 +114,8 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#A6A6A6",
+    borderRadius:10,
+    backgroundColor: "#05375a"
   },
   textSign: {
     fontSize: 18,
