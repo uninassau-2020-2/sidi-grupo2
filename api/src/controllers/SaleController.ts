@@ -36,6 +36,18 @@ export default class SaleController {
    */
   static listMySale = async (req: Request, res: Response) => {
     const userCurrrent = { id: res.locals.jwtPayload.userId } as User;
+    const saleRepository = getRepository(Sale);
+    try {
+      const sale = await saleRepository.find(
+        // { user: userCurrrent },
+        {
+          relations: ["saleToProducts"],
+        }
+      );
+      res.json(sale);
+    } catch (error) {
+      res.status(404).json({ data: "vendas não encontrada" });
+    }
   };
 
   static newSale = async (req: Request, res: Response) => {
