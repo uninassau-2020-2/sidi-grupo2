@@ -8,11 +8,10 @@ const { Navigator, Screen } = createStackNavigator();
 
 import Login from "./screen/login/LoginScreen";
 import SignIn from "./screen/login/SignInScreen";
-import Register from "./screen/forgotPass/ForgotpassScreen";
+import Register from "./screen/login/ForgotpassScreen";
+import NewCredention from "./screen/login/NewCredentionScreen";
+import PasswordUpdate from "./screen/login/PasswordUpdateScreen";
 import MainStack from "./screen/main/MainStack";
-import NewCredention from "./screen/forgotPass/NewCredentionScreen";
-import PasswordUpdate from "./screen/forgotPass/PasswordUpdateScreen";
-
 
 export default function Routes() {
   return (

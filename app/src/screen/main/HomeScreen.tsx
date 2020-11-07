@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { BarChart, LineChart } from "react-native-chart-kit";
+import { Text, View, StyleSheet, Image } from "react-native";
+import { LineChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { LineChartData } from "react-native-chart-kit/dist/line-chart/LineChart";
 import { ScrollView } from "react-native-gesture-handler";

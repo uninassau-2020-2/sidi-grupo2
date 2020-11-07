@@ -5,7 +5,7 @@ const Tab = createBottomTabNavigator();
 
 import Home from "./HomeScreen";
 import Product from "./ProductScreen";
-import Users from "./UsersScreen"
+import Users from "./UsersScreen";
 
 export default function App() {
   return (

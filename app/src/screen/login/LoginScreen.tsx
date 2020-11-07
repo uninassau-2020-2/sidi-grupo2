@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  SafeAreaView,
+  Animated,
   Text,
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Animated,
-  Image,
   Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { RectButton } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { TextInput } from 'react-native-paper';
-import * as Animatable from 'react-native-animatable';
+import * as Animatable from "react-native-animatable";
 export default function LoginScreen() {
-
   const navigation = useNavigation();
 
   function handleToNavigateToSignIn() {
@@ -33,39 +28,36 @@ export default function LoginScreen() {
           resizeMode={"stretch"}
         />  */}
       </View>
-      <Animatable.View 
-      style={styles.footer}
-      animation="fadeInUpBig"> 
-          <Text style={styles.title}>Fique conectado!</Text>
-          <Text style={styles.text}>Entrar com conta</Text>
-          <View style={styles.button}>
-          <TouchableOpacity 
-          style={styles.signIn}
-          onPress={handleToNavigateToSignIn}
+      <Animated.View style={styles.footer}>
+        <Text style={styles.title}>Fique conectado!</Text>
+        <Text style={styles.text}>Entrar com conta</Text>
+        <View style={styles.button}>
+          <TouchableOpacity
+            style={styles.signIn}
+            onPress={handleToNavigateToSignIn}
           >
             <Text style={styles.textSign}>Vamos começar</Text>
           </TouchableOpacity>
-          </View>
-      </Animatable.View>
+        </View>
+      </Animated.View>
     </View>
   );
 }
 
-const { height } = Dimensions.get('screen');
+const { height } = Dimensions.get("screen");
 const height_logo = height * 0.7 * 0.4;
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    backgroundColor: "#F2F2f2"
+    backgroundColor: "#F2F2f2",
   },
-  header:{
+  header: {
     flex: 2,
     justifyContent: "center",
     alignItems: "center",
   },
-  footer:{
+  footer: {
     flex: 1,
     backgroundColor: "white",
     borderTopLeftRadius: 30,
@@ -73,11 +65,11 @@ const styles = StyleSheet.create({
     paddingVertical: 50,
     paddingHorizontal: 30,
   },
-  logo:{
+  logo: {
     width: height_logo,
     height: height_logo,
   },
-  title:{
+  title: {
     color: "#05375a",
     fontWeight: "bold",
     fontSize: 30,
@@ -90,17 +82,17 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     marginTop: 30,
   },
-  signIn:{
+  signIn: {
     width: 150,
     height: 40,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
     flexDirection: "row",
-    backgroundColor: "#A6A6A6"
+    backgroundColor: "#A6A6A6",
   },
-  textSign:{
+  textSign: {
     color: "#fff",
     fontWeight: "bold",
-  }
-})
+  },
+});

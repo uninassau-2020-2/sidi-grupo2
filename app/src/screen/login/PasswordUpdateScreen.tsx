@@ -9,15 +9,8 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { RectButton } from "react-native-gesture-handler";
-import { TextInput } from 'react-native-paper';
-import { Avatar } from 'react-native-paper';
+import { Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-
-
-import { NavigationContainer, StackActions } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
 
 export default function PasswordUpdateScreen() {
   const [offset] = useState(new Animated.ValueXY({ x: 0, y: 95 }));
@@ -40,16 +33,16 @@ export default function PasswordUpdateScreen() {
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Text style={styles.title}>Senha atualizada</Text>
-      <Avatar.Icon style={styles.logo} size={80} icon="check" />
-      <Text style={styles.subTitle}>Sua senha foi atualizada !</Text>
+        <Text style={styles.title}>Senha atualizada</Text>
+        <Avatar.Icon style={styles.logo} size={80} icon="check" />
+        <Text style={styles.subTitle}>Sua senha foi atualizada !</Text>
 
-      <TouchableOpacity
-            style={styles.btnSubmit}
-           onPress={handleToNavigateToLogin}
-          >
-            <Text style={styles.submitText}>Confirmar</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnSubmit}
+          onPress={handleToNavigateToLogin}
+        >
+          <Text style={styles.submitText}>Confirmar</Text>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -61,14 +54,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
   },
-  
   btnSubmit: {
     backgroundColor: "#35AAFF",
     width: "90%",
@@ -104,6 +95,5 @@ const styles = StyleSheet.create({
     marginTop: 25,
     fontSize: 18,
     color: "#5c657e",
-
-  }
+  },
 });
