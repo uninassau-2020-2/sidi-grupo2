@@ -8,135 +8,99 @@ import {
   TouchableOpacity,
   Animated,
   Image,
+  Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { RectButton } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from 'react-native-paper';
-
-
+import * as Animatable from 'react-native-animatable';
 export default function LoginScreen() {
-  const [offset] = useState(new Animated.ValueXY({ x: 0, y: 95 }));
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    Animated.spring(offset.y, {
-      toValue: 0,
-      speed: 4,
-      bounciness: 20,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  function handleToNavigateToHome() {
-    navigation.navigate("Home");
+  function handleToNavigateToSignIn() {
+    navigation.navigate("SignIn");
   }
-
-  function handleToNavigateToRegister() {
-    navigation.navigate("Register");
-  }
-
   return (
-    <SafeAreaView style={styles.background}>
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-        <Animated.View
-          style={[
-            styles.container,
-            {
-              transform: [{ translateY: offset.y }],
-            },
-          ]}
-        >
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            autoCorrect={false}
-            onChangeText={() => {}}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Senha"
-            autoCorrect={false}
-            onChangeText={() => {}}
-          />
-
-          <TouchableOpacity
-            style={styles.btnSubmit}
-            onPress={handleToNavigateToHome}
+    <View style={styles.container}>
+      <StatusBar />
+      <View style={styles.header}>
+        {/* <Animatable.Image
+          animation="bounceIn"
+          source={require('../../assets/logo.png')}
+          style={styles.logo}
+          resizeMode={"stretch"}
+        />  */}
+      </View>
+      <Animatable.View 
+      style={styles.footer}
+      animation="fadeInUpBig"> 
+          <Text style={styles.title}>Fique conectado!</Text>
+          <Text style={styles.text}>Entrar com conta</Text>
+          <View style={styles.button}>
+          <TouchableOpacity 
+          style={styles.signIn}
+          onPress={handleToNavigateToSignIn}
           >
-            <Text style={styles.submitText}>Acessar</Text>
+            <Text style={styles.textSign}>Vamos começar</Text>
           </TouchableOpacity>
-
-          <RectButton
-            style={styles.btnRegister}
-            onPress={handleToNavigateToRegister}
-          >
-            <View accessible>
-              <Text style={styles.registerText}>Esqueceu a senha ?</Text>
-            </View>
-          </RectButton>
-        </Animated.View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          </View>
+      </Animatable.View>
+    </View>
   );
 }
 
+const { height } = Dimensions.get('screen');
+const height_logo = height * 0.7 * 0.4;
+
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  containerLogo: {
-    flex: 1,
-    justifyContent: "center",
-  },
+
   container: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: "#F2F2f2"
+  },
+  header:{
+    flex: 2,
     justifyContent: "center",
-    width: "90%",
-  },
-  input: {
-    backgroundColor: "#FFF",
-    width: "90%",
-    marginBottom: 15,
-    color: "#222",
-    fontSize: 17,
-    borderRadius: 7,
-  },
-  btnSubmit: {
-    backgroundColor: "#35AAFF",
-    width: "90%",
-    height: 45,
     alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 7,
   },
-  submitText: {
-    color: "#FFF",
-    fontSize: 18,
+  footer:{
+    flex: 1,
+    backgroundColor: "white",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 50,
+    paddingHorizontal: 30,
   },
-  btnRegister: {
-    marginTop: 10,
+  logo:{
+    width: height_logo,
+    height: height_logo,
   },
-  registerText: {
-    color: "#5c657e",
-  },
-  cardImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    resizeMode: "stretch",
-  },
-  title: {
-    margin: 12,
-    marginTop: 24,
-    fontSize: 24,
-    color: "#5c657e",
+  title:{
+    color: "#05375a",
     fontWeight: "bold",
+    fontSize: 30,
   },
-});
+  text: {
+    color: "gray",
+    marginTop: 5,
+  },
+  button: {
+    alignItems: "flex-end",
+    marginTop: 30,
+  },
+  signIn:{
+    width: 150,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    flexDirection: "row",
+    backgroundColor: "#A6A6A6"
+  },
+  textSign:{
+    color: "#fff",
+    fontWeight: "bold",
+  }
+})

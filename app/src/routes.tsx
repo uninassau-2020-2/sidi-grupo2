@@ -7,10 +7,11 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 const { Navigator, Screen } = createStackNavigator();
 
 import Login from "./screen/login/LoginScreen";
-import Register from "./screen/ForgotPass/ForgotpassScreen";
+import SignIn from "./screen/login/SignInScreen";
+import Register from "./screen/forgotPass/ForgotpassScreen";
 import MainStack from "./screen/main/MainStack";
-import NewCredention from "./screen/ForgotPass/NewCredentionScreen";
-import PasswordUpdate from "./screen/ForgotPass/PasswordUpdateScreen";
+import NewCredention from "./screen/forgotPass/NewCredentionScreen";
+import PasswordUpdate from "./screen/forgotPass/PasswordUpdateScreen";
 
 
 export default function Routes() {
@@ -29,6 +30,11 @@ export default function Routes() {
             name="Login"
             component={Login}
             options={{ title: "Login", headerShown: false }}
+          />
+          <Screen
+            name="SignIn"
+            component={SignIn}
+            options={{ title: "SignIn", headerShown: false }}
           />
           <Screen
             name="Register"
