@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Animated,
   Text,
   View,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
@@ -17,6 +15,7 @@ export default function LoginScreen() {
   function handleToNavigateToSignIn() {
     navigation.navigate("SignIn");
   }
+
   return (
     <View style={styles.container}>
       <StatusBar />
@@ -28,7 +27,7 @@ export default function LoginScreen() {
           resizeMode={"stretch"}
         />  */}
       </View>
-      <Animated.View style={styles.footer}>
+      <Animatable.View style={styles.footer}>
         <Text style={styles.title}>Fique conectado!</Text>
         <Text style={styles.text}>Entrar com conta</Text>
         <View style={styles.button}>
@@ -39,7 +38,7 @@ export default function LoginScreen() {
             <Text style={styles.textSign}>Vamos começar</Text>
           </TouchableOpacity>
         </View>
-      </Animated.View>
+      </Animatable.View>
     </View>
   );
 }

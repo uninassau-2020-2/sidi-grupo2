@@ -5,12 +5,18 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Dimensions,
 } from "react-native";
-import * as Animatable from "react-native-animatable";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import * as Animatable from "react-native-animatable";
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
+
+  function handleToNavigateToLogin() {
+    navigation.navigate("Home");
+  }
+
   return (
     <Animatable.View style={styles.container} animation="fadeInUpBig">
       <View style={styles.header}>
@@ -21,13 +27,21 @@ export default function LoginScreen() {
         <Text style={styles.text_footer}>E-MAIL</Text>
         <View style={styles.action}>
           <Ionicons name="md-mail" size={20} color="gray" />
-          <TextInput placeholder="Seu email..." style={styles.textInput} />
+          <TextInput
+            placeholder="Seu email..."
+            style={styles.textInput}
+            keyboardType="email-address"
+          />
         </View>
 
         <Text style={[styles.text_footer, { marginTop: 35 }]}>Senha</Text>
         <View style={styles.action}>
           <Ionicons name="md-lock" size={20} color="gray" />
-          <TextInput placeholder="Sua senha..." style={styles.textInput} />
+          <TextInput
+            placeholder="Sua senha..."
+            style={styles.textInput}
+            secureTextEntry
+          />
         </View>
 
         <Text style={{ marginTop: 15, color: "#05375a" }}>
@@ -35,7 +49,10 @@ export default function LoginScreen() {
         </Text>
 
         <View style={styles.button}>
-          <TouchableOpacity style={styles.signIn}>
+          <TouchableOpacity
+            style={styles.signIn}
+            onPress={handleToNavigateToLogin}
+          >
             <Text style={[styles.textSign, { color: "#fff" }]}>Entrar</Text>
           </TouchableOpacity>
         </View>

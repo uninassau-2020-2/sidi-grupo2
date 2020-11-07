@@ -8,12 +8,11 @@ import {
   KeyboardAvoidingView,
   Animated,
   TouchableOpacity,
-
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { RectButton } from "react-native-gesture-handler";
-import { TextInput } from 'react-native-paper';
-import { Avatar } from 'react-native-paper';
+import { TextInput } from "react-native-paper";
+import { Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import { NavigationContainer, StackActions } from "@react-navigation/native";
@@ -39,10 +38,11 @@ export default function ForgotpassScreen() {
   return (
     <SafeAreaView style={styles.background}>
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      
-      <Avatar.Icon style={styles.logo} size={80} icon="lock" />
-      <Text style={styles.title}>Recuperar Senha</Text>
-      <Text style={styles.subTitle}>forneça o e-mail de sua conta para qual deseja alterar sua senha</Text>
+        <Avatar.Icon style={styles.logo} size={80} icon="lock" />
+        <Text style={styles.title}>Recuperar Senha</Text>
+        <Text style={styles.subTitle}>
+          forneça o e-mail de sua conta para qual deseja alterar sua senha
+        </Text>
         <Animated.View
           style={[
             styles.container,
@@ -64,7 +64,6 @@ export default function ForgotpassScreen() {
           >
             <Text style={styles.submitText}>Proximo</Text>
           </TouchableOpacity>
-
         </Animated.View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -126,6 +125,5 @@ const styles = StyleSheet.create({
     marginTop: 0,
     fontSize: 18,
     color: "#5c657e",
-
   },
 });
