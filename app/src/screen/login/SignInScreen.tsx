@@ -57,7 +57,7 @@ export default function LoginScreen() {
             style={styles.signIn}
             onPress={handleToNavigateToHome}
           >
-            <Text style={[styles.textSign, { color: "#fff" }]}>Entrar</Text>
+            <Text style={styles.textSign}>Entrar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -120,5 +120,6 @@ const styles = StyleSheet.create({
   textSign: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#fff",
   },
 });
