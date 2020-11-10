@@ -9,13 +9,16 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
+import { useAuth } from "../../context/auth.context";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
 
   function handleToNavigateToHome() {
-    navigation.navigate("Home");
+    signIn();
   }
+
+  const { signIn } = useAuth();
 
   function handleToNavigateForgotPass() {
     navigation.navigate("Register");

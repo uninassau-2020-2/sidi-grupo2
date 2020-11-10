@@ -7,6 +7,7 @@ import Home from "./HomeScreen";
 import Product from "./ProductScreen";
 import Users from "./UsersScreen";
 import Cashier from "./cashier/CashierScreen";
+import Profile from "./ProfileScreen";
 
 export default function App() {
   return (
@@ -16,7 +17,7 @@ export default function App() {
       <Tab.Screen name="Vendas" component={Home} />
       <Tab.Screen name="Produtos" component={Product} />
       <Tab.Screen name="Usuários" component={Users} />
-      <Tab.Screen name="Perfil" component={Home} />
+      <Tab.Screen name="Perfil" component={Profile} />
     </Tab.Navigator>
   );
 }

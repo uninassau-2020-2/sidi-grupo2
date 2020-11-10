@@ -1,7 +1,9 @@
 import * as Updates from "expo-updates";
 import React, { useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
-import Routes from "./src/routes";
+import { AuthProvider } from "./src/context/auth.context";
+import Routes from "./src/routes/";
 
 export default function App() {
   useEffect(() => {
@@ -15,5 +17,11 @@ export default function App() {
     updateApp();
   }, []);
 
-  return <Routes />;
+  return (
+    <NavigationContainer>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
+    </NavigationContainer>
+  );
 }

@@ -12,12 +12,12 @@ import {
 import InputSpinner from "react-native-input-spinner";
 import { ProductType } from "../../../interface";
 import ProductData from "../../../data/ProductData.json";
-import { AppContext } from "../../../context/ShoppingCartContext";
-import { ShoppingCartType, Types } from "../../../reducer/ShoppingCartReducer";
+import { AppContext } from "../../../context/shoppingCart.context";
+import { ShoppingCartType, Types } from "../../../reducer/shoppingCart.reducer";
 
 const DATA_PRODUCTS: Array<ProductType> = ProductData;
 
-const List: React.FC = () => {
+const ListComponent: React.FC = () => {
   const { state, dispatch } = React.useContext(AppContext);
   const [products, setProduct] = useState<ProductType | undefined>();
 
@@ -199,4 +199,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default List;
+export default ListComponent;
