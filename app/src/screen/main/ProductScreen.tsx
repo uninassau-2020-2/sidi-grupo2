@@ -10,14 +10,7 @@ import { FlatList, RectButton, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { List } from "react-native-paper";
 import { Card, Title, Paragraph } from "react-native-paper";
-
-interface IProduct {
-  name: string;
-  id: number;
-  unitOfMeasurement: string;
-  price: number;
-  codigo: number;
-}
+import { IProduct } from "../../interface";
 
 const DATA_PRODUCT: Array<IProduct> = [
   {
@@ -29,7 +22,7 @@ const DATA_PRODUCT: Array<IProduct> = [
   },
   {
     name: "Creme",
-    id: 1,
+    id: 2,
     unitOfMeasurement: "unidade",
     price: 1.4,
     codigo: 48755961528,

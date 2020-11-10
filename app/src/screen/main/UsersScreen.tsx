@@ -7,15 +7,10 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { FlatList, RectButton, ScrollView } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DataTable } from "react-native-paper";
-
-interface IUsers {
-  name: string;
-  id: number;
-  acessNivel: string;
-}
+import { IUsers } from "../../interface";
 
 const DATA_USERS: Array<IUsers> = [
   {

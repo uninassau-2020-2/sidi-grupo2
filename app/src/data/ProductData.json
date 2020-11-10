@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Mel",
+    "id": 1,
+    "unitOfMeasurement": "litro",
+    "price": 2.4,
+    "amount": 10,
+    "codigo": 12345
+  },
+  {
+    "name": "Creme",
+    "id": 2,
+    "unitOfMeasurement": "unidade",
+    "amount": 55,
+    "price": 1.4,
+    "codigo": 123456
+  }
+]
