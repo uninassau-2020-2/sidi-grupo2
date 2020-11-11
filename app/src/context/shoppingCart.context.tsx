@@ -3,7 +3,7 @@ import {
   productReducer,
   ProductActions,
   ShoppingCartType,
-} from "../reducer/ShoppingCartReducer";
+} from "../reducer/shoppingCart.reducer";
 
 type InitialStateType = {
   products: ShoppingCartType[];
