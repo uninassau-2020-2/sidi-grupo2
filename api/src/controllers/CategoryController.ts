@@ -8,7 +8,9 @@ class CategoryController {
   static listAll = async (req: Request, res: Response) => {
     //Get users from database
     const categoryRepository = getRepository(Category);
-    const categories = await categoryRepository.find();
+    const categories = await categoryRepository.find({
+      select: ["id", "categoryId", "name"],
+    });
 
     //Send the users object
     res.json(categories);
@@ -48,7 +50,7 @@ class CategoryController {
     try {
       //If all ok, send 201 response
       const categoryCreate = await categoryRepository.save(category);
-      res.status(201).json(categoryCreate);
+      res.status(201).json({ data: "categoria criada" });
     } catch (e) {
       res.status(409).json({ data: "categoria já existe" });
       return;
@@ -110,7 +112,7 @@ class CategoryController {
 
     //After all send a 204 (no content, but accepted) response
     categoryRepository.softDelete(id).then(() => {
-      res.status(200).json(category);
+      res.status(200).json({ data: "categoria deletada" });
     });
   };
 }
