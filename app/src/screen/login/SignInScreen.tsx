@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,12 +13,24 @@ import { useAuth } from "../../context/auth.context";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const { signIn, error } = useAuth();
+
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    setShowError(false);
+  }, [username, password]);
 
   function handleToNavigateToHome() {
-    signIn();
+    try {
+      signIn(username, password);
+    } catch (e) {
+      console.log("e", e);
+    }
+    setShowError(true);
   }
-
-  const { signIn } = useAuth();
 
   function handleToNavigateForgotPass() {
     navigation.navigate("Register");
@@ -38,6 +50,8 @@ export default function LoginScreen() {
             placeholder="Seu email..."
             style={styles.textInput}
             keyboardType="email-address"
+            value={username}
+            onChangeText={setUsername}
           />
         </View>
 
@@ -48,8 +62,12 @@ export default function LoginScreen() {
             placeholder="Sua senha..."
             style={styles.textInput}
             secureTextEntry
+            onChangeText={setPassword}
+            value={password}
           />
         </View>
+
+        {showError && error && <Text>{error}</Text>}
 
         <TouchableOpacity onPress={handleToNavigateForgotPass}>
           <Text style={{ marginTop: 15, color: "#05375a" }}>

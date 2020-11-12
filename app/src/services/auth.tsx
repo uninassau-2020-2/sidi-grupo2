@@ -1,21 +1,20 @@
-interface Response {
+import { Use } from "react-native-svg";
+import { IUser } from "../context/auth.context";
+import api, { RequestMethod } from "./api";
+
+interface ResponseUser {
   token: string;
-  user: {
-    name: string;
-    email: string;
-  };
+  user: IUser;
 }
 
-export function signIn(): Promise<Response> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        token: "jk12h3j21h3jk212h3jk12h3jkh12j3kh12k123hh21g3f12f3",
-        user: {
-          name: "Thiago",
-          email: "thiagomarinho@rocketseat.com.br",
-        },
-      });
-    }, 2000);
+export async function signIn(
+  user: string,
+  password: string
+): Promise<ResponseUser> {
+  const response = await api.request<void, ResponseUser>({
+    method: RequestMethod.POST,
+    url: "/auth/login",
+    data: { username: user, password: password },
   });
+  return response;
 }

@@ -3,25 +3,28 @@ import AsyncStorage from "@react-native-community/async-storage";
 import * as auth from "../services/auth";
 import api from "../services/api";
 
-interface User {
-  name: string;
-  email: string;
-  role: "admin" | "seller";
+export interface IUser {
+  id: number;
+  username: string;
+  role: string;
+  token: string;
 }
 
 interface AuthContextData {
   signed: boolean;
-  user: User | null;
+  user: IUser | null;
   loading: boolean;
-  signIn(): Promise<void>;
+  error: string | null;
+  signIn(username: string, password: string): Promise<void>;
   signOut(): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadStorageData() {
@@ -30,7 +33,9 @@ const AuthProvider: React.FC = ({ children }) => {
 
       if (storagedUser && storagedToken) {
         setUser(JSON.parse(storagedUser));
-        api.defaults.headers.Authorization = `Baerer ${storagedToken}`;
+
+        api.defaults.headers.auth = storagedToken;
+        setError(null);
       }
 
       setLoading(false);
@@ -39,24 +44,28 @@ const AuthProvider: React.FC = ({ children }) => {
     loadStorageData();
   });
 
-  async function signIn() {
-    const response = await auth.signIn();
-    setUser(response.user);
+  async function signIn(username: string, password: string) {
+    try {
+      const response = await auth.signIn(username, password);
+      setUser(response.user);
+      api.defaults.headers.auth = response.token;
 
-    api.defaults.headers.Authorization = `Baerer ${response.token}`;
-
-    await AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.user));
-    await AsyncStorage.setItem("@RNAuth:token", response.token);
+      await AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.user));
+      await AsyncStorage.setItem("@RNAuth:token", response.token);
+    } catch (e) {
+      setError("Usuário inválido");
+    }
   }
 
   async function signOut() {
     await AsyncStorage.clear();
     setUser(null);
+    setError(null);
   }
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, loading, signIn, signOut }}
+      value={{ signed: !!user, user, loading, error, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>
