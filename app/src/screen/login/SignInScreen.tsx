@@ -54,6 +54,7 @@ export default function LoginScreen() {
             onChangeText={setUsername}
           />
         </View>
+        
 
         <Text style={[styles.text_footer, { marginTop: 35 }]}>Senha</Text>
         <View style={styles.action}>
