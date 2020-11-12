@@ -28,6 +28,12 @@ class AuthController {
       res.status(401).json({ data: "usuário não encontrado" });
     }
 
+    const dados = {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+    };
+
     //Check if encrypted password match
     if (!user.checkIfUnencryptedPasswordIsValid(password)) {
       res.status(401).json({ data: "dados inválidos" });
@@ -41,7 +47,9 @@ class AuthController {
       { expiresIn: "1h" }
     );
     //Send the jwt in the response
-    res.status(200).json(classToPlain({ ...user, token }));
+
+    res.status(200).json(classToPlain({ ...dados, token }));
+    // res.status(200).json(classToPlain({ ...user, token }));
   };
 
   static changePassword = async (req: Request, res: Response) => {
