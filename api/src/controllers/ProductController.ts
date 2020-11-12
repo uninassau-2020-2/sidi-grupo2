@@ -15,6 +15,8 @@ class ProductController {
     });
 
     //Send the products object
+    console.log(products);
+    console.log(products["id"]);
     res.json(products);
   };
 
@@ -119,7 +121,7 @@ class ProductController {
     name && (product.name = name);
     description && (product.description = description);
     amount && (product.amount = parseInt(amount));
-    salePrice && (product.salePrice =   salePrice);
+    salePrice && (product.salePrice = salePrice);
     costPrice && (product.costPrice = costPrice);
     measuredUnit && (product.measuredUnit = measuredUnit);
     barCode && (product.barCorde = barCode);
@@ -150,7 +152,7 @@ class ProductController {
     }
   };
 
-  static deleteCategory = async (req: Request, res: Response) => {
+  static deleteProduct = async (req: Request, res: Response) => {
     //Get the ID from the url
     const id = req.params.id;
 
@@ -159,12 +161,12 @@ class ProductController {
     try {
       product = await productRepository.findOneOrFail(id);
     } catch (error) {
-      res.status(404).json({data:"produto não encontrado"});
+      res.status(404).json({ data: "produto não encontrado" });
       return;
     }
 
     //After all send a 204 (no content, but accepted) response
-    await productRepository.delete(id).then(remove =>{
+    await productRepository.delete(id).then((remove) => {
       res.status(200).json(product);
     });
   };
