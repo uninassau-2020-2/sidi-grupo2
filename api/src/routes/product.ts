@@ -52,7 +52,7 @@ router.patch(
 router.delete(
   "/:id([0-9]+)",
   [checkJwt, checkRole([UserRole.ADMIN])],
-  ProductController.deleteCategory
+  ProductController.deleteProduct
 );
 
 export default router;
