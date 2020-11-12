@@ -19,26 +19,26 @@ class AuthController {
 
     //Get user from database
     const userRepository = getRepository(User);
-    let user: User;
+    let userx: User;
     try {
-      user = await userRepository.findOneOrFail({
+      userx = await userRepository.findOneOrFail({
         where: { username },
       });
     } catch (error) {
       res.status(401).json({ data: "usuário não encontrado" });
     }
 
-    const dados = {
-      id: user.id,
-      username: user.username,
-      role: user.role,
-    };
-
     //Check if encrypted password match
-    if (!user.checkIfUnencryptedPasswordIsValid(password)) {
+    if (!userx.checkIfUnencryptedPasswordIsValid(password)) {
       res.status(401).json({ data: "dados inválidos" });
       return;
     }
+
+    const user = {
+      id: userx.id,
+      username: userx.username,
+      role: userx.role,
+    };
 
     //Sing JWT, valid for 1 hour
     const token = jwt.sign(
@@ -48,7 +48,7 @@ class AuthController {
     );
     //Send the jwt in the response
 
-    res.status(200).json(classToPlain({ ...dados, token }));
+    res.status(200).json(classToPlain({ ...user, token }));
     // res.status(200).json(classToPlain({ ...user, token }));
   };
 

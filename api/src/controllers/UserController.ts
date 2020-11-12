@@ -60,7 +60,7 @@ class UserController {
     }
 
     //If all ok, send 201 response
-    res.status(201).json({ data: "usuário criado" });
+    res.status(201).json(user);
   };
 
   static editUser = async (req: Request, res: Response) => {
@@ -116,7 +116,7 @@ class UserController {
     userRepository.softDelete(id);
 
     //After all send a 204 (no content, but accepted) response
-    res.status(200).json({ data: "usuário deletado" });
+    res.status(200).json(user);
   };
 }
 

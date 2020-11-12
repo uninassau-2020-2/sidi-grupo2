@@ -15,8 +15,6 @@ class ProductController {
     });
 
     //Send the products object
-    console.log(products);
-    console.log(products["id"]);
     res.json(products);
   };
 
