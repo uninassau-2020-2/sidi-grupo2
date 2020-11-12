@@ -28,7 +28,7 @@ class UserController {
       });
       res.json(user);
     } catch (error) {
-      res.status(404).send("User not found");
+      res.status(404).send({ data: "usuário não encontrado" });
     }
   };
 
@@ -94,7 +94,7 @@ class UserController {
     try {
       await userRepository.save(user);
     } catch (e) {
-      res.status(409).send("username already in use");
+      res.status(409).send({ data: "Nome de usuário já em uso" });
       return;
     }
     //After all send a 204 (no content, but accepted) response
@@ -110,13 +110,13 @@ class UserController {
     try {
       user = await userRepository.findOneOrFail(id);
     } catch (error) {
-      res.status(404).send("User not found");
+      res.status(404).send({ data: "usuário não encontrado" });
       return;
     }
     userRepository.softDelete(id);
 
     //After all send a 204 (no content, but accepted) response
-    res.status(200).json(user);
+    res.status(200).json({ data: "usuário deletado" });
   };
 }
 
