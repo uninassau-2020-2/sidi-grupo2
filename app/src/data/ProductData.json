@@ -5,6 +5,8 @@
     "unitOfMeasurement": "litro",
     "price": 2.4,
     "amount": 10,
+    "purchasePrice": 2.3,
+    "image": "https://veja.abril.com.br/wp-content/uploads/2020/08/2-GettyImages-1128182316.jpg.jpg?quality=70&strip=info&resize=100,100",
     "codigo": 12345
   },
   {
@@ -13,6 +15,8 @@
     "unitOfMeasurement": "unidade",
     "amount": 55,
     "price": 1.4,
+    "purchasePrice": 1.0,
+    "image": "https://veja.abril.com.br/wp-content/uploads/2020/08/2-GettyImages-1128182316.jpg.jpg?quality=70&strip=info&resize=100,100",
     "codigo": 123456
   }
 ]

@@ -3,67 +3,52 @@ import {
   Text,
   View,
   StyleSheet,
-  ListRenderItemInfo,
   TouchableOpacity,
   TextInput,
-  Image
+  Image,
 } from "react-native";
 
-import { FlatList, RectButton, ScrollView,} from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { List } from "react-native-paper";
-import { Card, Title, Paragraph,  } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { ProductType } from "../../interface";
 import ProductData from "../../data/ProductData.json";
 
-interface IProduct {
-  name: string;
-  id: number;
-  unitOfMeasurement: string;
-  price: number;
-  codigo: number;
-}
-
 const DATA_PRODUCTS: Array<ProductType> = ProductData;
 
-
-export default function HomeScreen() {
-
-  const renderItemList = (item: IProduct, index: number) => (
-    <View>
-      <View style={styles.card}>
-        <Image
-          source={{
-            uri: "https://veja.abril.com.br/wp-content/uploads/2020/08/2-GettyImages-1128182316.jpg.jpg?quality=70&strip=info&resize=100,100",
-          }}
-          style={styles.cardImage}
-        />
-        <View style={{ marginLeft: 6, flex: 1, marginTop: -95 }}>
-          <Text style={styles.cardTitle}>{item.name}</Text>
-          <Text style={styles.cardDescription}>codigo: {item.codigo}</Text>
-          <View style={{height:1, backgroundColor: "#d4d4d4", marginBottom: 10, width: 280}}></View>
-            <Text style={{color: "#a2abbb", marginTop: 4}}>Valor de compra: 10</Text>
-            <Text style={{color: "#a2abbb", marginTop: 4}}>Valor de compra: 10</Text>
-            <Text style={{color: "#a2abbb", marginTop: 4}}>Valor de compra: 10</Text>
-        </View>
-        <View style={{ alignItems: "flex-end", marginTop: -95  }}>
-          <Text style={styles.cardValue}>R${item.price}</Text>
-          <Text style={styles.cardDescription}>Total: R$10.5</Text>
-        </View>
+export default function ProductScreen() {
+  const renderItemList = (item: ProductType, index: number) => (
+    <View style={styles.card}>
+      <Image source={{ uri: item.image }} style={styles.cardImage} />
+      <View
+        style={{
+          marginLeft: 6,
+          flex: 1,
+        }}
+      >
+        <Text style={styles.cardTitle}>{item.name}</Text>
+        <Text style={styles.cardDescription}>codigo: {item.codigo}</Text>
       </View>
-      <View style={styles.cardDetails}>
-        <Text style={{color: "#fff", marginLeft: 10, marginTop: 10}}>Detalhes</Text>
-        <Ionicons name="md-arrow-forward" size={20} color="gray" 
-        style={{color: "#fff", marginLeft: 240, marginTop: 10}}/>
+      <View style={{ alignItems: "flex-end", marginRight: 20 }}>
+        <Text style={styles.cardValue}>R${item.price}</Text>
+        <Text style={styles.cardDescription}>
+          comprado por: R${item.purchasePrice}
+        </Text>
       </View>
+      {/* <View style={styles.cardDetails}> */}
+      <Ionicons
+        name="md-arrow-forward"
+        size={20}
+        color="gray"
+        style={{ color: "#05375a" }}
+      />
+      {/* </View> */}
     </View>
-    
   );
-  
 
   const renderListOfProduct = () => (
-    <List.Section >
+    <List.Section>
       {DATA_PRODUCTS.map((item, index) => renderItemList(item, index))}
     </List.Section>
   );
@@ -71,88 +56,69 @@ export default function HomeScreen() {
   return (
     <SafeAreaView>
       <Text style={styles.title}>Produtos</Text>
-      <View style={styles.button}>
-          <TouchableOpacity
-            style={styles.signIn}
-            //onPress={handleToNavigateToSignIn}
-          >
-            <Text style={styles.textSign}>Novo produto</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.buttons}>
+        <TouchableOpacity style={styles.buttonAdd}>
+          <Text style={styles.buttonAddText}>Novo produto</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.action}>
-          <TextInput
-            placeholder="Buscar protudos"
-            style={styles.textInput}
-            keyboardType="email-address"
-          />
+        <TextInput placeholder="Buscar protudos" style={styles.textInput} />
       </View>
       <View style={styles.conteiner}>
-      <View  style={styles.subTitle}>
-        <Text style={{color: "#D4D4D4"}}>10 Produtos</Text>
-      </View>
-      <ScrollView>{renderListOfProduct()}</ScrollView>
+        <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
+        <ScrollView>{renderListOfProduct()}</ScrollView>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-
   title: {
     margin: 12,
     marginTop: 80,
-    marginBottom:10,
+    marginBottom: 10,
     fontSize: 28,
     color: "#5c657e",
     fontWeight: "bold",
     position: "absolute",
-
   },
   card: {
     backgroundColor: "#eef4fc",
     paddingHorizontal: 12,
-    paddingVertical: 15,
+    paddingVertical: 8,
     marginVertical: 6,
     borderRadius: 10,
     justifyContent: "space-between",
     flexDirection: "row",
-    alignItems: "center",
     marginTop: 10,
     margin: 12,
-    height: 200,
+    alignItems: "center",
   },
-  cardDetails:{
+  cardDetails: {
     backgroundColor: "#05375a",
-    height: 40,
-    flexDirection: "row",
-    margin: 12,
-    marginTop: -45,
-    borderBottomLeftRadius:10,
-    borderBottomRightRadius:10,
+    height: "100%",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    alignContent: "center",
   },
   cardImage: {
     width: 25,
     height: 25,
     borderRadius: 20,
     resizeMode: "stretch",
-    marginTop: -150
   },
-  conteiner:{
+  conteiner: {
     backgroundColor: "#fff",
-    marginTop: 140,
   },
   cardTitle: {
     color: "#6a748d",
     fontWeight: "bold",
     fontSize: 16,
-    marginTop: 55
   },
   cardValue: {
     fontSize: 16,
     color: "#83d79a",
     fontWeight: "bold",
-    marginTop: -30
-
   },
   cardDescription: {
     color: "#a2abbb",
@@ -161,11 +127,9 @@ const styles = StyleSheet.create({
 
   action: {
     flexDirection: "row",
-    marginTop: 140, 
     zIndex: 2,
     elevation: 2,
-    position: "absolute",
-    margin: 12
+    margin: 12,
   },
   textInput: {
     flex: 1,
@@ -174,27 +138,29 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     borderRadius: 10,
   },
-  subTitle:{
+  subTitle: {
     fontSize: 16,
-    marginTop: 40,
+    marginTop: 12,
+    marginRight: 12,
     alignItems: "center",
+    color: "#D4D4D4",
+    textAlign: "right",
   },
-  button: {
+  buttons: {
     alignItems: "flex-end",
-    marginTop: 85,
-    marginLeft: 240,
-    position: "absolute"
+    marginRight: 12,
+    marginTop: 35,
   },
-  signIn: {
-    width: 90,
-    height: 30,
+  buttonAdd: {
+    padding: 8,
+    paddingHorizontal: 12,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius:20,
-    backgroundColor: "#05375a"
+    borderRadius: 20,
+    backgroundColor: "#05375a",
   },
-  textSign: {
-    fontSize: 12,
+  buttonAddText: {
+    fontSize: 14,
     color: "#eee",
   },
 });

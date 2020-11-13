@@ -5,6 +5,8 @@ export type ProductType = {
   price: number;
   codigo: number;
   amount: number;
+  purchasePrice: number;
+  image: string;
 };
 
 export interface IUsers {
