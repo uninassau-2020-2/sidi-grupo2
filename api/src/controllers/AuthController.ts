@@ -14,7 +14,6 @@ class AuthController {
     let { username, password } = req.body;
     if (!(username && password)) {
       res.status(400).json({ data: "campos incorretos" });
-      // throw new ErrorHandler(400, 'The email address already exists');
     }
 
     //Get user from database
@@ -48,8 +47,7 @@ class AuthController {
     );
     //Send the jwt in the response
 
-    res.status(200).json(classToPlain({ ...user, token }));
-    // res.status(200).json(classToPlain({ ...user, token }));
+    res.status(200).json({ user, token });
   };
 
   static changePassword = async (req: Request, res: Response) => {
