@@ -8,18 +8,18 @@ import {
   Image,
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { List } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
 import { ProductType } from "../../interface";
 import ProductData from "../../data/ProductData.json";
+import DismissKeyboard from "../../components/DismissKeyboard";
 
 const DATA_PRODUCTS: Array<ProductType> = ProductData;
 
 export default function ProductScreen() {
   const renderItemList = (item: ProductType, index: number) => (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} key={String(item.id)}>
       <Image source={{ uri: item.image }} style={styles.cardImage} />
       <View
         style={{
@@ -36,38 +36,38 @@ export default function ProductScreen() {
           comprado por: R${item.purchasePrice}
         </Text>
       </View>
-      {/* <View style={styles.cardDetails}> */}
       <Ionicons
         name="md-arrow-forward"
         size={20}
         color="gray"
         style={{ color: "#05375a" }}
       />
-      {/* </View> */}
-    </View>
+    </TouchableOpacity>
   );
 
   const renderListOfProduct = () => (
-    <List.Section>
-      {DATA_PRODUCTS.map((item, index) => renderItemList(item, index))}
-    </List.Section>
+    <>{DATA_PRODUCTS.map((item, index) => renderItemList(item, index))}</>
   );
 
   return (
     <SafeAreaView>
-      <Text style={styles.title}>Produtos</Text>
-      <View style={styles.buttons}>
-        <TouchableOpacity style={styles.buttonAdd}>
-          <Text style={styles.buttonAddText}>Novo produto</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.action}>
-        <TextInput placeholder="Buscar protudos" style={styles.textInput} />
-      </View>
-      <View style={styles.conteiner}>
-        <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
-        <ScrollView>{renderListOfProduct()}</ScrollView>
-      </View>
+      <DismissKeyboard>
+        <View>
+          <Text style={styles.title}>Produtos</Text>
+          <View style={styles.buttons}>
+            <TouchableOpacity style={styles.buttonAdd}>
+              <Text style={styles.buttonAddText}>Novo produto</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.action}>
+            <TextInput placeholder="Buscar protudos" style={styles.textInput} />
+          </View>
+          <View style={styles.conteiner}>
+            <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
+            <ScrollView>{renderListOfProduct()}</ScrollView>
+          </View>
+        </View>
+      </DismissKeyboard>
     </SafeAreaView>
   );
 }
@@ -75,7 +75,7 @@ export default function ProductScreen() {
 const styles = StyleSheet.create({
   title: {
     margin: 12,
-    marginTop: 80,
+    marginTop: 30,
     marginBottom: 10,
     fontSize: 28,
     color: "#5c657e",
