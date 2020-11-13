@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { AuthProvider } from "./src/context/auth.context";
 import Routes from "./src/routes/";
+import { Platform } from "react-native";
 
 export default function App() {
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function App() {
         await Updates.reloadAsync();
       }
     }
-    updateApp();
+    Platform.OS !== "web" && updateApp();
   }, []);
 
   return (
