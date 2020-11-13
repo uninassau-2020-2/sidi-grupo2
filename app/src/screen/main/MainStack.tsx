@@ -1,7 +1,7 @@
 import * as React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
-const Tab = createBottomTabNavigator();
+const { Navigator, Screen } = createDrawerNavigator();
 
 import Home from "./HomeScreen";
 import Product from "./ProductScreen";
@@ -11,13 +11,13 @@ import Profile from "./ProfileScreen";
 
 export default function App() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Início" component={Home} />
-      <Tab.Screen name="Caixa" component={Cashier} />
-      <Tab.Screen name="Vendas" component={Home} />
-      <Tab.Screen name="Produtos" component={Product} />
-      <Tab.Screen name="Usuários" component={Users} />
-      <Tab.Screen name="Perfil" component={Profile} />
-    </Tab.Navigator>
+    <Navigator>
+      <Screen name="Início" component={Home} />
+      <Screen name="Caixa" component={Cashier} />
+      <Screen name="Vendas" component={Home} />
+      <Screen name="Produtos" component={Product} />
+      <Screen name="Usuários" component={Users} />
+      <Screen name="Perfil" component={Profile} />
+    </Navigator>
   );
 }
