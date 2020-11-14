@@ -10,7 +10,6 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ProductType } from "../../interface";
 import ProductData from "../../data/ProductData.json";
 import DismissKeyboard from "../../components/DismissKeyboard";
@@ -50,38 +49,21 @@ export default function ProductScreen() {
   );
 
   return (
-    <SafeAreaView>
-      <DismissKeyboard>
-        <View>
-          <Text style={styles.title}>Produtos</Text>
-          <View style={styles.buttons}>
-            <TouchableOpacity style={styles.buttonAdd}>
-              <Text style={styles.buttonAddText}>Novo produto</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.action}>
-            <TextInput placeholder="Buscar protudos" style={styles.textInput} />
-          </View>
-          <View style={styles.conteiner}>
-            <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
-            <ScrollView>{renderListOfProduct()}</ScrollView>
-          </View>
+    <DismissKeyboard>
+      <View>
+        <View style={styles.action}>
+          <TextInput placeholder="Buscar protudos" style={styles.textInput} />
         </View>
-      </DismissKeyboard>
-    </SafeAreaView>
+        <View style={styles.conteiner}>
+          <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
+          <ScrollView>{renderListOfProduct()}</ScrollView>
+        </View>
+      </View>
+    </DismissKeyboard>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    margin: 12,
-    marginTop: 30,
-    marginBottom: 10,
-    fontSize: 28,
-    color: "#5c657e",
-    fontWeight: "bold",
-    position: "absolute",
-  },
   card: {
     backgroundColor: "#eef4fc",
     paddingHorizontal: 12,
@@ -150,17 +132,5 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     marginRight: 12,
     marginTop: 35,
-  },
-  buttonAdd: {
-    padding: 8,
-    paddingHorizontal: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 20,
-    backgroundColor: "#05375a",
-  },
-  buttonAddText: {
-    fontSize: 14,
-    color: "#eee",
   },
 });

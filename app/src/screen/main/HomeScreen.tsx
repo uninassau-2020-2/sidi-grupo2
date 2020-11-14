@@ -104,24 +104,21 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={{ padding: 12 }}>
-        <Text style={styles.title}>Dados Financeiros</Text>
-        <View
-          style={{
-            justifyContent: "space-between",
-            flexDirection: "row",
-            marginTop: 12,
-          }}
-        >
-          {renderTotalToday()}
-          {renderAvarageMonth()}
-        </View>
-        {renderGraphic()}
-        {renderCardProduct()}
-        {renderCardSale()}
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView contentContainerStyle={{ padding: 12 }}>
+      <View
+        style={{
+          justifyContent: "space-between",
+          flexDirection: "row",
+          marginTop: 12,
+        }}
+      >
+        {renderTotalToday()}
+        {renderAvarageMonth()}
+      </View>
+      {renderGraphic()}
+      {renderCardProduct()}
+      {renderCardSale()}
+    </ScrollView>
   );
 }
 
@@ -138,13 +135,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 0,
   },
-  title: {
-    marginTop: 12,
-    fontSize: 24,
-    color: "#5c657e",
-    fontWeight: "bold",
-  },
-
   infoTitle: {
     fontWeight: "bold",
     fontSize: 22,

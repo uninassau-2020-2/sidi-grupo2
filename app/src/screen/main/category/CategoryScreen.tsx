@@ -14,7 +14,6 @@ import DeleteSwipe from "../../../components/DeleteSwipe";
 import { CategoryType } from "../../../interface";
 
 import CategoriesData from "../../../data/CategoryData.json";
-import { SafeAreaView } from "react-native-safe-area-context";
 import ListEmpty from "../../../components/ListEmpty";
 
 const DATA_CATEGORIES: Array<CategoryType> = CategoriesData;
@@ -40,34 +39,26 @@ const CategoryScreen: React.FC = () => {
         key={String(item.id)}
         delayPressIn={20}
       >
-        <Text style={styles.cardTitle}>
-          {item.name} - {index}
-        </Text>
+        <Text style={styles.cardTitle}>{item.name}</Text>
 
-        <Ionicons
-          name="md-arrow-forward"
-          size={20}
-          color="gray"
-          style={{ color: "#05375a" }}
-        />
+        <Ionicons name="md-arrow-forward" size={20} color="#05375a" />
       </TouchableOpacity>
     </DeleteSwipe>
   );
 
   return (
     <DismissKeyboard>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        <FlatList
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-          keyExtractor={(item, index) => String(index)}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          data={categories}
-          renderItem={renderItemList}
-          ListEmptyComponent={<ListEmpty />}
-        />
-      </SafeAreaView>
+      <FlatList
+        contentContainerStyle={{
+          flexGrow: 1,
+          marginTop: 12,
+        }}
+        keyExtractor={(item, index) => String(index)}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        data={categories}
+        renderItem={renderItemList}
+        ListEmptyComponent={<ListEmpty />}
+      />
     </DismissKeyboard>
   );
 };

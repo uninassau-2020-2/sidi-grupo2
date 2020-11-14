@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   Text,
   View,
@@ -7,117 +7,109 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { DataTable } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
+import { FlatList } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 import { IUsers } from "../../interface";
+import UserData from "../../data/UserData.json";
+import ListEmpty from "../../components/ListEmpty";
+import DeleteSwipe from "../../components/DeleteSwipe";
+import HeaderRight from "../../components/HeaderRight";
+import { roleUserText } from "../../util";
 
-const DATA_USERS: Array<IUsers> = [
-  {
-    name: "fellip",
-    id: 1,
-    acessNivel: "admin",
-  },
-  {
-    name: "Mario",
-    id: 2,
-    acessNivel: "vendedor",
-  },
-  {
-    name: "Daniel",
-    id: 3,
-    acessNivel: "fornecedor",
-  },
-  {
-    name: "Leticia",
-    id: 4,
-    acessNivel: "fornecedor",
-  },
-  {
-    name: "João",
-    id: 5,
-    acessNivel: "admin",
-  },
-  {
-    name: "Lais",
-    id: 6,
-    acessNivel: "Vendedor",
-  },
-];
+const DATA_USERS: Array<IUsers> = UserData;
 
 export default function UsersScreen() {
+  const [users, setUsers] = useState(DATA_USERS);
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderRight onPress={() => alert("Adicionar usuário")} />
+      ),
+    });
+  }, [navigation]);
+
   const renderItemList = ({ item, index }: ListRenderItemInfo<IUsers>) => (
-    <DataTable.Row>
-      <DataTable.Cell>
+    <DeleteSwipe
+      titleDelete="Remover usuário"
+      messageDelete="Tem certeza que deseja remover?"
+      onDelete={() => {
+        setUsers(users.filter((item, indexItem) => indexItem !== index));
+      }}
+    >
+      <TouchableOpacity style={styles.card}>
         <Image
           source={{
             uri: `https://ui-avatars.com/api/?name=${item.name}`,
           }}
           style={styles.cardImage}
         />
-      </DataTable.Cell>
-      <DataTable.Cell>{item.name}</DataTable.Cell>
-      <DataTable.Cell numeric>{item.acessNivel}</DataTable.Cell>
-    </DataTable.Row>
+        <View style={{ marginLeft: 6, flex: 1 }}>
+          <Text style={styles.cardTitle}>{item.name}</Text>
+          <Text style={styles.cardDescription}>{item.email || "--"}</Text>
+        </View>
+        <Text style={styles.cardValue}>{roleUserText(item.role)}</Text>
+        <Ionicons
+          name="md-arrow-forward"
+          size={20}
+          color="gray"
+          style={{ color: "#05375a", marginLeft: 12 }}
+        />
+      </TouchableOpacity>
+    </DeleteSwipe>
   );
 
   const renderListOfProduct = () => (
     <FlatList
+      contentContainerStyle={{
+        flexGrow: 1,
+        marginHorizontal: 6,
+        marginTop: 12,
+      }}
       keyExtractor={(item, index) => String(index)}
-      data={DATA_USERS}
+      data={users}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
       renderItem={renderItemList}
+      ListEmptyComponent={<ListEmpty />}
     />
   );
 
-  return (
-    <SafeAreaView>
-      <Text style={styles.title}>Usuarios</Text>
-      <ScrollView>
-        <DataTable>
-          <DataTable.Header>
-            <DataTable.Title>Id</DataTable.Title>
-            <DataTable.Title>Nome</DataTable.Title>
-            <DataTable.Title numeric>Cargo</DataTable.Title>
-          </DataTable.Header>
-          {renderListOfProduct()}
-        </DataTable>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  return renderListOfProduct();
 }
 
 const styles = StyleSheet.create({
-  title: {
-    margin: 12,
-    marginTop: 24,
-    fontSize: 24,
-    color: "#5c657e",
-    fontWeight: "bold",
-  },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    margin: 12,
-  },
-  itemList: {
-    justifyContent: "space-between",
-    height: 40,
-    flexDirection: "row",
-    padding: 6,
-    backgroundColor: "#c1c4cb",
-  },
-  textList: {
+  card: {
+    backgroundColor: "#eef4fc",
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    borderRadius: 20,
     justifyContent: "space-between",
     flexDirection: "row",
-    padding: 6,
-    margin: 12,
+    alignItems: "center",
   },
   cardImage: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     borderRadius: 20,
     resizeMode: "stretch",
-    marginTop: 10,
-    marginRight: 5,
+  },
+  cardTitle: {
+    color: "#6a748d",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+
+  cardValue: {
+    fontSize: 16,
+    color: "#babec5",
+  },
+
+  cardDescription: {
+    color: "#a2abbb",
+  },
+  separator: {
+    marginVertical: 3,
   },
 });

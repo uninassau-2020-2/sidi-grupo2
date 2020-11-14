@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const { Navigator, Screen } = createDrawerNavigator();
@@ -9,11 +10,22 @@ import Users from "./UsersScreen";
 import Cashier from "./cashier/CashierScreen";
 import Category from "./category/CategoryScreen";
 import Profile from "./ProfileScreen";
-
+import { BorderlessButton } from "react-native-gesture-handler";
 export default function App() {
   return (
-    <Navigator>
-      <Screen name="Início" component={Home} />
+    <Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#f2f2f2",
+        },
+        headerTintColor: "#5c657e",
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: 24,
+        },
+      }}
+    >
+      <Screen name="Dados Financeiro" component={Home} />
       <Screen name="Caixa" component={Cashier} />
       <Screen name="Vendas" component={Home} />
       <Screen name="Produtos" component={Product} />

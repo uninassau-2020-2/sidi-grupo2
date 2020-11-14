@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "fellip",
+    "email": "fellip@gmail.com",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "name": "Mario",
+    "email": "mario@gmail.com",
+    "role": "seller"
+  },
+  {
+    "id": 3,
+    "name": "Daniel",
+    "email": "daniel@gmail.com",
+    "role": "seller"
+  },
+  {
+    "id": 4,
+    "name": "Leticia",
+    "email": "leticia@gmail.com",
+    "role": "seller"
+  },
+  {
+    "id": 5,
+    "name": "João",
+    "email": "joão@gmail.com",
+    "role": "admin"
+  },
+  {
+    "id": 6,
+    "name": "Lais",
+    "email": "lais@gmail.com",
+    "role": "seller"
+  }
+]

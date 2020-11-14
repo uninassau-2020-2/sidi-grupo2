@@ -1,3 +1,5 @@
+import { RoleUser } from "../enum";
+
 export type ProductType = {
   name: string;
   id: number;
@@ -16,7 +18,8 @@ export type CategoryType = {
 };
 
 export interface IUsers {
-  name: string;
   id: number;
-  acessNivel: string;
+  name: string;
+  email: string;
+  role: string;
 }
