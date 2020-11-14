@@ -7,6 +7,7 @@ import Home from "./HomeScreen";
 import Product from "./ProductScreen";
 import Users from "./UsersScreen";
 import Cashier from "./cashier/CashierScreen";
+import Category from "./category/CategoryScreen";
 import Profile from "./ProfileScreen";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
       <Screen name="Vendas" component={Home} />
       <Screen name="Produtos" component={Product} />
       <Screen name="Usuários" component={Users} />
+      <Screen name="Categoria" component={Category} />
       <Screen name="Perfil" component={Profile} />
     </Navigator>
   );

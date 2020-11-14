@@ -1,0 +1,5 @@
+[
+  { "id": 1, "categoryId": null, "name": "Alimento" },
+  { "id": 2, "categoryId": null, "name": "Bebida" },
+  { "id": 3, "categoryId": 1, "name": "Carne" }
+]
