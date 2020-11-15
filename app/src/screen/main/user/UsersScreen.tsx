@@ -10,12 +10,12 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { IUsers } from "../../interface";
-import UserData from "../../data/UserData.json";
-import ListEmpty from "../../components/ListEmpty";
-import DeleteSwipe from "../../components/DeleteSwipe";
-import HeaderRight from "../../components/HeaderRight";
-import { roleUserText } from "../../util";
+import { IUsers } from "../../../interface";
+import UserData from "../../../data/UserData.json";
+import ListEmpty from "../../../components/ListEmpty";
+import DeleteSwipe from "../../../components/DeleteSwipe";
+import HeaderRight from "../../../components/HeaderRight";
+import { roleUserText } from "../../../util";
 
 const DATA_USERS: Array<IUsers> = UserData;
 
@@ -26,7 +26,7 @@ export default function UsersScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderRight onPress={() => alert("Adicionar usuário")} />
+        <HeaderRight onPress={() => navigation.navigate("newEditUser")} />
       ),
     });
   }, [navigation]);

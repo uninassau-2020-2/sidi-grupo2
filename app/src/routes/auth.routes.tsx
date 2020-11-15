@@ -10,31 +10,27 @@ import PasswordUpdate from "../screen/login/PasswordUpdateScreen";
 const { Navigator, Screen } = createStackNavigator();
 
 const AuthRoutes: React.FC = () => (
-  <Navigator>
-    <Screen
-      name="Login"
-      component={Login}
-      options={{ title: "Login", headerShown: false }}
-    />
-    <Screen
-      name="SignIn"
-      component={SignIn}
-      options={{ title: "SignIn", headerShown: false }}
-    />
+  <Navigator
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <Screen name="Login" component={Login} options={{ title: "Login" }} />
+    <Screen name="SignIn" component={SignIn} options={{ title: "SignIn" }} />
     <Screen
       name="Register"
       component={Register}
-      options={{ title: "Registrar", headerShown: false }}
+      options={{ title: "Registrar" }}
     />
     <Screen
       name="NewCredention"
       component={NewCredention}
-      options={{ title: "Nova Senha", headerShown: false }}
+      options={{ title: "Nova Senha" }}
     />
     <Screen
       name="PasswordUpdate"
       component={PasswordUpdate}
-      options={{ title: "Senha alterada", headerShown: false }}
+      options={{ title: "Senha alterada" }}
     />
   </Navigator>
 );

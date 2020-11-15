@@ -6,11 +6,10 @@ const { Navigator, Screen } = createDrawerNavigator();
 
 import Home from "./HomeScreen";
 import Product from "./ProductScreen";
-import Users from "./UsersScreen";
+import UserRoutes from "./user/users.routes";
 import Cashier from "./cashier/CashierScreen";
 import Category from "./category/CategoryScreen";
 import Profile from "./ProfileScreen";
-import { BorderlessButton } from "react-native-gesture-handler";
 export default function App() {
   return (
     <Navigator
@@ -29,7 +28,11 @@ export default function App() {
       <Screen name="Caixa" component={Cashier} />
       <Screen name="Vendas" component={Home} />
       <Screen name="Produtos" component={Product} />
-      <Screen name="Usuários" component={Users} />
+      <Screen
+        name="Usuários"
+        component={UserRoutes}
+        options={{ headerShown: false }}
+      />
       <Screen name="Categoria" component={Category} />
       <Screen name="Perfil" component={Profile} />
     </Navigator>

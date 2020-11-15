@@ -1,3 +1,4 @@
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { RoleUser } from "../enum";
 
 export type ActionMap<M extends { [index: string]: any }> = {
