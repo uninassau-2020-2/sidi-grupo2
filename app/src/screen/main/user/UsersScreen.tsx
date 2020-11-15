@@ -15,7 +15,8 @@ import UserData from "../../../data/UserData.json";
 import ListEmpty from "../../../components/ListEmpty";
 import DeleteSwipe from "../../../components/DeleteSwipe";
 import HeaderRight from "../../../components/HeaderRight";
-import { roleUserText } from "../../../util";
+import { roleUserToString } from "../../../util";
+import { UserScreenParam } from "./users.routes";
 
 const DATA_USERS: Array<IUsers> = UserData;
 
@@ -26,10 +27,16 @@ export default function UsersScreen() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderRight onPress={() => navigation.navigate("newEditUser")} />
+        <HeaderRight onPress={() => navigation.navigate("NewEditUser")} />
       ),
     });
   }, [navigation]);
+
+  function handleToEditUser() {
+    navigation.navigate("NewEditUser", {
+      isNewUser: false,
+    });
+  }
 
   const renderItemList = ({ item, index }: ListRenderItemInfo<IUsers>) => (
     <DeleteSwipe
@@ -39,7 +46,7 @@ export default function UsersScreen() {
         setUsers(users.filter((item, indexItem) => indexItem !== index));
       }}
     >
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity style={styles.card} onPress={handleToEditUser}>
         <Image
           source={{
             uri: `https://ui-avatars.com/api/?name=${item.name}`,
@@ -50,7 +57,7 @@ export default function UsersScreen() {
           <Text style={styles.cardTitle}>{item.name}</Text>
           <Text style={styles.cardDescription}>{item.email || "--"}</Text>
         </View>
-        <Text style={styles.cardValue}>{roleUserText(item.role)}</Text>
+        <Text style={styles.cardValue}>{roleUserToString(item.role)}</Text>
         <Ionicons
           name="md-arrow-forward"
           size={20}

@@ -1,4 +1,3 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { RoleUser } from "../enum";
 
 export type ActionMap<M extends { [index: string]: any }> = {
@@ -12,7 +11,7 @@ export type ActionMap<M extends { [index: string]: any }> = {
       };
 };
 
-export const roleUserText = (role: string) => {
+export const roleUserToString = (role: string) => {
   switch (role) {
     case RoleUser.ADMIN:
       return "Administrador";

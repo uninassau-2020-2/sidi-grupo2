@@ -1,46 +1,64 @@
-import React from "react";
-
-import { View, Text, StyleSheet, TextInput } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { View, StyleSheet } from "react-native";
+import SegmentedControl from "@react-native-community/segmented-control";
 import DismissKeyboard from "../../../components/DismissKeyboard";
 import { ScrollView } from "react-native-gesture-handler";
+import { RoleUser } from "../../../enum";
 import AppButton from "../../../components/AppButton";
+import Input from "../../../components/Input";
+import { roleUserToString } from "../../../util";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
+import { NewEditUserScreenProp } from "./users.routes";
 
 const NewEditUserScreen: React.FC = () => {
-  const Separator = () => <View style={{ marginVertical: 10 }} />;
+  const navigation = useNavigation();
+  const route = useRoute<NewEditUserScreenProp>();
+  const isFocused = useIsFocused();
+  const { isNewUser } = route.params;
 
+  useEffect(() => {
+    navigation.setOptions({
+      title: isNewUser === true ? "Novo Usuário" : "Editar Usuário",
+    });
+  }, [isNewUser, isFocused]);
+
+  const [name, setName] = useState("");
+  const [role, setRole] = useState(0);
+
+  const Separator = () => <View style={{ marginVertical: 10 }} />;
   return (
     <DismissKeyboard>
       <ScrollView contentContainerStyle={{ padding: 24 }}>
-        <View style={styles.action}>
-          <Ionicons name="ios-person" size={24} color="gray" />
-          <TextInput
-            placeholder="Nome"
-            style={styles.textInput}
-            keyboardType="default"
-          />
-        </View>
+        <Input
+          placeholder="Nome"
+          icon="ios-person"
+          value={name}
+          onChangeText={setName}
+        />
 
         <Separator />
-
-        <View style={styles.action}>
-          <Ionicons name="md-mail" size={24} color="gray" />
-          <TextInput
-            placeholder="E-mail"
-            style={styles.textInput}
-            keyboardType="email-address"
-          />
-        </View>
+        <Input
+          placeholder="E-mail"
+          icon="ios-mail"
+          keyboardType="email-address"
+        />
         <Separator />
+        <Input placeholder="Password" icon="md-key" secureTextEntry />
 
-        <View style={styles.action}>
-          <Ionicons name="md-key" size={24} color="gray" />
-          <TextInput
-            placeholder="Senha"
-            style={styles.textInput}
-            keyboardType="email-address"
-          />
-        </View>
+        <Separator />
+        <SegmentedControl
+          values={Object.values(RoleUser).map((item) =>
+            roleUserToString(String(item))
+          )}
+          selectedIndex={role}
+          onChange={(event) => {
+            setRole(event.nativeEvent.selectedSegmentIndex);
+          }}
+        />
         <Separator />
         <AppButton title="Cadastrar" onPress={() => {}} />
       </ScrollView>
@@ -48,20 +66,6 @@ const NewEditUserScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  action: {
-    flexDirection: "row",
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#fff",
-    paddingBottom: 5,
-  },
-  textInput: {
-    flex: 1,
-    paddingLeft: 10,
-    fontSize: 16,
-    color: "#05375a",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default NewEditUserScreen;

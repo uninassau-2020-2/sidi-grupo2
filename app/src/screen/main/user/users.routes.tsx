@@ -1,14 +1,27 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
+import { RectButton } from "react-native-gesture-handler";
 
+import {
+  DrawerActions,
+  RouteProp,
+  useNavigation,
+} from "@react-navigation/native";
 import User from "./UsersScreen";
 import NewEditUser from "./NewEditUserScreen";
-import { Button } from "react-native-paper";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
-import HeaderBack from "../../../components/HeaderBack";
 
-const { Navigator, Screen } = createStackNavigator();
+import HeaderBack from "../../../components/HeaderBack";
+import { IUsers } from "../../../interface";
+
+export type UserScreenParam = {
+  User: undefined;
+  NewEditUser: { isNewUser: boolean; user: IUsers };
+};
+
+export type NewEditUserScreenProp = RouteProp<UserScreenParam, "NewEditUser">;
+
+const { Navigator, Screen } = createStackNavigator<UserScreenParam>();
 
 const UsersRoutes: React.FC = () => {
   const navigation = useNavigation();
@@ -24,24 +37,26 @@ const UsersRoutes: React.FC = () => {
           fontSize: 24,
         },
         headerLeft: ({ tintColor }) => (
-          <Button
+          <RectButton
+            style={{ padding: 12 }}
             onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
           >
             <Ionicons
               name="md-menu"
-              size={20}
+              size={24}
               color="gray"
               style={{ color: tintColor }}
             />
-          </Button>
+          </RectButton>
         ),
       }}
     >
-      <Screen name="user" component={User} options={{ title: "Usuários" }} />
+      <Screen name="User" component={User} options={{ title: "Usuários" }} />
       <Screen
-        name="newEditUser"
+        name="NewEditUser"
         component={NewEditUser}
         options={{ title: "Usuários", headerLeft: () => <HeaderBack /> }}
+        initialParams={{ isNewUser: true }}
       />
     </Navigator>
   );
