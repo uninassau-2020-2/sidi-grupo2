@@ -15,17 +15,17 @@ export default function LoginScreen() {
   const navigation = useNavigation();
   const { signIn, error } = useAuth();
 
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     setShowError(false);
-  }, [username, password]);
+  }, [email, password]);
 
   function handleToNavigateToHome() {
     try {
-      signIn(username, password);
+      signIn(email, password);
     } catch (e) {
       console.log("e", e);
     }
@@ -50,8 +50,8 @@ export default function LoginScreen() {
             placeholder="Seu email..."
             style={styles.textInput}
             keyboardType="email-address"
-            value={username}
-            onChangeText={setUsername}
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
 

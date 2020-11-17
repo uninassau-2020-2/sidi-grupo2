@@ -8,13 +8,13 @@ interface ResponseUser {
 }
 
 export async function signIn(
-  user: string,
+  email: string,
   password: string
 ): Promise<ResponseUser> {
   const response = await api.request<void, ResponseUser>({
     method: RequestMethod.POST,
     url: "/auth/login",
-    data: { username: user, password: password },
+    data: { email: email, password: password },
   });
   return response;
 }

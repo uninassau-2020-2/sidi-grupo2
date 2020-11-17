@@ -5,9 +5,9 @@ import api from "../services/api";
 
 export interface IUser {
   id: number;
-  username: string;
+  email: string;
+  name: string;
   role: string;
-  token: string;
 }
 
 interface AuthContextData {
@@ -15,7 +15,7 @@ interface AuthContextData {
   user: IUser | null;
   loading: boolean;
   error: string | null;
-  signIn(username: string, password: string): Promise<void>;
+  signIn(email: string, password: string): Promise<void>;
   signOut(): void;
 }
 
@@ -44,9 +44,9 @@ const AuthProvider: React.FC = ({ children }) => {
     loadStorageData();
   });
 
-  async function signIn(username: string, password: string) {
+  async function signIn(email: string, password: string) {
     try {
-      const response = await auth.signIn(username, password);
+      const response = await auth.signIn(email, password);
       setUser(response.user);
       api.defaults.headers.auth = response.token;
 
