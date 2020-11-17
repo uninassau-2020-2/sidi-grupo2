@@ -1,4 +1,6 @@
+import React from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { useAuth } from "../context/auth.context";
 
 type IObjectErros = {
   [key: number]: string;
@@ -25,6 +27,7 @@ const api = axios.create({
 
 const responseErrorMiddleware = async (error: AxiosError) => {
   const { response, config } = error;
+  const { signOut } = useAuth();
 
   const status = (response && response.status) || 1001;
 
@@ -57,7 +60,7 @@ const responseErrorMiddleware = async (error: AxiosError) => {
   }
 
   if (status === 401) {
-    // logout();
+    signOut();
   }
 
   if (status !== 404 && status !== 500) {

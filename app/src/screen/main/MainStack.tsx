@@ -14,6 +14,7 @@ export default function App() {
   return (
     <Navigator
       screenOptions={{
+        headerShown: true,
         headerStyle: {
           backgroundColor: "#f2f2f2",
         },

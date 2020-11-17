@@ -1,10 +1,12 @@
-import * as Updates from "expo-updates";
 import React, { useEffect } from "react";
+import { Platform } from "react-native";
+import * as Updates from "expo-updates";
+import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { AuthProvider } from "./src/context/auth.context";
 import Routes from "./src/routes/";
-import { Platform } from "react-native";
+import store from "./src/services/store";
 
 export default function App() {
   useEffect(() => {
@@ -21,7 +23,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <AuthProvider>
-        <Routes />
+        <Provider store={store}>
+          <Routes />
+        </Provider>
       </AuthProvider>
     </NavigationContainer>
   );

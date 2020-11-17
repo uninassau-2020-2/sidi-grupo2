@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import {
   Text,
   View,
@@ -6,23 +11,55 @@ import {
   ListRenderItemInfo,
   TouchableOpacity,
   Image,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { IUsers } from "../../../interface";
-import UserData from "../../../data/UserData.json";
 import ListEmpty from "../../../components/ListEmpty";
 import DeleteSwipe from "../../../components/DeleteSwipe";
 import HeaderRight from "../../../components/HeaderRight";
 import { roleUserToString } from "../../../util";
-import { UserScreenParam } from "./users.routes";
-
-const DATA_USERS: Array<IUsers> = UserData;
+import { ApplicationState } from "../../../services/store";
+import {
+  RepositoriesTypes,
+  Repository,
+} from "../../../services/store/ducks/repositories/types";
+import { doRemoveUser } from "../../../services/user";
 
 export default function UsersScreen() {
-  const [users, setUsers] = useState(DATA_USERS);
   const navigation = useNavigation();
+
+  const { data: users, loading } = useSelector(
+    (state: ApplicationState) => state.repositories
+  );
+
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingScreen, setLoadingScreen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    setRefreshing(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    setRefreshing(loading);
+  }, [loading]);
+
+  function getUsers() {
+    dispatch({ type: RepositoriesTypes.LOAD_REQUEST });
+  }
+
+  const onRefresh = useCallback(() => {
+    getUsers();
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,12 +75,21 @@ export default function UsersScreen() {
     });
   }
 
-  const renderItemList = ({ item, index }: ListRenderItemInfo<IUsers>) => (
+  const renderItemList = ({ item, index }: ListRenderItemInfo<Repository>) => (
     <DeleteSwipe
       titleDelete="Remover usuário"
       messageDelete="Tem certeza que deseja remover?"
-      onDelete={() => {
-        setUsers(users.filter((item, indexItem) => indexItem !== index));
+      onDelete={async () => {
+        setLoadingScreen(true);
+        doRemoveUser(item.id)
+          .then((remove) => {
+            getUsers();
+          })
+          .catch((e) => {})
+          .then((_) => {
+            setLoadingScreen(false);
+          });
+        // setUsers(users.filter((item, indexItem) => indexItem !== index));
       }}
     >
       <TouchableOpacity style={styles.card} onPress={handleToEditUser}>
@@ -76,14 +122,26 @@ export default function UsersScreen() {
         marginTop: 12,
       }}
       keyExtractor={(item, index) => String(index)}
-      data={users}
+      data={users || []}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       renderItem={renderItemList}
       ListEmptyComponent={<ListEmpty />}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          title="carregando.."
+        />
+      }
     />
   );
 
-  return renderListOfProduct();
+  return (
+    <>
+      {loadingScreen && <ActivityIndicator />}
+      {renderListOfProduct()}
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -1,4 +1,3 @@
-import { Use } from "react-native-svg";
 import { IUser } from "../context/auth.context";
 import api, { RequestMethod } from "./api";
 
