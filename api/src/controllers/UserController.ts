@@ -9,7 +9,7 @@ class UserController {
     //Get users from database
     const userRepository = getRepository(User);
     const users = await userRepository.find({
-      select: ["id", "username", "role"], //We dont want to send the passwords on response
+      select: ["id", "name", "email", "role"], //We dont want to send the passwords on response
     });
 
     //Send the users object
@@ -24,7 +24,7 @@ class UserController {
     const userRepository = getRepository(User);
     try {
       const user = await userRepository.findOneOrFail(id, {
-        select: ["id", "username", "role"], //We dont want to send the pass`word on response
+        select: ["id", "name", "email", "role"], //We dont want to send the pass`word on response
       });
       res.json(user);
     } catch (error) {
@@ -34,9 +34,10 @@ class UserController {
 
   static newUser = async (req: Request, res: Response) => {
     //Get parameters from the body
-    let { username, password, role } = req.body;
+    let { name, email, password, role } = req.body;
     let user = new User();
-    user.username = username;
+    user.name = name;
+    user.email = email;
     user.password = password;
     user.role = role;
 
@@ -50,12 +51,12 @@ class UserController {
     //Hash the password, to securely store on DB
     user.hashPassword();
 
-    //Try to save. If fails, the username is already in use
+    //Try to save. If fails, the email is already in use
     const userRepository = getRepository(User);
     try {
       await userRepository.save(user);
     } catch (e) {
-      res.status(409).json({ data: "usuário já existente" });
+      res.status(409).json({ data: "e-mail já existente" });
       return;
     }
 
@@ -68,37 +69,43 @@ class UserController {
     const id = req.params.id;
 
     //Get values from the body
-    const { username, role } = req.body;
+    const { name, email, role, password } = req.body;
 
     //Try to find user on database
     const userRepository = getRepository(User);
-    let user;
+    let user: User;
     try {
       user = await userRepository.findOneOrFail(id);
     } catch (error) {
       //If not found, send a 404 response
-      res.status(404).json({ data: "usuário não criado" });
+      res.status(404).json({ data: "usuário não encontrado" });
       return;
     }
 
     //Validate the new values on model
-    user.username = username;
-    user.role = role;
+    name && (user.name = name);
+    email && (user.email = email);
+    password && (user.password = password);
+    role && (user.role = role);
+
     const errors = await validate(user);
     if (errors.length > 0) {
       res.status(400).send(errors);
       return;
     }
 
+    //Hash the password, to securely store on DB
+    if (password) user.hashPassword();
+
     //Try to safe, if fails, that means username already in use
     try {
       await userRepository.save(user);
     } catch (e) {
-      res.status(409).send({ data: "Nome de usuário já em uso" });
+      res.status(409).send({ data: "e-mail de usuário já em uso" });
       return;
     }
     //After all send a 204 (no content, but accepted) response
-    res.status(204).send();
+    res.status(200).json(user);
   };
 
   static deleteUser = async (req: Request, res: Response) => {

@@ -7,19 +7,24 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from "typeorm";
-import { Length, IsNotEmpty } from "class-validator";
+import { Length, IsNotEmpty, IsEmail } from "class-validator";
 import { Exclude } from "class-transformer";
 import * as bcrypt from "bcryptjs";
 import { UserRole } from "../enum";
 @Entity()
-@Unique(["username"])
+@Unique(["email"])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({})
+  @Length(4, 200)
+  name: string;
+
   @Column()
-  @Length(4, 20)
-  username: string;
+  @IsEmail()
+  @Length(4, 200)
+  email: string;
 
   @Column()
   @Length(4, 100)

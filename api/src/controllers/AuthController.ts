@@ -11,8 +11,8 @@ import { classToPlain } from "class-transformer";
 class AuthController {
   static login = async (req: Request, res: Response) => {
     //Check if username and password are set
-    let { username, password } = req.body;
-    if (!(username && password)) {
+    let { email, password } = req.body;
+    if (!(email && password)) {
       res.status(400).json({ data: "campos incorretos" });
     }
 
@@ -21,7 +21,7 @@ class AuthController {
     let userx: User;
     try {
       userx = await userRepository.findOneOrFail({
-        where: { username },
+        where: { email },
       });
     } catch (error) {
       res.status(401).json({ data: "usuário não encontrado" });
@@ -35,13 +35,14 @@ class AuthController {
 
     const user = {
       id: userx.id,
-      username: userx.username,
+      name: userx.name,
+      email: userx.email,
       role: userx.role,
-    };
+    } as User;
 
     //Sing JWT, valid for 1 hour
     const token = jwt.sign(
-      { userId: user.id, username: user.username },
+      { userId: user.id, name: user.name, email: user.email },
       config.jwtSecret,
       { expiresIn: "1h" }
     );
