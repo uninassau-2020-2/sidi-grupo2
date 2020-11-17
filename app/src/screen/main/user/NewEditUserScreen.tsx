@@ -12,12 +12,22 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
+import { useForm, Controller } from "react-hook-form";
 import { NewEditUserScreenProp } from "./users.routes";
+
+type FormData = {
+  name: string;
+  email: string;
+  password: string;
+  role: number;
+};
 
 const NewEditUserScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<NewEditUserScreenProp>();
   const isFocused = useIsFocused();
+  const { control, handleSubmit, errors } = useForm<FormData>();
+  const onSubmit = (data: FormData) => console.log(data);
   const { isNewUser } = route.params;
 
   useEffect(() => {
@@ -26,41 +36,87 @@ const NewEditUserScreen: React.FC = () => {
     });
   }, [isNewUser, isFocused]);
 
-  const [name, setName] = useState("");
-  const [role, setRole] = useState(0);
-
   const Separator = () => <View style={{ marginVertical: 10 }} />;
   return (
     <DismissKeyboard>
       <ScrollView contentContainerStyle={{ padding: 24 }}>
-        <Input
-          placeholder="Nome"
-          icon="ios-person"
-          value={name}
-          onChangeText={setName}
-        />
-
-        <Separator />
-        <Input
-          placeholder="E-mail"
-          icon="ios-mail"
-          keyboardType="email-address"
-        />
-        <Separator />
-        <Input placeholder="Password" icon="md-key" secureTextEntry />
-
-        <Separator />
-        <SegmentedControl
-          values={Object.values(RoleUser).map((item) =>
-            roleUserToString(String(item))
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <Input
+              placeholder="Nome"
+              icon="ios-person"
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              errors={errors.name?.message}
+            />
           )}
-          selectedIndex={role}
-          onChange={(event) => {
-            setRole(event.nativeEvent.selectedSegmentIndex);
+          rules={{
+            required: { value: true, message: "nome é obrigatório" },
           }}
+          name="name"
+          defaultValue=""
+        />
+
+        <Separator />
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <Input
+              placeholder="E-mail"
+              icon="ios-mail"
+              keyboardType="email-address"
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              errors={errors.email?.message}
+            />
+          )}
+          name="email"
+          rules={{
+            required: { value: true, message: "e-mail é obrigatório" },
+          }}
+          defaultValue=""
         />
         <Separator />
-        <AppButton title="Cadastrar" onPress={() => {}} />
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <Input
+              placeholder="Password"
+              icon="md-key"
+              secureTextEntry
+              value={value}
+              onChangeText={(value) => onChange(value)}
+              errors={errors.password?.message}
+            />
+          )}
+          name="password"
+          rules={{
+            required: { value: true, message: "senha é obrigatório" },
+            minLength: { value: 6, message: "necessário ter 6 caracteres" },
+          }}
+          defaultValue=""
+        />
+
+        <Separator />
+        <Controller
+          control={control}
+          render={({ onChange, onBlur, value }) => (
+            <SegmentedControl
+              values={Object.values(RoleUser).map((item) =>
+                roleUserToString(String(item))
+              )}
+              selectedIndex={value}
+              onChange={(event) => {
+                onChange(event.nativeEvent.selectedSegmentIndex);
+              }}
+            />
+          )}
+          name="role"
+          defaultValue={1}
+        />
+        <Separator />
+        <AppButton title="Cadastrar" onPress={handleSubmit(onSubmit)} />
       </ScrollView>
     </DismissKeyboard>
   );
