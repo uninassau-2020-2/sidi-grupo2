@@ -17,7 +17,7 @@ export default function App() {
         await Updates.reloadAsync();
       }
     }
-    Platform.OS !== "web" && updateApp();
+    Platform.OS !== "web" && !__DEV__ && updateApp();
   }, []);
 
   return (
