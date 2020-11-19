@@ -29,7 +29,7 @@ const renderHeader = () => {
   return (
     <View>
      <View style={styles.action}>
-          <TextInput placeholder="Buscar produtos" style={styles.textInput} />
+          <TextInput placeholder="Buscar produto" style={styles.textInput} />
         </View>
     </View>
   );
