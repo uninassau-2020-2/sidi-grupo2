@@ -30,11 +30,11 @@ const ListComponent: React.FC = () => {
   }
 
   const renderFooter = () => (
-    <View style={styles.footer}>
-      <Text>Total</Text>
-      <Text>R${calcTotal()}</Text>
+    <View style={styles.cardSearch}>
+      <Text style={styles.footerTitle}>Total:</Text>
+      <Text style={{color: "#83d79a"}}>R${calcTotal()}</Text>
       <TouchableOpacity style={styles.buttonFinishShop}>
-        <Text>Finalizar compra</Text>
+        <Text style={styles.buttonFinishShopText}>Finalizar compra</Text>
       </TouchableOpacity>
     </View>
   );
@@ -42,8 +42,8 @@ const ListComponent: React.FC = () => {
   const renderHeader = () => {
     return (
       <View>
-        <Text>Realizar busca</Text>
-        <TextInput
+        <View style={styles.action}>
+        <TextInput 
           placeholder="Faça a busca"
           style={styles.inputSearch}
           onChangeText={(text) => {
@@ -52,15 +52,22 @@ const ListComponent: React.FC = () => {
             );
           }}
         />
-        <Text>{products?.name}</Text>
-        <Text>{products?.codigo}</Text>
+        
+        </View>
+
+        <View style={styles.cardSearch}>
+          <Text style={styles.cardTitle}>{products?.name}</Text>
+          <Text style={styles.cardDescription}>{products?.codigo}</Text>
+        
         <TouchableOpacity
+        style={styles.buttonAdd}
           onPress={() => {
             products && handlerAddProduct(products);
           }}
         >
-          <Text>ADD</Text>
+          <Text style={styles.buttonFinishShopText}>Adicionar</Text>
         </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -148,9 +155,23 @@ const styles = StyleSheet.create({
   },
   containerList: {
     flex: 1,
+    backgroundColor: "#fff"
   },
   buttonFinishShop: {
-    // flex: 1,
+    width: 130,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "#8DD6CA"
+  },
+  buttonAdd: {
+    width: 90,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "#8DD6CA"
   },
   inputSearch: {
     backgroundColor: "#FFF",
@@ -166,8 +187,16 @@ const styles = StyleSheet.create({
   footer: {
     borderTopWidth: 1,
     borderColor: "#d5d5d5",
+    paddingVertical: 20,
+    backgroundColor: "#E1FBFC"
   },
-
+  footerTitle:
+  {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#6a748d",
+    margin: 12
+  },
   card: {
     backgroundColor: "#eef4fc",
     paddingHorizontal: 12,
@@ -177,6 +206,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
+  },
+  cardSearch: {
+    backgroundColor: "#eef4fc",
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    //marginVertical: 6,
+    //borderRadius: 20,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    
   },
   cardImage: {
     width: 40,
@@ -196,6 +236,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#83d79a",
     fontWeight: "bold",
+  },
+  action: {
+    zIndex: 2,
+    elevation: 2,
+    margin: 12,
+    alignItems: "center"
   },
 });
 

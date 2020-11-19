@@ -16,7 +16,27 @@ import DismissKeyboard from "../../components/DismissKeyboard";
 
 const DATA_PRODUCTS: Array<ProductType> = ProductData;
 
+
+const renderFooter = () => (
+  <View style={styles.buttons}>
+    <TouchableOpacity >
+      <Text style={{color: "#fff"}}>Adicionar produto</Text>
+    </TouchableOpacity>
+  </View>
+);
+
+const renderHeader = () => {
+  return (
+    <View>
+     <View style={styles.action}>
+          <TextInput placeholder="Buscar produtos" style={styles.textInput} />
+        </View>
+    </View>
+  );
+};
+
 export default function ProductScreen() {
+
   const renderItemList = (item: ProductType, index: number) => (
     <TouchableOpacity style={styles.card} key={String(item.id)}>
       <Image source={{ uri: item.image }} style={styles.cardImage} />
@@ -49,17 +69,17 @@ export default function ProductScreen() {
   );
 
   return (
-    <DismissKeyboard>
-      <View>
-        <View style={styles.action}>
-          <TextInput placeholder="Buscar protudos" style={styles.textInput} />
-        </View>
-        <View style={styles.conteiner}>
-          <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
-          <ScrollView>{renderListOfProduct()}</ScrollView>
-        </View>
-      </View>
-    </DismissKeyboard>
+    <>
+    {renderHeader()}
+      {/* <DismissKeyboard>         */}
+          <View style={styles.conteiner}>
+            <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
+            <ScrollView>{renderListOfProduct()}</ScrollView>
+          </View>
+      {/* </DismissKeyboard> */}
+    {renderFooter()}
+    </>
+    
   );
 }
 
@@ -90,7 +110,8 @@ const styles = StyleSheet.create({
     resizeMode: "stretch",
   },
   conteiner: {
-    backgroundColor: "#fff",
+    flex: 1,
+    backgroundColor: "#fff"
   },
   cardTitle: {
     color: "#6a748d",
@@ -108,17 +129,16 @@ const styles = StyleSheet.create({
   },
 
   action: {
-    flexDirection: "row",
-    zIndex: 2,
-    elevation: 2,
     margin: 12,
+    alignItems: "center"
   },
   textInput: {
-    flex: 1,
-    height: 52,
-    backgroundColor: "#eee",
-    shadowColor: "#000",
+    backgroundColor: "#FFF",
+    width: "90%",
+    color: "#222",
+    fontSize: 17,
     borderRadius: 10,
+    padding: 8,
   },
   subTitle: {
     fontSize: 16,
@@ -129,8 +149,13 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   buttons: {
-    alignItems: "flex-end",
-    marginRight: 12,
-    marginTop: 35,
+    backgroundColor: "#8DD6CA",
+    paddingVertical: 8,
+    marginVertical: 10,
+    borderRadius: 20,
+    marginTop: 10,
+    margin: 12,
+    alignItems: "center",
+
   },
 });
