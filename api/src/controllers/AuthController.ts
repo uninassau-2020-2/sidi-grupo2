@@ -24,7 +24,7 @@ class AuthController {
         where: { email },
       });
     } catch (error) {
-      res.status(401).json({ data: "usuário não encontrado" });
+      res.status(401).json({ data: "dados inválidos" });
     }
 
     //Check if encrypted password match
@@ -46,7 +46,6 @@ class AuthController {
       config.jwtSecret,
       { expiresIn: "1h" }
     );
-    //Send the jwt in the response
 
     res.status(200).json({ user, token });
   };
