@@ -34,7 +34,7 @@ const ListComponent: React.FC = () => {
       <Text style={styles.footerTitle}>Total:</Text>
       <Text style={{color: "#83d79a"}}>R${calcTotal()}</Text>
       <TouchableOpacity style={styles.buttonFinishShop}>
-        <Text style={styles.buttonFinishShopText}>Finalizar compra</Text>
+        <Text style={styles.buttonFinishShopText}>Finalizar compras</Text>
       </TouchableOpacity>
     </View>
   );

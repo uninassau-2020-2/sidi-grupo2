@@ -71,12 +71,10 @@ export default function ProductScreen() {
   return (
     <>
     {renderHeader()}
-      {/* <DismissKeyboard>         */}
           <View style={styles.conteiner}>
-            <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text>
+            <Text style={styles.subTitle}>{DATA_PRODUCTS.length}Produtos</Text>
             <ScrollView>{renderListOfProduct()}</ScrollView>
           </View>
-      {/* </DismissKeyboard> */}
     {renderFooter()}
     </>
     
