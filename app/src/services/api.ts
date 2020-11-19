@@ -1,6 +1,6 @@
-import React from "react";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { useAuth } from "../context/auth.context";
+import AsyncStorage from "@react-native-community/async-storage";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+// import { useAuth } from "../context/auth.context";
 
 type IObjectErros = {
   [key: number]: string;
@@ -25,12 +25,26 @@ const api = axios.create({
   },
 });
 
+const requestMiddleware = async (config: AxiosRequestConfig) => {
+  const storagedToken = await AsyncStorage.getItem("@RNAuth:token");
+  const newConfig = config;
+  if (storagedToken) {
+    newConfig.headers.Authorization = storagedToken;
+  }
+  return newConfig;
+};
+
+const requestErrorMiddleware = (error: AxiosError) => {
+  return Promise.reject(error);
+};
+
+api.interceptors.request.use(requestMiddleware, requestErrorMiddleware);
+
 const responseErrorMiddleware = async (error: AxiosError) => {
   const { response, config } = error;
-  const { signOut } = useAuth();
+  // const { signOut } = useAuth();
 
   const status = (response && response.status) || 1001;
-
   const responseErrors = {
     errorStatus: status,
     errorMessage: objectErros[status],
@@ -60,7 +74,7 @@ const responseErrorMiddleware = async (error: AxiosError) => {
   }
 
   if (status === 401) {
-    signOut();
+    // signOut();
   }
 
   if (status !== 404 && status !== 500) {
