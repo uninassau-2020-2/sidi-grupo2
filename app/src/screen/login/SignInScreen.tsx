@@ -7,29 +7,23 @@ import {
   TextInput,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
-import { useAuth } from "../../context/auth.context";
+import { signInRequest } from "../../services/store/ducks/auth/actions";
+import { StoreState } from "../../services/store/createStore";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
-  const { signIn, error } = useAuth();
+  const dispatch = useDispatch();
+
+  const { error } = useSelector((state: StoreState) => state.auth);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [showError, setShowError] = useState(false);
-
-  useEffect(() => {
-    setShowError(false);
-  }, [email, password]);
 
   function handleToNavigateToHome() {
-    try {
-      signIn(email, password);
-    } catch (e) {
-      console.log("e", e);
-    }
-    setShowError(true);
+    dispatch(signInRequest({ email: email, password: password }));
   }
 
   function handleToNavigateForgotPass() {
@@ -50,6 +44,7 @@ export default function LoginScreen() {
             placeholder="Seu email..."
             style={styles.textInput}
             keyboardType="email-address"
+            autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
           />
@@ -67,7 +62,7 @@ export default function LoginScreen() {
           />
         </View>
 
-        {showError && error && <Text>{error}</Text>}
+        {error && <Text>{error}</Text>}
 
         <TouchableOpacity onPress={handleToNavigateForgotPass}>
           <Text style={{ marginTop: 15, color: "#05375a" }}>

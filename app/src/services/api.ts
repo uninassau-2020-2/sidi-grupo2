@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "./store/ducks/auth/actions";
 // import { useAuth } from "../context/auth.context";
-
 type IObjectErros = {
   [key: number]: string;
 };
@@ -18,18 +19,23 @@ const objectErros: IObjectErros = {
 };
 
 const api = axios.create({
-  baseURL: "http://localhost:8081",
+  baseURL: "https://sidi-grupo2.herokuapp.com",
   timeout: 3000,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
+async function logout() {
+  const dispatch = useDispatch();
+  dispatch(logoutAction());
+}
+
 const requestMiddleware = async (config: AxiosRequestConfig) => {
-  const storagedToken = await AsyncStorage.getItem("@RNAuth:token");
+  const storagedToken = await AsyncStorage.getItem("@auth:token");
   const newConfig = config;
   if (storagedToken) {
-    newConfig.headers.Authorization = storagedToken;
+    newConfig.headers.auth = storagedToken;
   }
   return newConfig;
 };
@@ -42,8 +48,6 @@ api.interceptors.request.use(requestMiddleware, requestErrorMiddleware);
 
 const responseErrorMiddleware = async (error: AxiosError) => {
   const { response, config } = error;
-  // const { signOut } = useAuth();
-
   const status = (response && response.status) || 1001;
   const responseErrors = {
     errorStatus: status,
@@ -74,7 +78,7 @@ const responseErrorMiddleware = async (error: AxiosError) => {
   }
 
   if (status === 401) {
-    // signOut();
+    logout();
   }
 
   if (status !== 404 && status !== 500) {

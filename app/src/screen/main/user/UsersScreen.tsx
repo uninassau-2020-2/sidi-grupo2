@@ -22,18 +22,17 @@ import ListEmpty from "../../../components/ListEmpty";
 import DeleteSwipe from "../../../components/DeleteSwipe";
 import HeaderRight from "../../../components/HeaderRight";
 import { roleUserToString } from "../../../util";
-import { ApplicationState } from "../../../services/store";
-import {
-  RepositoriesTypes,
-  Repository,
-} from "../../../services/store/ducks/repositories/types";
+
 import { doRemoveUser } from "../../../services/user";
+import { StoreState } from "../../../services/store/createStore";
+import { loadRequest } from "../../../services/store/ducks/user/actions";
+import { User } from "../../../interface";
 
 export default function UsersScreen() {
   const navigation = useNavigation();
 
-  const { data: users, loading } = useSelector(
-    (state: ApplicationState) => state.repositories
+  const { data: users, loading, error } = useSelector(
+    (state: StoreState) => state.user
   );
 
   const [refreshing, setRefreshing] = useState(false);
@@ -49,18 +48,6 @@ export default function UsersScreen() {
     setRefreshing(loading);
   }, [loading]);
 
-  useEffect(() => {
-    setRefreshing(loading);
-  }, [loading]);
-
-  function getUsers() {
-    dispatch({ type: RepositoriesTypes.LOAD_REQUEST });
-  }
-
-  const onRefresh = useCallback(() => {
-    getUsers();
-  }, []);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -69,13 +56,21 @@ export default function UsersScreen() {
     });
   }, [navigation]);
 
+  const onRefresh = useCallback(() => {
+    getUsers();
+  }, []);
+
+  function getUsers() {
+    dispatch(loadRequest());
+  }
+
   function handleToEditUser() {
     navigation.navigate("NewEditUser", {
       isNewUser: false,
     });
   }
 
-  const renderItemList = ({ item, index }: ListRenderItemInfo<Repository>) => (
+  const renderItemList = ({ item, index }: ListRenderItemInfo<User>) => (
     <DeleteSwipe
       titleDelete="Remover usuário"
       messageDelete="Tem certeza que deseja remover?"

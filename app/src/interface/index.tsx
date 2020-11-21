@@ -23,3 +23,15 @@ export interface IUsers {
   email: string;
   role: string;
 }
+
+export interface Auth {
+  email: string;
+  password: string;
+}
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}

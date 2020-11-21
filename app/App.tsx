@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { AuthProvider } from "./src/context/auth.context";
 import Routes from "./src/routes/";
-import store from "./src/services/store";
+import { store } from "./src/services/store";
 
 export default function App() {
   useEffect(() => {
@@ -22,11 +22,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <AuthProvider>
-        <Provider store={store}>
+      <Provider store={store}>
+        <AuthProvider>
           <Routes />
-        </Provider>
-      </AuthProvider>
+        </AuthProvider>
+      </Provider>
     </NavigationContainer>
   );
 }

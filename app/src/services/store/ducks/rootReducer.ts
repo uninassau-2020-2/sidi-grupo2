@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
-import repositories from "./repositories";
+import { StoreState } from "../createStore";
 
-export const rootReducer = combineReducers({
-  repositories: repositories,
+import auth from "./auth/";
+import user from "./user/";
+
+export default combineReducers<StoreState>({
+  auth,
+  user,
 });
-
-export type RootState = ReturnType<typeof rootReducer>;

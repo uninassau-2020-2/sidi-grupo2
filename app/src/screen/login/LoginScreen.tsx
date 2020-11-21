@@ -9,6 +9,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
+
 export default function LoginScreen() {
   const navigation = useNavigation();
 
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     flexDirection: "row",
-    backgroundColor: "#05375a"
+    backgroundColor: "#05375a",
   },
   textSign: {
     color: "#fff",

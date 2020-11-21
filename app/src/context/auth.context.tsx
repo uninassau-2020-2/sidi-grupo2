@@ -1,65 +1,42 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import * as auth from "../services/auth";
-export interface IUser {
-  id: number;
-  email: string;
-  name: string;
-  role: string;
-}
+import { User } from "../interface";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreState } from "../services/store/createStore";
+import { signInSuccess } from "../services/store/ducks/auth/actions";
 
 interface AuthContextData {
-  signed: boolean;
-  user: IUser | null;
+  isSignedIn: boolean;
+  user: User | null;
   loading: boolean;
-  error: string | null;
-  signIn(email: string, password: string): Promise<void>;
-  signOut(): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { isSignedIn, user, loadingSignInRequest } = useSelector(
+    (state: StoreState) => state.auth
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function loadStorageData() {
-      const storagedUser = await AsyncStorage.getItem("@RNAuth:user");
-      const storagedToken = await AsyncStorage.getItem("@RNAuth:token");
+      const storagedUser = await AsyncStorage.getItem("@auth:user");
+      const storagedToken = await AsyncStorage.getItem("@auth:token");
+      const user: User = JSON.parse(storagedUser || "") as User;
 
-      if (storagedUser && storagedToken) {
-        setUser(JSON.parse(storagedUser));
-        setError(null);
+      if (storagedToken && user) {
+        console.log("teste");
+        dispatch(signInSuccess({ token: storagedToken, user: user }));
       }
-
-      setLoading(false);
     }
 
     loadStorageData();
-  });
-
-  async function signIn(email: string, password: string) {
-    try {
-      const response = await auth.signIn(email, password);
-      setUser(response.user);
-      await AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.user));
-      await AsyncStorage.setItem("@RNAuth:token", response.token);
-    } catch (e) {
-      setError("Usuário inválido");
-    }
-  }
-
-  async function signOut() {
-    await AsyncStorage.clear();
-    setUser(null);
-    setError(null);
-  }
+  }, []);
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, loading, error, signIn, signOut }}
+      value={{ isSignedIn, user, loading: loadingSignInRequest }}
     >
       {children}
     </AuthContext.Provider>
