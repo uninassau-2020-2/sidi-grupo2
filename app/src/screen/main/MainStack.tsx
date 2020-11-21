@@ -8,7 +8,7 @@ import Home from "./HomeScreen";
 import Product from "./ProductScreen";
 import UserRoutes from "./user/users.routes";
 import Cashier from "./cashier/CashierScreen";
-import Category from "./category/CategoryScreen";
+import Category from "./category/category.routes";
 import Profile from "./ProfileScreen";
 export default function App() {
   return (
@@ -30,11 +30,15 @@ export default function App() {
       <Screen name="Vendas" component={Home} />
       <Screen name="Produtos" component={Product} />
       <Screen
+        name="Categoria"
+        component={Category}
+        options={{ headerShown: false }}
+      />
+      <Screen
         name="Usuários"
         component={UserRoutes}
         options={{ headerShown: false }}
       />
-      <Screen name="Categoria" component={Category} />
       <Screen name="Perfil" component={Profile} />
     </Navigator>
   );

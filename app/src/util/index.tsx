@@ -1,3 +1,4 @@
+import { StackNavigationOptions } from "@react-navigation/stack/lib/typescript/src/types";
 import { RoleUser } from "../enum";
 
 export type ActionMap<M extends { [index: string]: any }> = {
@@ -18,4 +19,15 @@ export const roleUserToString = (role: string) => {
     default:
       return "Vendedor";
   }
+};
+
+export const screenOptionDefault: StackNavigationOptions = {
+  headerStyle: {
+    backgroundColor: "#f2f2f2",
+  },
+  headerTintColor: "#5c657e",
+  headerTitleStyle: {
+    fontWeight: "bold",
+    fontSize: 24,
+  },
 };

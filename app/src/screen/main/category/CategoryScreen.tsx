@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 import {
   View,
@@ -7,24 +7,33 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { FlatList } from "react-native-gesture-handler";
 import DismissKeyboard from "../../../components/DismissKeyboard";
 import DeleteSwipe from "../../../components/DeleteSwipe";
-import { CategoryType } from "../../../interface";
 
 import CategoriesData from "../../../data/CategoryData.json";
 import ListEmpty from "../../../components/ListEmpty";
+import HeaderRight from "../../../components/HeaderRight";
+import { Category } from "../../../interface";
 
-const DATA_CATEGORIES: Array<CategoryType> = CategoriesData;
+const DATA_CATEGORIES: Array<Category> = CategoriesData;
 
 const CategoryScreen: React.FC = () => {
   const [categories, setCategories] = useState(DATA_CATEGORIES);
 
-  const renderItemList = ({
-    item,
-    index,
-  }: ListRenderItemInfo<CategoryType>) => (
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderRight onPress={() => navigation.navigate("NewEditCategory")} />
+      ),
+    });
+  }, [navigation]);
+
+  const renderItemList = ({ item, index }: ListRenderItemInfo<Category>) => (
     <DeleteSwipe
       titleDelete="Remover categoria"
       messageDelete="Tem certeza que deseja remover?"

@@ -11,11 +11,11 @@ export type ProductType = {
   image: string;
 };
 
-export type CategoryType = {
+export interface Category {
   id: number;
   categoryId: number | null;
   name: string;
-};
+}
 
 export interface IUsers {
   id: number;
