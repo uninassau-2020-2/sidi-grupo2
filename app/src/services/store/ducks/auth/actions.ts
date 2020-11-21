@@ -1,5 +1,5 @@
 import { action } from "typesafe-actions";
-import { Auth, User } from "../../../../interface";
+import { Auth, IError, User } from "../../../../interface";
 import { AuthTypes } from "./types";
 
 export function signInRequest({ email, password }: Auth) {
@@ -16,8 +16,10 @@ export function signInSuccess({ user, token }: { token: string; user: User }) {
   });
 }
 
-export function signInFailure() {
-  return action(AuthTypes.LOAD_FAILURE);
+export function signInFailure(error: IError | null) {
+  return action(AuthTypes.LOAD_FAILURE, {
+    error,
+  });
 }
 
 export function logoutAction() {

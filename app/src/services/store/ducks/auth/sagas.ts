@@ -14,14 +14,19 @@ export function* signIn({ payload }: ActionType<typeof actions.signInRequest>) {
       password: password,
     });
 
-    yield call(store, "@auth:user", JSON.stringify(response.user));
-    yield call(store, "@auth:token", response.token);
+    if (response.fail) {
+      console.log("response.responseErrors", response.responseErrors);
+      yield put(actions.signInFailure(response.responseErrors));
+    } else {
+      yield call(store, "@auth:user", JSON.stringify(response.user));
+      yield call(store, "@auth:token", response.token);
 
-    yield put(
-      actions.signInSuccess({ token: response.token, user: response.user })
-    );
+      yield put(
+        actions.signInSuccess({ token: response.token, user: response.user })
+      );
+    }
   } catch (err) {
-    yield put(actions.signInFailure());
+    yield put(actions.signInFailure(err));
   }
 }
 

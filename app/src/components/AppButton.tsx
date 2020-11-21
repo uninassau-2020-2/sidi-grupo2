@@ -12,9 +12,15 @@ export default function AppButton({
   title,
   disabled = false,
 }: IAppButton) {
+  const backgroundColor = !disabled ? "#05375a" : "#999";
+  const _buttonStyle = {
+    ...styles.button,
+    backgroundColor,
+  };
   return (
     <TouchableOpacity
-      style={styles.button}
+      activeOpacity={0.7}
+      style={_buttonStyle}
       onPress={onPress}
       disabled={disabled}
     >
@@ -30,7 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: "#05375a",
   },
   buttonText: {
     fontWeight: "bold",

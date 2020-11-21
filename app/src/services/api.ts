@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
+import { IError } from "../interface";
 import { logoutAction } from "./store/ducks/auth/actions";
 // import { useAuth } from "../context/auth.context";
 type IObjectErros = {
@@ -54,7 +55,7 @@ const responseErrorMiddleware = async (error: AxiosError) => {
     errorMessage: objectErros[status],
   };
 
-  if (status === 401 && config.url?.includes("/login")) {
+  if (status === 401 && config.url?.includes("/auth/login")) {
     const responseErrorsNotAuth: IError = {
       errorStatus: status,
       errorMessage: "Falha na autenticação, verifique seus dados.",
@@ -87,11 +88,6 @@ const responseErrorMiddleware = async (error: AxiosError) => {
 
   return Promise.reject(responseErrors);
 };
-
-interface IError {
-  errorStatus: number;
-  errorMessage: string;
-}
 
 const responseMiddleware = (response: AxiosResponse<any>) => {
   return response.data;

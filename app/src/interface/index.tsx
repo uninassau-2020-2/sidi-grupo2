@@ -35,3 +35,8 @@ export interface User {
   email: string;
   role: string;
 }
+
+export interface IError {
+  errorStatus: number;
+  errorMessage: string;
+}

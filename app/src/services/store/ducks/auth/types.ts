@@ -1,3 +1,4 @@
+import { IError } from "./../../../../interface/index";
 import { ActionType } from "typesafe-actions";
 import { User } from "../../../../interface";
 import * as actions from "./actions";
@@ -13,7 +14,7 @@ export enum AuthTypes {
 export interface AuthState {
   readonly loadingSignInRequest: boolean;
   readonly isSignedIn: boolean;
-  readonly error: boolean;
+  readonly error: IError | null;
   readonly token: string | null;
   readonly user: User | null;
 }

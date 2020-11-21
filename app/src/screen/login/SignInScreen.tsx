@@ -12,12 +12,15 @@ import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import { signInRequest } from "../../services/store/ducks/auth/actions";
 import { StoreState } from "../../services/store/createStore";
+import AppButton from "../../components/AppButton";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { error } = useSelector((state: StoreState) => state.auth);
+  const { error, loadingSignInRequest } = useSelector(
+    (state: StoreState) => state.auth
+  );
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -62,7 +65,7 @@ export default function LoginScreen() {
           />
         </View>
 
-        {error && <Text>{error}</Text>}
+        {error && <Text>{error.errorMessage}</Text>}
 
         <TouchableOpacity onPress={handleToNavigateForgotPass}>
           <Text style={{ marginTop: 15, color: "#05375a" }}>
@@ -71,12 +74,11 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <View style={styles.button}>
-          <TouchableOpacity
-            style={styles.signIn}
+          <AppButton
+            title="Entrar"
+            disabled={loadingSignInRequest}
             onPress={handleToNavigateToHome}
-          >
-            <Text style={styles.textSign}>Entrar</Text>
-          </TouchableOpacity>
+          />
         </View>
       </View>
     </Animatable.View>

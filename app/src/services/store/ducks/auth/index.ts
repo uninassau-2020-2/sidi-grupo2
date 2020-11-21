@@ -3,7 +3,7 @@ import { AuthState, AuthAction, AuthTypes } from "./types";
 const initialState: AuthState = {
   loadingSignInRequest: false,
   isSignedIn: false,
-  error: false,
+  error: null,
   token: null,
   user: null,
 };
@@ -22,6 +22,7 @@ export default function auth(
     case AuthTypes.LOAD_SUCCESS:
       return {
         ...state,
+        error: null,
         loadingSignInRequest: false,
         isSignedIn: true,
         token: action.payload.token,
@@ -32,7 +33,7 @@ export default function auth(
       return {
         ...state,
         loadingSignInRequest: false,
-        error: true,
+        error: action.payload.error,
       };
     default:
       return state;
