@@ -21,6 +21,18 @@ export const roleUserToString = (role: string) => {
   }
 };
 
+export const roleUserFromIndex = (role: number) => {
+  return Object.values(RoleUser)[role];
+};
+
+export const indexOfRoleUser = (role: string): number => {
+  return Object.values(RoleUser).indexOf(role as RoleUser);
+};
+
+export const roleUserFromValue = (role: string) => {
+  return Object.values(RoleUser).find((key) => key === role);
+};
+
 export const screenOptionDefault: StackNavigationOptions = {
   headerStyle: {
     backgroundColor: "#f2f2f2",

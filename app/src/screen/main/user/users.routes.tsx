@@ -12,7 +12,7 @@ import { screenOptionDefault } from "../../../util";
 
 export type UserScreenParam = {
   User: undefined;
-  NewEditUser: { isNewUser: boolean; user: IUsers };
+  NewEditUser: { isNewUser: boolean; user: IUsers | null };
 };
 
 export type NewEditUserScreenProp = RouteProp<UserScreenParam, "NewEditUser">;
@@ -32,7 +32,7 @@ const UsersRoutes: React.FC = () => {
         name="NewEditUser"
         component={NewEditUser}
         options={{ title: "Usuários", headerLeft: () => <HeaderBack /> }}
-        initialParams={{ isNewUser: true }}
+        initialParams={{ isNewUser: true, user: null }}
       />
     </Navigator>
   );

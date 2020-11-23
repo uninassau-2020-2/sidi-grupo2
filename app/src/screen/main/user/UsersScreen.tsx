@@ -64,11 +64,39 @@ export default function UsersScreen() {
     dispatch(loadRequest());
   }
 
-  function handleToEditUser() {
+  function handleToEditUser(user: User) {
     navigation.navigate("NewEditUser", {
       isNewUser: false,
+      user: user,
     });
   }
+
+  const renderUserItem = (user: User) => {
+    return (
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => handleToEditUser(user)}
+      >
+        <Image
+          source={{
+            uri: `https://ui-avatars.com/api/?name=${user.name}`,
+          }}
+          style={styles.cardImage}
+        />
+        <View style={{ marginLeft: 6, flex: 1 }}>
+          <Text style={styles.cardTitle}>{user.name}</Text>
+          <Text style={styles.cardDescription}>{user.email || "--"}</Text>
+        </View>
+        <Text style={styles.cardValue}>{roleUserToString(user.role)}</Text>
+        <Ionicons
+          name="md-arrow-forward"
+          size={20}
+          color="gray"
+          style={{ color: "#05375a", marginLeft: 12 }}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   const renderItemList = ({ item, index }: ListRenderItemInfo<User>) => (
     <DeleteSwipe
@@ -87,25 +115,7 @@ export default function UsersScreen() {
         // setUsers(users.filter((item, indexItem) => indexItem !== index));
       }}
     >
-      <TouchableOpacity style={styles.card} onPress={handleToEditUser}>
-        <Image
-          source={{
-            uri: `https://ui-avatars.com/api/?name=${item.name}`,
-          }}
-          style={styles.cardImage}
-        />
-        <View style={{ marginLeft: 6, flex: 1 }}>
-          <Text style={styles.cardTitle}>{item.name}</Text>
-          <Text style={styles.cardDescription}>{item.email || "--"}</Text>
-        </View>
-        <Text style={styles.cardValue}>{roleUserToString(item.role)}</Text>
-        <Ionicons
-          name="md-arrow-forward"
-          size={20}
-          color="gray"
-          style={{ color: "#05375a", marginLeft: 12 }}
-        />
-      </TouchableOpacity>
+      {renderUserItem(item)}
     </DeleteSwipe>
   );
 

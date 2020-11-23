@@ -15,7 +15,6 @@ export function* signIn({ payload }: ActionType<typeof actions.signInRequest>) {
     });
 
     if (response.fail) {
-      console.log("response.responseErrors", response.responseErrors);
       yield put(actions.signInFailure(response.responseErrors));
     } else {
       yield call(store, "@auth:user", JSON.stringify(response.user));
@@ -47,12 +46,12 @@ async function removeStore(key: string) {
 }
 
 export function* logout() {
+  console.log("FINISHH");
   yield call(removeStore, "@auth:user");
   yield call(removeStore, "@auth:token");
-  console.log("FINISHH");
 }
 
 export default all([
   takeLatest(AuthTypes.LOAD_REQUEST, signIn),
-  takeEvery(AuthTypes.LOAD_LOGOUT, logout),
+  takeLatest(AuthTypes.LOAD_LOGOUT, logout),
 ]);

@@ -23,5 +23,6 @@ export function signInFailure(error: IError | null) {
 }
 
 export function logoutAction() {
+  console.log(logoutAction);
   return action(AuthTypes.LOAD_LOGOUT);
 }

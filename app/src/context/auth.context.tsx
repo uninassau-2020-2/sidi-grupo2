@@ -22,20 +22,26 @@ const AuthProvider: React.FC = ({ children }) => {
     (state: StoreState) => state.auth
   );
   const dispatch = useDispatch();
+  const [isSign, setIsSign] = useState(false);
 
   useEffect(() => {
     async function loadStorageData() {
       const storagedUser = await AsyncStorage.getItem("@auth:user");
       const storagedToken = await AsyncStorage.getItem("@auth:token");
-
-      if (storagedToken && user) {
+      if (storagedToken && storagedUser) {
         const user: User = JSON.parse(storagedUser || "") as User;
         dispatch(signInSuccess({ token: storagedToken, user: user }));
+        setIsSign(true);
+      } else {
+        setIsSign(false);
       }
     }
-
     loadStorageData();
   }, []);
+
+  useEffect(() => {
+    setIsSign(isSignedIn);
+  }, [isSignedIn]);
 
   function signOut() {
     dispatch(logoutAction());
@@ -43,7 +49,12 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isSignedIn, user, loading: loadingSignInRequest, signOut }}
+      value={{
+        isSignedIn: isSign,
+        user,
+        loading: loadingSignInRequest,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

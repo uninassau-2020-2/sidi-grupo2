@@ -36,6 +36,13 @@ export interface User {
   role: string;
 }
 
+export interface UserRequest {
+  name: string;
+  email: string;
+  password: string;
+  role: RoleUser;
+}
+
 export interface IError {
   errorStatus: number;
   errorMessage: string;

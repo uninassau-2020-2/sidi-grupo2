@@ -1,15 +1,15 @@
 import "reflect-metadata";
-import {createConnection, getConnectionOptions} from "typeorm";
+import { createConnection, getConnectionOptions } from "typeorm";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as helmet from "helmet";
 import * as cors from "cors";
 import * as compression from "compression";
-import {ValidationError} from "class-validator";
-import {isCelebrateError} from "celebrate";
+import { ValidationError } from "class-validator";
+import { isCelebrateError } from "celebrate";
 // import * as methodOverride from 'method-override';
 import routes from "./routes";
-import {ErrorHandler, handleError} from "./helpers/ErrorHandler";
+import { ErrorHandler, handleError } from "./helpers/ErrorHandler";
 
 // read connection options from ormconfig file (or ENV variables)
 getConnectionOptions().then(async (connectionOptions) => {
@@ -25,15 +25,9 @@ getConnectionOptions().then(async (connectionOptions) => {
       type: "postgres",
       url: databaseUrl,
       migrationsRun: true,
-      entities: [
-        "build/entity/**/*.js"
-      ],
-      migrations: [
-        "build/migration/**/*.js"
-      ],
-      subscribers: [
-        "build/subscriber/**/*.js"
-      ]
+      entities: ["build/entity/**/*.js"],
+      migrations: ["build/migration/**/*.js"],
+      subscribers: ["build/subscriber/**/*.js"],
     });
 
     console.log(connectionOptions);
@@ -50,7 +44,7 @@ getConnectionOptions().then(async (connectionOptions) => {
       app.use(helmet());
       app.use(compression());
       app.use(bodyParser.json());
-      app.use(bodyParser.urlencoded({extended: true}));
+      app.use(bodyParser.urlencoded({ extended: true }));
       app.use(express.static("public"));
 
       app.use("/", routes);
@@ -71,8 +65,11 @@ getConnectionOptions().then(async (connectionOptions) => {
         ) => {
           if (isCelebrateError(err)) {
             // Logger.error('Error: %o', err);
-            res.status(400).json({error: "Invalid data"}).end();
-          } else if (err instanceof Array && err[0] instanceof ValidationError) {
+            res.status(400).json({ error: "Invalid data" }).end();
+          } else if (
+            err instanceof Array &&
+            err[0] instanceof ValidationError
+          ) {
             const messageArr: Array<string> = [];
             let e: ValidationError;
             for (e of err) {
@@ -81,12 +78,12 @@ getConnectionOptions().then(async (connectionOptions) => {
               });
             }
             // Logger.error('Error: %o', messageArr);
-            res.status(400).json({errors: messageArr}).end();
+            res.status(400).json({ errors: messageArr }).end();
           } else if (err.name === "UnauthorizedError") {
             /**
              * Handle 401 thrown by express-jwt library
              */
-            return res.status(401).json({error: err.message});
+            return res.status(401).json({ error: err.message });
           } else {
             next(err);
           }
@@ -120,11 +117,11 @@ getConnectionOptions().then(async (connectionOptions) => {
       // })
 
       // start express server
-      app.listen(process.env.PORT || 8081);
-
-      console.log(
-        "Express server has started on port 8081. Open http://localhost:8081/users to see results"
-      );
+      app.listen(Number(process.env.PORT) || 8081, "0.0.0.0", () => {
+        console.log(
+          "Express server has started on port 8081. Open http://localhost:8081/users to see results"
+        );
+      });
     })
     .catch((error) => console.log(error));
 });

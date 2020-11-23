@@ -25,6 +25,7 @@ class AuthController {
       });
     } catch (error) {
       res.status(401).json({ data: "dados inválidos" });
+      return;
     }
 
     //Check if encrypted password match

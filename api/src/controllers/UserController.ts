@@ -53,15 +53,15 @@ class UserController {
 
     //Try to save. If fails, the email is already in use
     const userRepository = getRepository(User);
+    let userx: User;
     try {
-      await userRepository.save(user);
+      userx = await userRepository.save(user);
     } catch (e) {
       res.status(409).json({ data: "e-mail já existente" });
       return;
     }
-
     //If all ok, send 201 response
-    res.status(201).json(user);
+    res.status(201).json(userx);
   };
 
   static editUser = async (req: Request, res: Response) => {
@@ -81,7 +81,7 @@ class UserController {
       res.status(404).json({ data: "usuário não encontrado" });
       return;
     }
-
+    console.log("password", password);
     //Validate the new values on model
     name && (user.name = name);
     email && (user.email = email);

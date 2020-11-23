@@ -2,7 +2,6 @@ import React from "react";
 import { RectButton } from "react-native-gesture-handler";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-
 interface HeaderDrawerProps {
   tintColor?: string | undefined;
 }
