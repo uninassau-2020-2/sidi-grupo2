@@ -16,11 +16,7 @@ getConnectionOptions().then(async (connectionOptions) => {
   // Se DATABASE_URL existir, irá utilizar ele
   let databaseUrl = process.env.DATABASE_URL;
 
-  console.log(`databaseUrl=${databaseUrl}`);
-
   if (databaseUrl !== undefined) {
-    console.log(connectionOptions);
-
     Object.assign(connectionOptions, {
       type: "postgres",
       url: databaseUrl,
@@ -29,8 +25,6 @@ getConnectionOptions().then(async (connectionOptions) => {
       migrations: ["build/migration/**/*.js"],
       subscribers: ["build/subscriber/**/*.js"],
     });
-
-    console.log(connectionOptions);
   }
 
   createConnection(connectionOptions)
