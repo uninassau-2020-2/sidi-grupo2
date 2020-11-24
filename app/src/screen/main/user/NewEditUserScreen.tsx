@@ -62,9 +62,9 @@ const NewEditUserScreen: React.FC = () => {
 
   useEffect(() => {
     if (addSucess === true) {
+      dispatch(cleanAdd());
+      dispatch(loadRequest());
       navigation.goBack();
-      // dispatch(cleanAdd());
-      // dispatch(loadRequest());
     }
   }, [addSucess]);
 

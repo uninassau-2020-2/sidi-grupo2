@@ -33,8 +33,8 @@ export default function reducer(
         addError: INITIAL_STATE.addError,
       };
     case UserTypes.ADD_REQUEST:
-      return { ...state, addSucess: false, loading: true };
     case UserTypes.UPDATE_REQUEST:
+      return { ...state, addSucess: false, loading: true };
     case UserTypes.ADD_SUCCESS:
       return {
         ...state,

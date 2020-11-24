@@ -41,7 +41,6 @@ export function* updateUser({
     const { user } = payload;
     const response = yield call(api.patch, `/user/${payload.id}`, user);
 
-    console.log("response", response);
     yield put(addSuccessAction(response));
   } catch (err) {
     yield put(addFailureAction(err));
