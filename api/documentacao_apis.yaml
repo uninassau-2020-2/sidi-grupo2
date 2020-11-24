@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  title: Rei do Cangaço
+  description: Conjunto de APIs para o projeto Rei do Cangaço
+  version: 1.0.0
+servers:
+#  - url: 'http://localhost:8081'
+#    description: Link do ambiente de desenvolvimento.
+  - url: 'https://sidi-grupo2.herokuapp.com'
+    description: Link do ambiente de produção.
+security:
+  - ApiKeyAuth: [ ]
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Autenticação
+      description: Loga no ambiente e retorna informações do usuário e o token.
+      summary: Loga no ambiente e obtém o token JWT.
+      operationId: authLogin
+      security: [ ]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FormularioEnvioLogin'
+      responses:
+        200:
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetornoLoginSchema'
+        401:
+          description: Login não realizado
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetornoLoginNaoAutorizadoSchema'
+  /auth/change-password:
+    post:
+      tags:
+        - Autenticação
+      description: Trocar a senha do usuário logado.
+      summary: Trocar a senha do usuário logado.
+      operationId: changePassword
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FormularioTrocarSenha'
+      responses:
+        204:
+          description: Senha alterada com sucesso. 
+        401:
+          description: Alteração não realizada.
+              
+  /user:
+    get:
+      tags:
+        - Usuários
+      description: Listar os usuários cadastrados.
+      summary: Lista os usuários.
+      operationId: listAllUsers
+      responses: 
+        200:
+          description: Sucesso, retorna a lista de usuários.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetornoListaUsuarios'
+  /user/{id}:
+    get:
+      tags:
+        - Usuários
+      description: Carregar usuário por ID.
+      summary: Carregar usuário por ID.
+      operationId: getUserById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: integer
+            minimum: 1
+          description: O ID do usuário.
+      responses: 
+        200:
+          description: Sucesso, retorna o usuário.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        404:
+          description: Erro, usuário não encontrado.
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RetornoUsuarioNaoEncontradoSchema'
+components:
+  schemas:
+    RetornoLoginSchema:
+      type: object
+      description: O retorno do login.
+      properties:
+        user:
+          type: object
+          description: O usuário logado.
+          properties:
+            id:
+              type: integer
+              description: O ID do usuário logado.
+            name:
+              type: string
+              description: O nome do usuário logado.
+            email:
+              type: string
+              description: O e-mail do usuário logado.
+            role:
+              type: string
+              description: O nível de acesso do usuário logado.
+        token:
+          type: string
+          description: O token JWT do usuário logado.
+    RetornoLoginNaoAutorizadoSchema:
+      type: object
+      description: O retorno do login não autorizado.
+      properties:
+        data:
+          type: string
+          description: A mensagem de erro
+          example: dados inválidos
+    FormularioEnvioLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          description: O e-mail do usuário.
+        password:
+          type: string
+          description: A senha do usuário.
+      required:
+        - email
+        - password
+    FormularioTrocarSenha:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          description: A senha antiga.
+        newPassword:
+          type: string
+          description: A nova senha.
+      required:
+        - oldPassword
+        - newPassword
+    Usuario:
+      type: object
+      description: O usuário.
+      properties: 
+        id:
+          type: integer
+          description: O ID do usuário.
+          example: 1
+        name:
+          type: string
+          description: O nome do usuário.
+          example: Fulano
+        email:
+          type: string
+          description: O e-mail do usuário.
+          example: fulano@cicrano.com
+        role:
+          type: string
+          description: O nível de acesso do usuário.
+          example: admin
+    RetornoListaUsuarios:
+      type: array
+      description: A lista de usuários.
+      items: 
+        $ref: '#/components/schemas/Usuario'
+    RetornoUsuarioNaoEncontradoSchema:
+      type: object
+      description: O retorno quando não é encontrado o usuário.
+      properties:
+        data:
+          type: string
+          description: A mensagem de erro
+          example: usuário não encontrado
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: auth
+      description: O token JWT.

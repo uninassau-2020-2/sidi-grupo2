@@ -11,6 +11,10 @@ import { isCelebrateError } from "celebrate";
 import routes from "./routes";
 import { ErrorHandler, handleError } from "./helpers/ErrorHandler";
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./documentacao_apis.yaml');
+
 // read connection options from ormconfig file (or ENV variables)
 getConnectionOptions().then(async (connectionOptions) => {
   // Se DATABASE_URL existir, irá utilizar ele
@@ -109,6 +113,8 @@ getConnectionOptions().then(async (connectionOptions) => {
       //       throw error
       //   }
       // })
+
+      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
       // start express server
       app.listen(Number(process.env.PORT) || 8081, "0.0.0.0", () => {
