@@ -12,12 +12,12 @@ import { screenOptionDefault } from "../../../util";
 
 export type ProviderScreenParam = {
   Product: undefined;
-  NewEditProduct: { isNewProvider: boolean; provider: Provider | null };
+  NewEditProvider: { isNewProvider: boolean; provider: Provider | null };
 };
 
 export type NewEditUserScreenProp = RouteProp<
   ProviderScreenParam,
-  "NewEditProduct"
+  "NewEditProvider"
 >;
 
 const { Navigator, Screen } = createStackNavigator<ProviderScreenParam>();
@@ -36,7 +36,7 @@ const UsersRoutes: React.FC = () => {
         options={{ title: "Fornecedores" }}
       />
       <Screen
-        name="NewEditProduct"
+        name="NewEditProvider"
         component={NewEditProviderScreen}
         options={{ title: "Fornecedores", headerLeft: () => <HeaderBack /> }}
         initialParams={{ isNewProvider: true, provider: null }}

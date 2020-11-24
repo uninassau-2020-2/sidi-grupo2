@@ -61,7 +61,38 @@ export interface UserRequest {
   role: RoleUser;
 }
 
-export interface Provider {}
+export interface Provider {
+  id: number;
+  cnpj: string;
+  companyName: string;
+  fantasyName: string;
+  stateRegistration: string;
+  zipcode: string;
+  email: string;
+  site: string;
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  uf: string;
+  phone: string;
+}
+
+export interface ProviderRequest {
+  cnpj: string;
+  companyName: string;
+  fantasyName: string;
+  stateRegistration: string;
+  zipcode: string;
+  email: string;
+  site: string;
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  uf: string;
+  phone: string;
+}
 
 export interface IError {
   errorStatus: number;
