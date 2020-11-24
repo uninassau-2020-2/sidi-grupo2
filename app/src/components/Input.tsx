@@ -14,6 +14,8 @@ interface InputProps extends TextInputProps {
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
   errors?: string | Array<string>;
+  width?: number | string;
+  label?: string;
 }
 
 export default function Input({
@@ -21,20 +23,30 @@ export default function Input({
   keyboardType = "default",
   placeholder = "",
   errors,
+  width = "auto",
+  label,
   ...props
 }: InputProps) {
+  const sizeIcon = 24;
   return (
-    <View>
-      <View style={styles.container}>
-        {icon && <Ionicons name={icon} size={24} color="gray" />}
-        <TextInput
-          placeholder={placeholder}
-          style={styles.textInput}
-          keyboardType={keyboardType || "default"}
-          {...props}
-        />
+    <View style={{ width: width }}>
+      <View>
+        {label && <Text style={styles.label}>{label}</Text>}
+        <View style={styles.container}>
+          {icon ? (
+            <Ionicons name={icon} size={sizeIcon} color="gray" />
+          ) : (
+            <View style={{ width: 1, height: sizeIcon }} />
+          )}
+          <TextInput
+            placeholder={placeholder}
+            style={styles.textInput}
+            keyboardType={keyboardType || "default"}
+            {...props}
+          />
+        </View>
+        {errors && <Text style={styles.errorText}>{errors}</Text>}
       </View>
-      {errors && <Text style={styles.errorText}>{errors}</Text>}
     </View>
   );
 }
@@ -44,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#fff",
+    borderBottomColor: "#d5d5d5",
     paddingBottom: 5,
   },
   textInput: {
@@ -52,6 +64,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     fontSize: 16,
     color: "#05375a",
+  },
+  label: {
+    color: "gray",
+    fontWeight: "bold",
   },
   errorText: {
     color: "red",

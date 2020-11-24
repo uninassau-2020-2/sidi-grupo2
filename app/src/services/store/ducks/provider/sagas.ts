@@ -5,6 +5,7 @@ import {
   loadFailureAction,
   loadSuccessAction,
   sendSuccessAction,
+  sendFailureAction,
 } from "./actions";
 
 import * as actions from "./actions";
@@ -30,10 +31,13 @@ export function* createProvider({
 }: ActionType<typeof actions.createRequestAction>) {
   try {
     const { provider } = payload;
+    console.log("provider", provider);
     const response = yield call(doCreateProvider, provider);
+    console.log("response", response);
     yield put(sendSuccessAction(response));
   } catch (err) {
-    yield put(loadFailureAction(err));
+    console.log("err", err);
+    yield put(sendFailureAction(err));
   }
 }
 
@@ -43,10 +47,9 @@ export function* updateProvider({
   try {
     const { provider } = payload;
     const response = yield call(doUpdateProvider, payload.id, provider);
-
     yield put(sendSuccessAction(response));
   } catch (err) {
-    yield put(loadFailureAction(err));
+    yield put(sendFailureAction(err));
   }
 }
 

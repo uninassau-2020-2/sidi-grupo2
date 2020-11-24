@@ -7,6 +7,7 @@ import HeaderRight from "./HeaderRight";
 import Input from "./Input";
 import ListEmpty from "./ListEmpty";
 import Separator from "./Separator";
+import TextError from "./TextError";
 
 export {
   AppButton,
@@ -18,4 +19,5 @@ export {
   Input,
   ListEmpty,
   Separator,
+  TextError,
 };

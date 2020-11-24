@@ -1,4 +1,3 @@
-import { Category } from "./../../../../interface/index";
 import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
 
@@ -6,6 +5,7 @@ import { CategoryTypes } from "./types";
 import {
   loadFailureAction,
   loadSuccessAction,
+  sendFailureAction,
   sendSuccessAction,
 } from "./actions";
 
@@ -33,7 +33,7 @@ export function* createCategory({
     const response = yield call(doCreateCategory, category);
     yield put(sendSuccessAction(response));
   } catch (err) {
-    yield put(loadFailureAction(err));
+    yield put(sendFailureAction(err));
   }
 }
 
@@ -46,7 +46,7 @@ export function* updateUser({
 
     yield put(sendSuccessAction(response));
   } catch (err) {
-    yield put(loadFailureAction(err));
+    yield put(sendFailureAction(err));
   }
 }
 

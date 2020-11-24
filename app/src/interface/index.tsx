@@ -87,7 +87,7 @@ export interface ProviderRequest {
   email: string;
   site: string;
   street: string;
-  number: string;
+  number: number;
   neighborhood: string;
   city: string;
   uf: string;

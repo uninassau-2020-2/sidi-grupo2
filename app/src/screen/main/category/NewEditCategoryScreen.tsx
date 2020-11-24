@@ -13,6 +13,7 @@ import {
   DismissKeyboard,
   Input,
   Separator,
+  TextError,
 } from "../../../components";
 import { CategoryRequest } from "../../../interface";
 import { StoreState } from "../../../services/store/createStore";
@@ -30,7 +31,7 @@ const NewEditCategoryScreen: React.FC = () => {
   const route = useRoute<NewEditCategoryScreenProp>();
   const { isNewCategory, category: categoryParam } = route.params;
   const dispatch = useDispatch();
-  const { sendSucess, sendError } = useSelector(
+  const { sendSucess, sendError, loading } = useSelector(
     (state: StoreState) => state.category
   );
   const { control, handleSubmit, errors } = useForm<CategoryRequest>({
@@ -63,9 +64,9 @@ const NewEditCategoryScreen: React.FC = () => {
     return unsubscribe;
   }, [navigation]);
 
-  const onSubmit = (user: CategoryRequest) => {
-    if (isNewCategory) dispatch(createRequestAction(user));
-    else dispatch(updateRequestAction(user, categoryParam?.id || 0));
+  const onSubmit = (category: CategoryRequest) => {
+    if (isNewCategory) dispatch(createRequestAction(category));
+    else dispatch(updateRequestAction(category, categoryParam?.id || 0));
   };
 
   return (
@@ -88,9 +89,12 @@ const NewEditCategoryScreen: React.FC = () => {
           }}
         />
         <Separator />
+        <TextError error={sendError?.errorMessage} />
+        <Separator />
         <AppButton
           title={isNewCategory ? "Cadastrar" : "Salvar"}
           onPress={handleSubmit(onSubmit)}
+          disabled={loading}
         />
       </ScrollView>
     </DismissKeyboard>

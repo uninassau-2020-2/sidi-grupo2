@@ -12,6 +12,7 @@ import {
 import {
   IsInt,
   IsMobilePhone,
+  IsPhoneNumber,
   IsUrl,
   Length,
   Max,
@@ -31,57 +32,57 @@ export class Provider {
   @Length(14)
   cnpj: string;
 
-  @Column({length: 200})
-  @Length(3,200)
+  @Column({ length: 200 })
+  @Length(3, 200)
   companyName: string;
 
-  @Column({length: 120})
-  @Length(3,120)
-  fantasyName: string
-  
+  @Column({ length: 120 })
+  @Length(3, 120)
+  fantasyName: string;
+
   @Column()
   @Length(12)
-  stateRegistration: string
-  
-  @Column({length: 150})
-  @Length(5,150)
-  email: string
+  stateRegistration: string;
 
-  @Column({length: 150})
+  @Column({ length: 150 })
+  @Length(5, 150)
+  email: string;
+
+  @Column({ length: 150 })
   @IsUrl()
-  site: string
-    
-  @Column({length: 8})
+  site: string;
+
+  @Column({ length: 8 })
   @Length(8)
-  zipcode: string
-  
-  @Column({length: 150})
-  @Length(2,150)
-  street: string
-  
+  zipcode: string;
+
+  @Column({ length: 150 })
+  @Length(2, 150)
+  street: string;
+
   @Column({ type: "int", width: 5 })
   @IsInt()
   @Min(1)
   @Max(9999)
-  number: number
-  
-  @Column({length: 120})
-  @Length(2,120)
-  neighborhood: string
+  number: number;
 
-  @Column({length: 200})
+  @Column({ length: 120 })
+  @Length(2, 120)
+  neighborhood: string;
+
+  @Column({ length: 200 })
   @Length(3, 200)
   city: string;
 
   @Column()
   @Length(2)
-  uf: string
+  uf: string;
 
-  @Column({length: 20})
-  @IsMobilePhone("pt-BR")
+  @Column({ length: 20 })
+  @IsPhoneNumber("pt-BR")
   phone: string;
 
-  @ManyToOne(() => User, {nullable: false})
+  @ManyToOne(() => User, { nullable: false })
   user: User;
 
   @OneToMany(() => Product, (product) => product.provider)

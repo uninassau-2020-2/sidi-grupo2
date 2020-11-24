@@ -14,5 +14,5 @@ export async function doCreateCategory(category: CategoryRequest) {
 }
 
 export async function doUpdateCategory(id: number, category: CategoryRequest) {
-  return api.post(`/category/${id}`, category);
+  return api.patch(`/category/${id}`, category);
 }

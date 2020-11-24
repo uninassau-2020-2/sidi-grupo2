@@ -35,6 +35,10 @@ const ProviderScreen: React.FC = () => {
   const [loadingScreen, setLoadingScreen] = useState(false);
 
   useEffect(() => {
+    getProviders();
+  }, []);
+
+  useEffect(() => {
     setRefreshing(loading);
   }, [loading]);
 

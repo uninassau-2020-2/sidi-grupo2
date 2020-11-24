@@ -15,7 +15,7 @@ export type ProviderScreenParam = {
   NewEditProvider: { isNewProvider: boolean; provider: Provider | null };
 };
 
-export type NewEditUserScreenProp = RouteProp<
+export type NewEditProviderScreenProp = RouteProp<
   ProviderScreenParam,
   "NewEditProvider"
 >;

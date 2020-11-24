@@ -14,5 +14,5 @@ export async function doCreateProvider(provider: ProviderRequest) {
 }
 
 export async function doUpdateProvider(id: number, provider: ProviderRequest) {
-  return api.post(`/provider/${id}`, provider);
+  return api.patch(`/provider/${id}`, provider);
 }

@@ -6,6 +6,7 @@ import {
   loadFailureAction,
   loadSuccessAction,
   sendSuccessAction,
+  sendFailureAction,
 } from "./actions";
 
 import * as actions from "./actions";
@@ -43,10 +44,9 @@ export function* updateUser({
   try {
     const { product } = payload;
     const response = yield call(doUpdateProduct, payload.id, product);
-
     yield put(sendSuccessAction(response));
   } catch (err) {
-    yield put(loadFailureAction(err));
+    yield put(sendFailureAction(err));
   }
 }
 

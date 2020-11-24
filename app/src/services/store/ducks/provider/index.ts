@@ -41,8 +41,10 @@ export default function reducer(
         ...state,
         loading: false,
         sendSucess: true,
+        sendError: null,
       };
     case ProviderTypes.SEND_FAILURE:
+      console.log("action.payload.error", action.payload.error);
       return {
         ...state,
         loading: false,
