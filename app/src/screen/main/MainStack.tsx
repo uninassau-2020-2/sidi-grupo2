@@ -10,6 +10,7 @@ import UserRoutes from "./user/users.routes";
 import Cashier from "./cashier/CashierScreen";
 import Category from "./category/category.routes";
 import Product from "./products/products.routes";
+import Provider from "./provider/provider.routes";
 import Profile from "./ProfileScreen";
 export default function App() {
   return (
@@ -28,16 +29,21 @@ export default function App() {
     >
       <Screen name="Dados Financeiro" component={Home} />
       <Screen name="Caixa" component={Cashier} />
-      <Screen name="Vendas" component={Home} />
+      <Screen name="Minhas Vendas" component={Home} />
 
       <Screen
-        name="Produto"
+        name="Produtos"
         component={Product}
         options={{ headerShown: false }}
       />
       <Screen
-        name="Categoria"
+        name="Categorias"
         component={Category}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="Fornecedores"
+        component={Provider}
         options={{ headerShown: false }}
       />
       <Screen

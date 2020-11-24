@@ -61,6 +61,8 @@ export interface UserRequest {
   role: RoleUser;
 }
 
+export interface Provider {}
+
 export interface IError {
   errorStatus: number;
   errorMessage: string;
