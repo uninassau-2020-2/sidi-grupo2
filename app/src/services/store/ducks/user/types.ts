@@ -9,6 +9,7 @@ export type UserAction = ActionType<typeof actions>;
  * Action Types
  */
 export enum UserTypes {
+  UPDATE_REQUEST = "@user/UPDATE_REQUEST",
   LOAD_REQUEST = "@user/LOAD_REQUEST",
   LOAD_SUCCESS = "@user/LOAD_SUCCESS",
   LOAD_FAILURE = "@user/LOAD_FAILURE",

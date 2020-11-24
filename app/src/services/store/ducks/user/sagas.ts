@@ -27,9 +27,21 @@ export function* addUser({
 }: ActionType<typeof actions.addRequestAction>) {
   try {
     const { user } = payload;
-    const response = payload.isNewUser
-      ? yield call(api.post, "/user", user)
-      : yield call(api.patch, "/user", user);
+    const response = yield call(api.post, "/user", user);
+    yield put(addSuccessAction(response));
+  } catch (err) {
+    yield put(addFailureAction(err));
+  }
+}
+
+export function* updateUser({
+  payload,
+}: ActionType<typeof actions.updateUserAction>) {
+  try {
+    const { user } = payload;
+    const response = yield call(api.patch, `/user/${payload.id}`, user);
+
+    console.log("response", response);
     yield put(addSuccessAction(response));
   } catch (err) {
     yield put(addFailureAction(err));
@@ -38,5 +50,6 @@ export function* addUser({
 
 export default all([
   takeLatest(UserTypes.LOAD_REQUEST, getUsers),
+  takeLatest(UserTypes.UPDATE_REQUEST, updateUser),
   takeEvery(UserTypes.ADD_REQUEST, addUser),
 ]);

@@ -17,11 +17,12 @@ export const loadFailure = (error: IError | null = null) =>
  */
 export const cleanAdd = () => action(UserTypes.ADD_CLEAN);
 
-export const addRequestAction = (
-  user: UserRequest,
-  isNewUser: boolean = false
-) => {
-  return action(UserTypes.ADD_REQUEST, { user, isNewUser });
+export const addRequestAction = (user: UserRequest) => {
+  return action(UserTypes.ADD_REQUEST, { user });
+};
+
+export const updateUserAction = (user: UserRequest, id: number) => {
+  return action(UserTypes.UPDATE_REQUEST, { user, id });
 };
 
 export const addSuccessAction = (data: User) =>

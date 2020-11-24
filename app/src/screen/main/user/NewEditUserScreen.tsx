@@ -21,22 +21,24 @@ import { NewEditUserScreenProp } from "./users.routes";
 import {
   addRequestAction,
   cleanAdd,
+  loadRequest,
+  updateUserAction,
 } from "../../../services/store/ducks/user/actions";
 import { StoreState } from "../../../services/store/createStore";
 
 const NewEditUserScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<NewEditUserScreenProp>();
-  const { isNewUser, user } = route.params;
+  const { isNewUser, user: userParam } = route.params;
   const isFocused = useIsFocused();
   const { control, handleSubmit, errors } = useForm<UserRequest>({
     mode: "all",
     reValidateMode: "onBlur",
     defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
+      name: userParam?.name || "",
+      email: userParam?.email || "",
       password: "",
-      role: (user?.role as RoleUser) || RoleUser.SELLER,
+      role: (userParam?.role as RoleUser) || RoleUser.SELLER,
     },
   });
   const dispatch = useDispatch();
@@ -59,15 +61,16 @@ const NewEditUserScreen: React.FC = () => {
   }, [isNewUser, isFocused]);
 
   useEffect(() => {
-    if (addSucess) {
+    if (addSucess === true) {
       navigation.goBack();
+      // dispatch(cleanAdd());
+      // dispatch(loadRequest());
     }
   }, [addSucess]);
 
   const onSubmit = (user: UserRequest) => {
-    // if (isNewUser)
-    dispatch(addRequestAction(user, isNewUser));
-    // else dispatch(addRequestAction(user));
+    if (isNewUser) dispatch(addRequestAction(user));
+    else dispatch(updateUserAction(user, userParam?.id || 0));
   };
 
   const Separator = () => <View style={{ marginVertical: 10 }} />;

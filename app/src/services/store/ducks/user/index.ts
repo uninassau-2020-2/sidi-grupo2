@@ -34,6 +34,7 @@ export default function reducer(
       };
     case UserTypes.ADD_REQUEST:
       return { ...state, addSucess: false, loading: true };
+    case UserTypes.UPDATE_REQUEST:
     case UserTypes.ADD_SUCCESS:
       return {
         ...state,
