@@ -112,7 +112,6 @@ export default function UsersScreen() {
           .then((_) => {
             setLoadingScreen(false);
           });
-        // setUsers(users.filter((item, indexItem) => indexItem !== index));
       }}
     >
       {renderUserItem(item)}

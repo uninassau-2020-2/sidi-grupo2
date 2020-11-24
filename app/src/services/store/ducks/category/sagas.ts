@@ -1,8 +1,8 @@
+import { Category } from "./../../../../interface/index";
 import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { ActionType } from "typesafe-actions";
 
 import { CategoryTypes } from "./types";
-import api from "../../../api";
 import {
   loadFailureAction,
   loadSuccessAction,
@@ -10,10 +10,15 @@ import {
 } from "./actions";
 
 import * as actions from "./actions";
+import {
+  doCreateCategory,
+  doGetCategories,
+  doUpdateCategory,
+} from "../../../category";
 
 export function* getUsers() {
   try {
-    const response = yield call(api.get, "/category");
+    const response = yield call(doGetCategories);
     yield put(loadSuccessAction(response));
   } catch (err) {
     yield put(loadFailureAction(err));
@@ -24,8 +29,8 @@ export function* createCategory({
   payload,
 }: ActionType<typeof actions.createRequestAction>) {
   try {
-    const { user } = payload;
-    const response = yield call(api.post, "/category", user);
+    const { category } = payload;
+    const response = yield call(doCreateCategory, category);
     yield put(sendSuccessAction(response));
   } catch (err) {
     yield put(loadFailureAction(err));
@@ -36,8 +41,8 @@ export function* updateUser({
   payload,
 }: ActionType<typeof actions.updateRequestAction>) {
   try {
-    const { user } = payload;
-    const response = yield call(api.patch, `/category/${payload.id}`, user);
+    const { category } = payload;
+    const response = yield call(doUpdateCategory, payload.id, category);
 
     yield put(sendSuccessAction(response));
   } catch (err) {

@@ -16,12 +16,12 @@ export const loadFailureAction = (error: IError | null = null) =>
  */
 export const resetAction = () => action(CategoryTypes.RESET);
 
-export const createRequestAction = (user: CategoryRequest) => {
-  return action(CategoryTypes.CREATE_REQUEST, { user });
+export const createRequestAction = (category: CategoryRequest) => {
+  return action(CategoryTypes.CREATE_REQUEST, { category });
 };
 
-export const updateRequestAction = (user: CategoryRequest, id: number) => {
-  return action(CategoryTypes.UPDATE_REQUEST, { user, id });
+export const updateRequestAction = (category: CategoryRequest, id: number) => {
+  return action(CategoryTypes.UPDATE_REQUEST, { category, id });
 };
 
 export const sendSuccessAction = (data: Category) =>

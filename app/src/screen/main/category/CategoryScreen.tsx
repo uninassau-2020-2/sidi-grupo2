@@ -1,4 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 import {
   View,
@@ -6,6 +11,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ListRenderItemInfo,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +26,7 @@ import { Category } from "../../../interface";
 import { useDispatch, useSelector } from "react-redux";
 import { loadRequestAction } from "../../../services/store/ducks/category/actions";
 import { StoreState } from "../../../services/store/createStore";
+import { doRemoveCategory } from "../../../services/category";
 
 const CategoryScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -29,9 +37,16 @@ const CategoryScreen: React.FC = () => {
     (state: StoreState) => state.category
   );
 
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingScreen, setLoadingScreen] = useState(false);
+
   useEffect(() => {
     getCategories();
   }, []);
+
+  useEffect(() => {
+    setRefreshing(loading);
+  }, [loading]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -40,6 +55,10 @@ const CategoryScreen: React.FC = () => {
       ),
     });
   }, [navigation]);
+
+  const onRefresh = useCallback(() => {
+    getCategories();
+  }, []);
 
   function getCategories() {
     dispatch(loadRequestAction());
@@ -56,7 +75,17 @@ const CategoryScreen: React.FC = () => {
     <DeleteSwipe
       titleDelete="Remover categoria"
       messageDelete="Tem certeza que deseja remover?"
-      onDelete={(ref) => {}}
+      onDelete={(ref) => {
+        setLoadingScreen(true);
+        doRemoveCategory(item.id)
+          .then((remove) => {
+            getCategories();
+          })
+          .catch((e) => {})
+          .then((_) => {
+            setLoadingScreen(false);
+          });
+      }}
     >
       <TouchableOpacity
         activeOpacity={0.7}
@@ -73,7 +102,8 @@ const CategoryScreen: React.FC = () => {
   );
 
   return (
-    <DismissKeyboard>
+    <>
+      {loadingScreen && <ActivityIndicator />}
       <FlatList
         contentContainerStyle={{
           flexGrow: 1,
@@ -84,8 +114,15 @@ const CategoryScreen: React.FC = () => {
         data={categories || []}
         renderItem={renderItemList}
         ListEmptyComponent={<ListEmpty />}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            title="carregando.."
+          />
+        }
       />
-    </DismissKeyboard>
+    </>
   );
 };
 
