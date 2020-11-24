@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   Text,
   View,
@@ -10,20 +10,25 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
-import { ProductType } from "../../interface";
-import ProductData from "../../data/ProductData.json";
-import DismissKeyboard from "../../components/DismissKeyboard";
+import { ProductType } from "../../../interface";
+import ProductData from "../../../data/ProductData.json";
+import DismissKeyboard from "../../../components/DismissKeyboard";
+import { useNavigation } from "@react-navigation/native";
+import { HeaderRight } from "../../../components";
 
 const DATA_PRODUCTS: Array<ProductType> = ProductData;
 
+const ProductScreen: React.FC = () => {
 
-const renderFooter = () => (
-  <View style={styles.buttons}>
-    <TouchableOpacity >
-      <Text style={{color: "#fff"}}>Adicionar produto</Text>
-    </TouchableOpacity>
-  </View>
-);
+  const navigation = useNavigation();
+
+useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () => (
+      <HeaderRight onPress={() => navigation.navigate("NewEditProduct")} />
+    ),
+  });
+}, [navigation]);
 
 const renderHeader = () => {
   return (
@@ -35,7 +40,7 @@ const renderHeader = () => {
   );
 };
 
-export default function ProductScreen() {
+  //export default function ProductScreen() {
 
   const renderItemList = (item: ProductType, index: number) => (
     <TouchableOpacity style={styles.card} key={String(item.id)}>
@@ -75,11 +80,10 @@ export default function ProductScreen() {
             <Text style={styles.subTitle}>{DATA_PRODUCTS.length}Produtos</Text>
             <ScrollView>{renderListOfProduct()}</ScrollView>
           </View>
-    {renderFooter()}
     </>
     
   );
-}
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -157,3 +161,5 @@ const styles = StyleSheet.create({
 
   },
 });
+
+export default ProductScreen;

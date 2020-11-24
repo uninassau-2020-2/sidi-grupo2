@@ -21,6 +21,7 @@ import { Category } from "../../../interface";
 const DATA_CATEGORIES: Array<Category> = CategoriesData;
 
 const CategoryScreen: React.FC = () => {
+  
   const [categories, setCategories] = useState(DATA_CATEGORIES);
 
   const navigation = useNavigation();
