@@ -6,6 +6,7 @@ import HeaderDrawer from "./HeaderDrawer";
 import HeaderRight from "./HeaderRight";
 import Input from "./Input";
 import ListEmpty from "./ListEmpty";
+import Separator from "./Separator";
 
 export {
   AppButton,
@@ -16,4 +17,5 @@ export {
   HeaderRight,
   Input,
   ListEmpty,
+  Separator,
 };

@@ -13,10 +13,10 @@ import { screenOptionDefault } from "../../../util";
 
 export type CategoryScreenParam = {
   Category: undefined;
-  NewEditCategory: { isNewCategory: boolean; category: Category };
+  NewEditCategory: { isNewCategory: boolean; category: Category | null };
 };
 
-export type NewEditUserScreenProp = RouteProp<
+export type NewEditCategoryScreenProp = RouteProp<
   CategoryScreenParam,
   "NewEditCategory"
 >;
@@ -40,7 +40,7 @@ const UsersRoutes: React.FC = () => {
         name="NewEditCategory"
         component={NewEditCategoryScreen}
         options={{ title: "Categoria", headerLeft: () => <HeaderBack /> }}
-        initialParams={{ isNewCategory: true }}
+        initialParams={{ isNewCategory: true, category: null }}
       />
     </Navigator>
   );

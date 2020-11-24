@@ -11,7 +11,12 @@ import {
 } from "@react-navigation/native";
 import { UserRequest } from "../../../interface";
 import { RoleUser } from "../../../enum";
-import { Input, AppButton, DismissKeyboard } from "../../../components";
+import {
+  Input,
+  AppButton,
+  DismissKeyboard,
+  Separator,
+} from "../../../components";
 import {
   indexOfRoleUser,
   roleUserFromIndex,
@@ -73,7 +78,6 @@ const NewEditUserScreen: React.FC = () => {
     else dispatch(updateUserAction(user, userParam?.id || 0));
   };
 
-  const Separator = () => <View style={{ marginVertical: 10 }} />;
   return (
     <DismissKeyboard>
       <ScrollView contentContainerStyle={{ padding: 24 }}>

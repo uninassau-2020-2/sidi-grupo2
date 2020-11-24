@@ -17,6 +17,10 @@ export interface Category {
   name: string;
 }
 
+export interface CategoryRequest {
+  categoryId: number | null;
+  name: string;
+}
 export interface IUsers {
   id: number;
   name: string;

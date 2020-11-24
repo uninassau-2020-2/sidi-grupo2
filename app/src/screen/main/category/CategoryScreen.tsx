@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import {
   View,
@@ -13,18 +13,25 @@ import { FlatList } from "react-native-gesture-handler";
 import DismissKeyboard from "../../../components/DismissKeyboard";
 import DeleteSwipe from "../../../components/DeleteSwipe";
 
-import CategoriesData from "../../../data/CategoryData.json";
 import ListEmpty from "../../../components/ListEmpty";
 import HeaderRight from "../../../components/HeaderRight";
 import { Category } from "../../../interface";
-
-const DATA_CATEGORIES: Array<Category> = CategoriesData;
+import { useDispatch, useSelector } from "react-redux";
+import { loadRequestAction } from "../../../services/store/ducks/category/actions";
+import { StoreState } from "../../../services/store/createStore";
 
 const CategoryScreen: React.FC = () => {
-  
-  const [categories, setCategories] = useState(DATA_CATEGORIES);
-
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
+
+  const { data: categories, loading, error } = useSelector(
+    (state: StoreState) => state.category
+  );
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,20 +41,29 @@ const CategoryScreen: React.FC = () => {
     });
   }, [navigation]);
 
+  function getCategories() {
+    dispatch(loadRequestAction());
+  }
+
+  function handleToEditCategory(category: Category) {
+    navigation.navigate("NewEditCategory", {
+      isNewCategory: false,
+      category: category,
+    });
+  }
+
   const renderItemList = ({ item, index }: ListRenderItemInfo<Category>) => (
     <DeleteSwipe
       titleDelete="Remover categoria"
       messageDelete="Tem certeza que deseja remover?"
-      onDelete={(ref) => {
-        setCategories(
-          categories.filter((item, indexItem) => indexItem !== index)
-        );
-      }}
+      onDelete={(ref) => {}}
     >
       <TouchableOpacity
+        activeOpacity={0.7}
         style={styles.card}
         key={String(item.id)}
         delayPressIn={20}
+        onPress={() => handleToEditCategory(item)}
       >
         <Text style={styles.cardTitle}>{item.name}</Text>
 
@@ -65,7 +81,7 @@ const CategoryScreen: React.FC = () => {
         }}
         keyExtractor={(item, index) => String(index)}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
-        data={categories}
+        data={categories || []}
         renderItem={renderItemList}
         ListEmptyComponent={<ListEmpty />}
       />
