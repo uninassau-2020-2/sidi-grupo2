@@ -1,14 +1,28 @@
 import { RoleUser } from "../enum";
 
-export type ProductType = {
-  name: string;
+export type Product = {
   id: number;
-  unitOfMeasurement: string;
-  price: number;
-  codigo: number;
+  name: string;
+  description: string;
   amount: number;
-  purchasePrice: number;
-  image: string;
+  salePrice: number;
+  costPrice: number;
+  measuredUnit: string;
+  category: string;
+  active: number;
+  barCorde: number;
+};
+
+export type ProductRequest = {
+  name: string;
+  description: string;
+  amount: number;
+  salePrice: number;
+  costPrice: number;
+  measuredUnit: string;
+  category: string;
+  active: number;
+  barCorde: number;
 };
 
 export interface Category {

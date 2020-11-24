@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import {
   Text,
   View,
@@ -6,20 +11,37 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  FlatList,
+  ListRenderItemInfo,
+  RefreshControl,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView } from "react-native-gesture-handler";
-import { ProductType } from "../../../interface";
-import ProductData from "../../../data/ProductData.json";
-import DismissKeyboard from "../../../components/DismissKeyboard";
 import { useNavigation } from "@react-navigation/native";
-import { HeaderRight } from "../../../components";
-
-const DATA_PRODUCTS: Array<ProductType> = ProductData;
+import { Product } from "../../../interface";
+import { HeaderRight, ListEmpty } from "../../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreState } from "../../../services/store/createStore";
+import { loadRequestAction } from "../../../services/store/ducks/product/actions";
 
 const ProductScreen: React.FC = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const { data: products, loading, error } = useSelector(
+    (state: StoreState) => state.product
+  );
+
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingScreen, setLoadingScreen] = useState(false);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  useEffect(() => {
+    setRefreshing(loading);
+  }, [loading]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,6 +50,14 @@ const ProductScreen: React.FC = () => {
       ),
     });
   }, [navigation]);
+
+  const onRefresh = useCallback(() => {
+    getProducts();
+  }, []);
+
+  function getProducts() {
+    dispatch(loadRequestAction());
+  }
 
   const renderHeader = () => {
     return (
@@ -39,9 +69,13 @@ const ProductScreen: React.FC = () => {
     );
   };
 
-  const renderItemList = (item: ProductType, index: number) => (
-    <TouchableOpacity style={styles.card} key={String(item.id)}>
-      <Image source={{ uri: item.image }} style={styles.cardImage} />
+  const renderItemList = ({ item, index }: ListRenderItemInfo<Product>) => (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.card}
+      key={String(item.id)}
+    >
+      {/* <Image source={{ uri: item.image }} style={styles.cardImage} /> */}
       <View
         style={{
           marginLeft: 6,
@@ -49,12 +83,12 @@ const ProductScreen: React.FC = () => {
         }}
       >
         <Text style={styles.cardTitle}>{item.name}</Text>
-        <Text style={styles.cardDescription}>codigo: {item.codigo}</Text>
+        <Text style={styles.cardDescription}>cod: {item.barCorde}</Text>
       </View>
       <View style={{ alignItems: "flex-end", marginRight: 20 }}>
-        <Text style={styles.cardValue}>R${item.price}</Text>
+        <Text style={styles.cardValue}>R${item.salePrice}</Text>
         <Text style={styles.cardDescription}>
-          comprado por: R${item.purchasePrice}
+          comprado por: R${item.costPrice}
         </Text>
       </View>
       <Ionicons
@@ -66,22 +100,41 @@ const ProductScreen: React.FC = () => {
     </TouchableOpacity>
   );
 
-  const renderListOfProduct = () => (
-    <>{DATA_PRODUCTS.map((item, index) => renderItemList(item, index))}</>
-  );
+  // const renderListOfProduct = () => (
+  //   <>{DATA_PRODUCTS.map((item, index) => renderItemList(item, index))}</>
+  // );
 
   return (
     <>
       {renderHeader()}
       <View style={styles.conteiner}>
-        <Text style={styles.subTitle}>{DATA_PRODUCTS.length}Produtos</Text>
-        <ScrollView>{renderListOfProduct()}</ScrollView>
+        {/* <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text> */}
+        <FlatList
+          contentContainerStyle={{
+            flexGrow: 1,
+            marginTop: 12,
+          }}
+          keyExtractor={(item, index) => String(index)}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          data={products || []}
+          renderItem={renderItemList}
+          ListEmptyComponent={<ListEmpty />}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              title="carregando.."
+            />
+          }
+        />
       </View>
     </>
   );
 };
-
 const styles = StyleSheet.create({
+  separator: {
+    marginVertical: 3,
+  },
   card: {
     backgroundColor: "#eef4fc",
     paddingHorizontal: 12,
