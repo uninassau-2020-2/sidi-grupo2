@@ -71,6 +71,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RetornoListaUsuarios'
+    post:
+      tags:
+        - Usuários
+      description: Criar um novo usuário.
+      summary: Criar um novo usuário.
+      operationId: addNewUser
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FormularioNovoUsuario'
+      responses:
+        201:
+          description: Usuário criado com sucesso.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        401:
+          description: Alteração não realizada.
   /user/{id}:
     get:
       tags:
@@ -98,6 +119,33 @@ paths:
           content: 
             application/json:
               schema: 
+                $ref: '#/components/schemas/RetornoUsuarioNaoEncontradoSchema'
+    delete:
+      tags:
+        - Usuários
+      description: Apagar um usuário por ID.
+      summary: Apagar um usuário por ID.
+      operationId: deleteUserById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: integer
+            minimum: 1
+          description: O ID do usuário.
+      responses:
+        200:
+          description: Usuário apagado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        404:
+          description: Usuário não encontrado.
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/RetornoUsuarioNaoEncontradoSchema'
 components:
   schemas:
@@ -189,6 +237,26 @@ components:
           type: string
           description: A mensagem de erro
           example: usuário não encontrado
+    FormularioNovoUsuario:
+      type: object
+      properties:
+        name:
+          type: string
+          description: O e-mail do usuário.
+        password:
+          type: string
+          description: A senha do usuário.
+        role:
+          type: string
+          description: O nivel de acesso do usuário.
+        email:
+          type: string
+          description: O e-mail do usuário.
+      required:
+        - name
+        - password
+        - role
+        - email
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
