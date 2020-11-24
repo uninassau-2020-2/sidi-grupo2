@@ -79,7 +79,16 @@ const ProviderScreen: React.FC = () => {
         }}
       >
         <Text style={styles.cardTitle}>{provider.companyName}</Text>
-        <Text style={styles.cardDescription}>cnpj: {provider.cnpj}</Text>
+        <View
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            marginRight: 12,
+          }}
+        >
+          <Text style={styles.cardDescription}>cnpj: {provider.cnpj}</Text>
+          <Text style={styles.cardDescription}>{provider.phone}</Text>
+        </View>
       </View>
       <Ionicons
         name="md-arrow-forward"
