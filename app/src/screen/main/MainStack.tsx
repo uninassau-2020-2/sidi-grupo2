@@ -31,10 +31,10 @@ export default function App() {
       <Screen name="Vendas" component={Home} />
 
       <Screen
-       name="Produto"
-       component={Product}
-       options={{ headerShown: false }}
-     />
+        name="Produto"
+        component={Product}
+        options={{ headerShown: false }}
+      />
       <Screen
         name="Categoria"
         component={Category}

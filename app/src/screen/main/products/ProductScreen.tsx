@@ -19,28 +19,25 @@ import { HeaderRight } from "../../../components";
 const DATA_PRODUCTS: Array<ProductType> = ProductData;
 
 const ProductScreen: React.FC = () => {
-
   const navigation = useNavigation();
 
-useLayoutEffect(() => {
-  navigation.setOptions({
-    headerRight: () => (
-      <HeaderRight onPress={() => navigation.navigate("NewEditProduct")} />
-    ),
-  });
-}, [navigation]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderRight onPress={() => navigation.navigate("NewEditProduct")} />
+      ),
+    });
+  }, [navigation]);
 
-const renderHeader = () => {
-  return (
-    <View>
-     <View style={styles.action}>
+  const renderHeader = () => {
+    return (
+      <View>
+        <View style={styles.action}>
           <TextInput placeholder="Buscar produto" style={styles.textInput} />
         </View>
-    </View>
-  );
-};
-
-  //export default function ProductScreen() {
+      </View>
+    );
+  };
 
   const renderItemList = (item: ProductType, index: number) => (
     <TouchableOpacity style={styles.card} key={String(item.id)}>
@@ -75,13 +72,12 @@ const renderHeader = () => {
 
   return (
     <>
-    {renderHeader()}
-          <View style={styles.conteiner}>
-            <Text style={styles.subTitle}>{DATA_PRODUCTS.length}Produtos</Text>
-            <ScrollView>{renderListOfProduct()}</ScrollView>
-          </View>
+      {renderHeader()}
+      <View style={styles.conteiner}>
+        <Text style={styles.subTitle}>{DATA_PRODUCTS.length}Produtos</Text>
+        <ScrollView>{renderListOfProduct()}</ScrollView>
+      </View>
     </>
-    
   );
 };
 
@@ -113,7 +109,7 @@ const styles = StyleSheet.create({
   },
   conteiner: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   cardTitle: {
     color: "#6a748d",
@@ -132,7 +128,7 @@ const styles = StyleSheet.create({
 
   action: {
     margin: 12,
-    alignItems: "center"
+    alignItems: "center",
   },
   textInput: {
     backgroundColor: "#FFF",
@@ -158,7 +154,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     margin: 12,
     alignItems: "center",
-
   },
 });
 

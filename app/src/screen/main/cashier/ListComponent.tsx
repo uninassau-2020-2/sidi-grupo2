@@ -32,7 +32,7 @@ const ListComponent: React.FC = () => {
   const renderFooter = () => (
     <View style={styles.cardSearch}>
       <Text style={styles.footerTitle}>Total:</Text>
-      <Text style={{color: "#83d79a"}}>R${calcTotal()}</Text>
+      <Text style={{ color: "#83d79a" }}>R${calcTotal()}</Text>
       <TouchableOpacity style={styles.buttonFinishShop}>
         <Text style={styles.buttonFinishShopText}>Finalizar compras </Text>
       </TouchableOpacity>
@@ -43,30 +43,29 @@ const ListComponent: React.FC = () => {
     return (
       <View>
         <View style={styles.action}>
-        <TextInput 
-          placeholder="Faça a busca"
-          style={styles.inputSearch}
-          onChangeText={(text) => {
-            setProduct(
-              DATA_PRODUCTS.find((product) => String(product.codigo) === text)
-            );
-          }}
-        />
-        
+          <TextInput
+            placeholder="Faça a busca"
+            style={styles.inputSearch}
+            onChangeText={(text) => {
+              setProduct(
+                DATA_PRODUCTS.find((product) => String(product.codigo) === text)
+              );
+            }}
+          />
         </View>
 
         <View style={styles.cardSearch}>
           <Text style={styles.cardTitle}>{products?.name}</Text>
           <Text style={styles.cardDescription}>{products?.codigo}</Text>
-        
-        <TouchableOpacity
-        style={styles.buttonAdd}
-          onPress={() => {
-            products && handlerAddProduct(products);
-          }}
-        >
-          <Text style={styles.buttonFinishShopText}>Adicionar</Text>
-        </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.buttonAdd}
+            onPress={() => {
+              products && handlerAddProduct(products);
+            }}
+          >
+            <Text style={styles.buttonFinishShopText}>Adicionar</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -114,7 +113,7 @@ const ListComponent: React.FC = () => {
             value={1}
             rounded={false}
             showBorder
-            height={35}
+            height={30}
             width={120}
             onChange={(num: number) => {
               dispatch({
@@ -155,7 +154,7 @@ const styles = StyleSheet.create({
   },
   containerList: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   buttonFinishShop: {
     width: 130,
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    backgroundColor: "#8DD6CA"
+    backgroundColor: "#8DD6CA",
   },
   buttonAdd: {
     width: 90,
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    backgroundColor: "#8DD6CA"
+    backgroundColor: "#8DD6CA",
   },
   inputSearch: {
     backgroundColor: "#FFF",
@@ -188,14 +187,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: "#d5d5d5",
     paddingVertical: 20,
-    backgroundColor: "#E1FBFC"
+    backgroundColor: "#E1FBFC",
   },
-  footerTitle:
-  {
+  footerTitle: {
     fontWeight: "bold",
     fontSize: 16,
     color: "#6a748d",
-    margin: 12
+    margin: 12,
   },
   card: {
     backgroundColor: "#eef4fc",
@@ -216,7 +214,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    
   },
   cardImage: {
     width: 40,
@@ -241,7 +238,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     elevation: 2,
     margin: 12,
-    alignItems: "center"
+    alignItems: "center",
   },
 });
 
