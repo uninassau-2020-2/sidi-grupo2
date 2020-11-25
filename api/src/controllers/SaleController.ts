@@ -2,7 +2,7 @@ import { SaleToProduct } from "./../entity/SaleToProduct";
 import { Product } from "./../entity/Product";
 import { Sale } from "./../entity/Sale";
 import { Request, Response } from "express";
-import { getManager, getRepository } from "typeorm";
+import {getManager, getRepository} from "typeorm";
 import { validate } from "class-validator";
 
 import { User } from "../entity/User";
@@ -35,16 +35,31 @@ export default class SaleController {
    * @param res
    */
   static listMySale = async (req: Request, res: Response) => {
-    const userCurrrent = { id: res.locals.jwtPayload.userId } as User;
     const saleRepository = getRepository(Sale);
     try {
       const sale = await saleRepository.find(
-        // { user: userCurrrent },
         {
+          where: { user: { id: res.locals.jwtPayload.userId }},
           relations: ["saleToProducts"],
         }
       );
-      res.json(sale);
+
+      const retornoSale = sale.map(s => {
+        return {
+          id: s.id,
+          formOfPayment: s.formOfPayment,
+          total: s.total,
+          change: s.change,
+          products: s.saleToProducts.map(p => {
+            return {
+              id: p.productId,
+              amount: p.amount,
+            }
+          }),
+        }
+      })
+      
+      res.json(retornoSale);
     } catch (error) {
       res.status(404).json({ data: "vendas não encontrada" });
     }
