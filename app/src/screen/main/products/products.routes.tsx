@@ -8,15 +8,15 @@ import NewEditProductScreen from "./NewEditProductScreen";
 
 import HeaderBack from "../../../components/HeaderBack";
 import HeaderDrawer from "../../../components/HeaderDrawer";
-import { ProductType } from "../../../interface";
 import { screenOptionDefault } from "../../../util";
+import { Product } from "../../../interface";
 
 export type ProductScreenParam = {
   Product: undefined;
-  NewEditProduct: { isNewProduct: boolean; product: ProductType };
+  NewEditProduct: { isNewProduct: boolean; product: Product | null };
 };
 
-export type NewEditUserScreenProp = RouteProp<
+export type NewEditProductScreenProp = RouteProp<
   ProductScreenParam,
   "NewEditProduct"
 >;
@@ -40,7 +40,7 @@ const UsersRoutes: React.FC = () => {
         name="NewEditProduct"
         component={NewEditProductScreen}
         options={{ title: "Produtos", headerLeft: () => <HeaderBack /> }}
-        initialParams={{ isNewProduct: true }}
+        initialParams={{ isNewProduct: true, product: null }}
       />
     </Navigator>
   );

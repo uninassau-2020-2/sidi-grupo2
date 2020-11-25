@@ -8,6 +8,8 @@ import Input from "./Input";
 import ListEmpty from "./ListEmpty";
 import Separator from "./Separator";
 import TextError from "./TextError";
+import InputSwitch from "./InputSwitch";
+import InputSelect from "./InputSelect";
 
 export {
   AppButton,
@@ -20,4 +22,6 @@ export {
   ListEmpty,
   Separator,
   TextError,
+  InputSwitch,
+  InputSelect,
 };

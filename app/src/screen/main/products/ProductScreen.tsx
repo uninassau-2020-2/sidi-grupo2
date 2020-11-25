@@ -59,6 +59,13 @@ const ProductScreen: React.FC = () => {
     dispatch(loadRequestAction());
   }
 
+  function handleToEditProvider(product: Product) {
+    navigation.navigate("NewEditProduct", {
+      isNewProduct: false,
+      product: product,
+    });
+  }
+
   const renderHeader = () => {
     return (
       <View>
@@ -74,6 +81,7 @@ const ProductScreen: React.FC = () => {
       activeOpacity={0.7}
       style={styles.card}
       key={String(item.id)}
+      onPress={() => handleToEditProvider(item)}
     >
       {/* <Image source={{ uri: item.image }} style={styles.cardImage} /> */}
       <View
@@ -100,15 +108,10 @@ const ProductScreen: React.FC = () => {
     </TouchableOpacity>
   );
 
-  // const renderListOfProduct = () => (
-  //   <>{DATA_PRODUCTS.map((item, index) => renderItemList(item, index))}</>
-  // );
-
   return (
     <>
       {renderHeader()}
       <View style={styles.conteiner}>
-        {/* <Text style={styles.subTitle}>{DATA_PRODUCTS.length} Produtos</Text> */}
         <FlatList
           contentContainerStyle={{
             flexGrow: 1,

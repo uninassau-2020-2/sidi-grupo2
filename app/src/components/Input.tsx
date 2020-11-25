@@ -6,6 +6,7 @@ import {
   KeyboardTypeOptions,
   TextInputProps,
   Text,
+  StyleProp,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,6 +17,7 @@ interface InputProps extends TextInputProps {
   errors?: string | Array<string>;
   width?: number | string;
   label?: string;
+  numberOfLines?: number;
 }
 
 export default function Input({
@@ -25,9 +27,25 @@ export default function Input({
   errors,
   width = "auto",
   label,
+  numberOfLines = 1,
   ...props
 }: InputProps) {
   const sizeIcon = 24;
+
+  let textarea: TextInputProps | null = null;
+
+  if (numberOfLines > 1) {
+    textarea = {
+      numberOfLines: numberOfLines,
+      multiline: true,
+    };
+  }
+
+  const _textInput = {
+    ...styles.textInput,
+    minHeight: numberOfLines ? numberOfLines * 16 : "auto",
+  };
+
   return (
     <View style={{ width: width }}>
       <View>
@@ -40,8 +58,9 @@ export default function Input({
           )}
           <TextInput
             placeholder={placeholder}
-            style={styles.textInput}
+            style={_textInput}
             keyboardType={keyboardType || "default"}
+            {...textarea}
             {...props}
           />
         </View>

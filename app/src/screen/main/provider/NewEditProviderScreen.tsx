@@ -57,7 +57,7 @@ const NewEditProviderScreen: React.FC = () => {
         providerParam?.email || "contabil@viniciusecarolinepadarialtda.com.br",
       site: providerParam?.site || "www.viniciusecarolinepadarialtda.com.br",
       street: providerParam?.street || "Rua Serafim Maia",
-      number: Number(providerParam?.number) || 576,
+      number: Number(providerParam?.number) || undefined,
       neighborhood: providerParam?.neighborhood || "Jardim das Esmeraldas",
       city: providerParam?.city || "São Paulo",
       uf: providerParam?.uf || "SP",
@@ -72,7 +72,6 @@ const NewEditProviderScreen: React.FC = () => {
   }, [isNewProvider, isFocused]);
 
   useEffect(() => {
-    console.log("sendSucess", sendSucess);
     if (sendSucess === true) {
       dispatch(resetAction());
       dispatch(loadRequestAction());
@@ -290,7 +289,7 @@ const NewEditProviderScreen: React.FC = () => {
                 <Input
                   placeholder="Número"
                   label="Número"
-                  width="30s%"
+                  width="30%"
                   onChangeText={(value) => onChange(Number(value))}
                   value={value ? String(value) : ""}
                   keyboardType="number-pad"

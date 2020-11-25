@@ -94,12 +94,15 @@ export default class SaleController {
         // Update the amount remaining on the products table.
         for (let productSale of products) {
           // Load the product with the ID
-          let product = await transactionalEntityManager.findOne(Product, parseInt(productSale.productId));
-          
+          let product = await transactionalEntityManager.findOne(
+            Product,
+            parseInt(productSale.productId)
+          );
+
           // Subtract the total amount with the amount purchased.
           product.amount -= parseInt(productSale.amount) || 1;
-          
-          // If the subtracted is less than zero, then make it zero instead of negative amount. 
+
+          // If the subtracted is less than zero, then make it zero instead of negative amount.
           if (product.amount < 0) {
             product.amount = 0;
           }

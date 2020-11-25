@@ -5,24 +5,24 @@ export type Product = {
   name: string;
   description: string;
   amount: number;
-  salePrice: number;
-  costPrice: number;
+  salePrice: string;
+  costPrice: string;
   measuredUnit: string;
   category: string;
-  active: number;
-  barCorde: number;
+  active: boolean;
+  barCorde: string;
 };
 
 export type ProductRequest = {
   name: string;
   description: string;
   amount: number;
-  salePrice: number;
-  costPrice: number;
+  salePrice: string;
+  costPrice: string;
   measuredUnit: string;
   category: string;
-  active: number;
-  barCorde: number;
+  active: boolean;
+  barCorde: string;
 };
 
 export interface Category {
