@@ -5,6 +5,7 @@ import category from "./category";
 import product from "./product";
 import provider from "./provider";
 import sale from "./sale";
+import me from "./me";
 
 const routes = Router();
 
@@ -14,5 +15,6 @@ routes.use("/category", category);
 routes.use("/product", product);
 routes.use("/provider", provider);
 routes.use("/sale", sale);
+routes.use("/me", me);
 
 export default routes;
