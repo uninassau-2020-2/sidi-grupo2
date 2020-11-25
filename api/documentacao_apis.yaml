@@ -4,8 +4,8 @@ info:
   description: Conjunto de APIs para o projeto Rei do Cangaço
   version: 1.0.0
 servers:
-#  - url: 'http://localhost:8081'
-#    description: Link do ambiente de desenvolvimento.
+  - url: 'http://localhost:8081'
+    description: Link do ambiente de desenvolvimento.
   - url: 'https://sidi-grupo2.herokuapp.com'
     description: Link do ambiente de produção.
 security:
@@ -147,6 +147,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RetornoUsuarioNaoEncontradoSchema'
+  /sale/me:
+    get:
+      tags:
+        - Vendas
+      description: Obter minhas vendas.
+      summary: Obter minhas vendas.
+      operationId: getMySales
+      responses: 
+        200:
+          description: Sucesso, retorna as vendas do usuário autenticado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetornoMinhasVendas'
+  /me:
+    get:
+      tags:
+        - Geral
+      description: Obter dados gerais.
+      summary: Obter dados gerais.
+      operationId: obtainGeneralData
+      responses: 
+        200:
+          description: O retorno.
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/RetornoDadosGerais'
 components:
   schemas:
     RetornoLoginSchema:
@@ -257,6 +285,74 @@ components:
         - password
         - role
         - email
+    RetornoMinhasVendas:
+      type: array
+      description: O retorno das minhas vendas.
+      items: 
+        $ref: '#/components/schemas/VendasSchema'
+    VendasSchema:
+      type: object
+      description: Informações de vendas.
+      properties: 
+        id:
+          type: integer
+          description: O ID da venda.
+        formOfPayment:
+          type: string
+          description: A forma de pagamento utilizada.
+        total:
+          type: string
+          description: O total da venda.
+        change:
+          type: string
+          description: O troco da venda.
+        products:
+          type: array
+          description: A lista de produtos
+          items: 
+            properties: 
+              id:
+                type: integer
+                description: O ID do produto.
+              amount:
+                type: integer
+                description: A quantidade comprada do produto.
+    RetornoDadosGerais:
+      type: object
+      description: O retorno dos dados gerais
+      properties: 
+        mais_vendidos_hoje:
+          type: object
+          description: O produto mais vendido hoje.
+          properties: 
+            id:
+              type: integer
+              description: O ID do produto.
+            nome:
+              type: string
+              description: O nome do produto.
+            quantidade:
+              type: integer
+              description: A quantidade vendida do produto.
+            valor_venda:
+              type: string
+              description: O valor total de vendas do produto.
+        funcionario_do_dia:
+          type: object
+          description: O funcionário do dia, que mais vendeu.
+          properties: 
+            id:
+              type: integer
+              description: O ID do funcionário.
+            nome:
+              type: string
+              description: O nome do funcionário.
+            valor_venda:
+              type: string
+              description: O valor total de vendas do funcionário.
+            quantidade_vendas:
+              type: integer
+              description: A quantidade total de vendas do funcionário.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
