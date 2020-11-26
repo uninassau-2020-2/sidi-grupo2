@@ -128,7 +128,7 @@ export default class SaleController {
       });
 
       //If all ok, send 201 response
-      res.status(201).json({ data: "deu certo" });
+      res.status(201).json({ data: "venda realizada" });
     } catch (e) {
       res.status(409).json({ data: "algum produto é inexistente" });
       return;
