@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import {
   View,
@@ -14,6 +14,8 @@ import { ProductType } from "../../../interface";
 import ProductData from "../../../data/ProductData.json";
 import { AppContext } from "../../../context/shoppingCart.context";
 import { ShoppingCartType, Types } from "../../../reducer/shoppingCart.reducer";
+import { Modalize } from 'react-native-modalize';
+import { AppButton } from "../../../components";
 
 const DATA_PRODUCTS: Array<ProductType> = ProductData;
 
@@ -29,12 +31,21 @@ const ListComponent: React.FC = () => {
     return totalx;
   }
 
+  const modalizeRef = useRef<Modalize>(null);
+
+  const onOpen = () => {
+    modalizeRef.current?.open();
+  };
+
+  function handleToNavigateToHome() {
+  }
+
   const renderFooter = () => (
     <View style={styles.cardSearch}>
       <Text style={styles.footerTitle}>Total:</Text>
       <Text style={{ color: "#83d79a" }}>R${calcTotal()}</Text>
-      <TouchableOpacity style={styles.buttonFinishShop}>
-        <Text style={styles.buttonFinishShopText}>Finalizar compras </Text>
+      <TouchableOpacity style={styles.buttonFinishShop} onPress={onOpen}>
+        <Text style={styles.buttonFinishShopText}>Finalizar compra</Text>
       </TouchableOpacity>
     </View>
   );
@@ -44,7 +55,7 @@ const ListComponent: React.FC = () => {
       <View>
         <View style={styles.action}>
           <TextInput
-            placeholder="Faça a busca"
+            placeholder="Buscar produto"
             style={styles.inputSearch}
             onChangeText={(text) => {
               setProduct(
@@ -139,9 +150,51 @@ const ListComponent: React.FC = () => {
           style={{ padding: 12 }}
           keyExtractor={(item) => String(item.product.id)}
           renderItem={renderItemProduct}
-        />
+          />
       </View>
       {renderFooter()}
+      <Modalize 
+      ref={modalizeRef}
+      snapPoint={420}
+      >
+          <View style={styles.contentTitleModal}>
+            <Text style={{fontWeight: "bold", color: "#6a748d", fontSize:18}}>Finalizar Compra</Text>
+          </View>
+        <View style={styles.contentModal}>
+          <View style={styles.contentCardModal}>
+            <Text style={styles.titleCardModal}>Forma de pagamento</Text>
+
+            <View style={styles.CardModal}>
+              <Text style={styles.titleCardModal}>Cartão</Text>
+            </View>
+            <View style={styles.CardModal}>
+              <Text style={styles.titleCardModal}>Dinheiro</Text>
+            </View>
+          </View>
+
+          <View >
+            <View style={styles.CardSalesModal}>
+              <Text style={styles.cardDescription}>SubTotal</Text>
+              <Text style={styles.cardDescription}>Desconto</Text>
+              <Text style={styles.cardDescription}>Troco</Text>
+                <View style={{ alignItems: "flex-end" }}>
+                  <Text style={styles.cardTitle}>R$ 100</Text>
+                  <Text style={styles.cardTitle}>R$ 100</Text>
+                  <Text style={styles.cardTitle}>R$ 100</Text>
+                </View>
+            </View>
+          </View>
+          <View style={styles.footer}>
+            <View style={styles.button}>
+            <AppButton
+              title="Finalizar"
+              onPress={handleToNavigateToHome}
+              />
+            </View>
+          </View>
+
+        </View>
+      </Modalize>
     </>
   );
 };
@@ -161,16 +214,16 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 50,
-    backgroundColor: "#8DD6CA",
+    borderRadius: 8,
+    backgroundColor: "#05375a",
   },
   buttonAdd: {
     width: 90,
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 50,
-    backgroundColor: "#8DD6CA",
+    borderRadius: 8,
+    backgroundColor: "#05375a",
   },
   inputSearch: {
     backgroundColor: "#FFF",
@@ -209,8 +262,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#eef4fc",
     paddingHorizontal: 12,
     paddingVertical: 12,
-    //marginVertical: 6,
-    //borderRadius: 20,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
@@ -240,6 +291,57 @@ const styles = StyleSheet.create({
     margin: 12,
     alignItems: "center",
   },
+  contentTitleModal:{
+    backgroundColor: "#eef4fc",
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  contentModal:{
+    marginTop: 8,
+    flex: 1
+  },
+  contentCardModal:
+  {
+    backgroundColor: "#eee",
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    marginVertical: 6,
+    justifyContent: "space-between",
+  },
+  CardModal:{
+    backgroundColor: "#fff",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 5,
+  },
+  CardSalesModal:{
+    backgroundColor: "#eef4fc",
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    marginVertical: 6,
+    justifyContent: "space-between",
+    flexDirection: "row",
+
+  },
+  titleCardModal:
+  {
+    color: "#6a748d",
+    fontWeight: "bold",
+    fontSize: 12,
+  },
+  button: {
+    alignItems: "center",
+    marginTop: 50,
+  },
+  footer:{
+    flex: 2,
+    backgroundColor: "white",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingVertical: 0,
+    paddingHorizontal: 30,
+  }
 });
 
 export default ListComponent;
