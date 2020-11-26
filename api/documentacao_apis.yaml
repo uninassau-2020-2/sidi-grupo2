@@ -4,8 +4,8 @@ info:
   description: Conjunto de APIs para o projeto Rei do Cangaço
   version: 1.0.0
 servers:
-  - url: 'http://localhost:8081'
-    description: Link do ambiente de desenvolvimento.
+#  - url: 'http://localhost:8081'
+#    description: Link do ambiente de desenvolvimento.
   - url: 'https://sidi-grupo2.herokuapp.com'
     description: Link do ambiente de produção.
 security:
