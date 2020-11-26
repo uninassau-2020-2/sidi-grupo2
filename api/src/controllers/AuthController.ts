@@ -58,7 +58,7 @@ class AuthController {
     //Get parameters from the body
     const { oldPassword, newPassword } = req.body;
     if (!(oldPassword && newPassword)) {
-      res.status(400).send();
+      res.status(400).send({ data: "não encontrado" });
     }
 
     //Get user from the database
@@ -67,12 +67,12 @@ class AuthController {
     try {
       user = await userRepository.findOneOrFail(id);
     } catch (id) {
-      res.status(401).send();
+      res.status(401).send({ data: "usuario não encontrado" });
     }
 
     //Check if old password matchs
     if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
-      res.status(401).json();
+      res.status(401).json({ data: "senha não corresponde" });
       return;
     }
 
@@ -80,14 +80,20 @@ class AuthController {
     user.password = newPassword;
     const errors = await validate(user);
     if (errors.length > 0) {
-      res.status(400).json(errors);
+
+      const erroReturn = {
+        data: "a senha deve ser maior ou igual a 4 caracteres",
+
+      }
+      res.status(400).json(erroReturn);
       return;
     }
+
     //Hash the new password and save
     user.hashPassword();
     userRepository.save(user);
 
-    res.status(204).send();
+    res.status(204).send({ data: "senha alterada" });
   };
 }
 export default AuthController;
