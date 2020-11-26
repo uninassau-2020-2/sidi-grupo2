@@ -33,5 +33,6 @@ const styles = StyleSheet.create({
   label: {
     color: "gray",
     fontWeight: "bold",
+    marginBottom: 6,
   },
 });

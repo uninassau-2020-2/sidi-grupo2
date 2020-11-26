@@ -91,7 +91,7 @@ const ProductScreen: React.FC = () => {
         }}
       >
         <Text style={styles.cardTitle}>{item.name}</Text>
-        <Text style={styles.cardDescription}>cod: {item.barCorde}</Text>
+        <Text style={styles.cardDescription}>cod: {item.barCode}</Text>
       </View>
       <View style={{ alignItems: "flex-end", marginRight: 20 }}>
         <Text style={styles.cardValue}>R${item.salePrice}</Text>

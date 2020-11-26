@@ -40,6 +40,7 @@ export default function reducer(
         ...state,
         loading: false,
         sendSucess: true,
+        sendError: null,
       };
     case ProductTypes.SEND_FAILURE:
       return {

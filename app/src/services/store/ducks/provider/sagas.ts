@@ -31,12 +31,9 @@ export function* createProvider({
 }: ActionType<typeof actions.createRequestAction>) {
   try {
     const { provider } = payload;
-    console.log("provider", provider);
     const response = yield call(doCreateProvider, provider);
-    console.log("response", response);
     yield put(sendSuccessAction(response));
   } catch (err) {
-    console.log("err", err);
     yield put(sendFailureAction(err));
   }
 }

@@ -14,5 +14,5 @@ export async function doCreateProduct(product: ProductRequest) {
 }
 
 export async function doUpdateProduct(id: number, product: ProductRequest) {
-  return api.post(`/product/${id}`, product);
+  return api.patch(`/product/${id}`, product);
 }

@@ -20,8 +20,8 @@ const objectErros: IObjectErros = {
 };
 
 const api = axios.create({
+  baseURL: "http://localhost:8081",
   // baseURL: "https://sidi-grupo2.herokuapp.com",
-  baseURL: "https://sidi-grupo2.herokuapp.com",
   timeout: 3000,
   headers: {
     "Content-Type": "application/json",
@@ -79,10 +79,18 @@ const responseErrorMiddleware = async (error: AxiosError) => {
   }
 
   if (status === 401) {
-    logout();
     console.log("Finish()");
+    // logout();
   }
-
+  /**
+   * Trata erros da validação da regra de negócio
+   */
+  if (status === 400 && Array.isArray(response?.data)) {
+    const errors = response?.data.map((item) => {
+      return { property: item.property, constraints: item.constraints };
+    });
+    return Promise.reject({ ...responseErrors, errors: errors });
+  }
   if (status !== 404 && status !== 500) {
     // store.dispatch({ type: "errors/API_ERROR", ...responseErrors });
   }

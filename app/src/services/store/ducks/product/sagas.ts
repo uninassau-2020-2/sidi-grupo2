@@ -15,9 +15,9 @@ import {
   doCreateProduct,
   doGetProducts,
   doUpdateProduct,
-} from "../../../produtct";
+} from "../../../product";
 
-export function* getUsers() {
+export function* getProducts() {
   try {
     const response = yield call(doGetProducts);
     yield put(loadSuccessAction(response));
@@ -26,7 +26,7 @@ export function* getUsers() {
   }
 }
 
-export function* createCategory({
+export function* createProduct({
   payload,
 }: ActionType<typeof actions.createRequestAction>) {
   try {
@@ -34,11 +34,11 @@ export function* createCategory({
     const response = yield call(doCreateProduct, product);
     yield put(sendSuccessAction(response));
   } catch (err) {
-    yield put(loadFailureAction(err));
+    yield put(sendFailureAction(err));
   }
 }
 
-export function* updateUser({
+export function* updateProduct({
   payload,
 }: ActionType<typeof actions.updateRequestAction>) {
   try {
@@ -51,7 +51,7 @@ export function* updateUser({
 }
 
 export default all([
-  takeLatest(ProductTypes.LOAD_REQUEST, getUsers),
-  takeEvery(ProductTypes.CREATE_REQUEST, createCategory),
-  takeEvery(ProductTypes.UPDATE_REQUEST, updateUser),
+  takeLatest(ProductTypes.LOAD_REQUEST, getProducts),
+  takeEvery(ProductTypes.CREATE_REQUEST, createProduct),
+  takeEvery(ProductTypes.UPDATE_REQUEST, updateProduct),
 ]);

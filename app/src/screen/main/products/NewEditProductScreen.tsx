@@ -10,7 +10,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
-  Switch,
+  View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +22,7 @@ import {
   TextError,
   InputSelect,
 } from "../../../components";
-import { ProductRequest } from "../../../interface";
+import { Category, ProductRequest, Provider } from "../../../interface";
 import { StoreState } from "../../../services/store/createStore";
 import {
   createRequestAction,
@@ -30,7 +30,10 @@ import {
   resetAction,
   updateRequestAction,
 } from "../../../services/store/ducks/product/actions";
+import { loadRequestAction as categoryRequestAction } from "../../../services/store/ducks/category/actions";
+import { loadRequestAction as providerRequestAction } from "../../../services/store/ducks/provider/actions";
 import { NewEditProductScreenProp } from "./products.routes";
+import { MeasuredUnit } from "../../../enum";
 
 const NewEditProductScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -40,8 +43,17 @@ const NewEditProductScreen: React.FC = () => {
   const dispatch = useDispatch();
 
   const { sendSucess, sendError, loading } = useSelector(
+    (state: StoreState) => state.product
+  );
+
+  const { data: dataCategory } = useSelector(
+    (state: StoreState) => state.category
+  );
+
+  const { data: dataProvider } = useSelector(
     (state: StoreState) => state.provider
   );
+
   const { control, handleSubmit, errors } = useForm<ProductRequest>({
     mode: "all",
     reValidateMode: "onBlur",
@@ -51,10 +63,22 @@ const NewEditProductScreen: React.FC = () => {
       amount: Number(productParam?.amount) || 0,
       salePrice: productParam?.salePrice || "",
       costPrice: productParam?.costPrice || "",
-      active: productParam?.active || true,
-      barCorde: productParam?.barCorde || "",
+      active: productParam?.active === true,
+      barCode: productParam?.barCode || "",
+      categoryId: productParam?.category.id || 0,
+      providerId: productParam?.provider.id || 0,
+      measuredUnit: productParam?.measuredUnit || MeasuredUnit.GR,
+      brand: productParam?.brand || "foto",
     },
   });
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      dispatch(resetAction());
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -71,17 +95,18 @@ const NewEditProductScreen: React.FC = () => {
   }, [sendSucess]);
 
   useEffect(() => {
-    if (sendSucess === true) {
-      dispatch(resetAction());
-      dispatch(loadRequestAction());
-      navigation.goBack();
+    if (dataCategory.length === 0) {
+      dispatch(categoryRequestAction());
     }
-  }, [sendSucess]);
+    console.log("dataProvider.length", dataProvider.length);
+    if (dataProvider.length === 0) {
+      dispatch(providerRequestAction());
+    }
+  }, []);
 
-  const onSubmit = (povider: ProductRequest) => {
-    console.log("povider", povider);
-    if (isNewProduct) dispatch(createRequestAction(povider));
-    else dispatch(updateRequestAction(povider, productParam?.id || 0));
+  const onSubmit = (provider: ProductRequest) => {
+    if (isNewProduct) dispatch(createRequestAction(provider));
+    else dispatch(updateRequestAction(provider, productParam?.id || 0));
   };
 
   return (
@@ -137,7 +162,7 @@ const NewEditProductScreen: React.FC = () => {
           <Separator />
           <Controller
             control={control}
-            name="barCorde"
+            name="barCode"
             render={({ onChange, onBlur, value }) => (
               <Input
                 placeholder="Código de Barra"
@@ -145,7 +170,7 @@ const NewEditProductScreen: React.FC = () => {
                 onChangeText={(value) => onChange(value)}
                 label="Código de Barra"
                 value={value}
-                errors={errors.barCorde?.message}
+                errors={errors.barCode?.message}
               />
             )}
             rules={{
@@ -154,7 +179,7 @@ const NewEditProductScreen: React.FC = () => {
                 message: "código de barra é obrigatório",
               },
               minLength: {
-                value: 8,
+                value: 13,
                 message: "código de barra inválido",
               },
             }}
@@ -186,71 +211,138 @@ const NewEditProductScreen: React.FC = () => {
             }}
           />
           <Separator />
-          <Controller
-            control={control}
-            name="salePrice"
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                placeholder="Preço de Venda"
-                icon="ios-business"
-                onChangeText={(value) => onChange(value)}
-                label="Preço de Venda"
-                keyboardType="decimal-pad"
-                value={value}
-                errors={errors.salePrice?.message}
-              />
-            )}
-            rules={{
-              required: {
-                value: true,
-                message: "preço de venda é obrigatório",
-              },
-            }}
-          />
+          <View style={styles.groupField}>
+            <Controller
+              control={control}
+              name="salePrice"
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  width="45%"
+                  placeholder="Preço de Venda"
+                  icon="md-cash"
+                  onChangeText={(value) => onChange(value)}
+                  label="Preço de Venda"
+                  keyboardType="decimal-pad"
+                  value={value}
+                  errors={errors.salePrice?.message}
+                />
+              )}
+              rules={{
+                required: {
+                  value: true,
+                  message: "preço de venda é obrigatório",
+                },
+              }}
+            />
+            <Separator />
+            <Controller
+              control={control}
+              name="costPrice"
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  placeholder="Preço de Compra"
+                  icon="ios-cash"
+                  width="45%"
+                  onChangeText={(value) => onChange(value)}
+                  label="Preço de Compra"
+                  keyboardType="decimal-pad"
+                  value={value}
+                  errors={errors.costPrice?.message}
+                />
+              )}
+              rules={{
+                required: {
+                  value: true,
+                  message: "preço de compra é obrigatório",
+                },
+              }}
+            />
+          </View>
           <Separator />
           <Controller
             control={control}
-            name="costPrice"
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                placeholder="Preço de Compra"
-                icon="ios-business"
-                onChangeText={(value) => onChange(value)}
-                label="Preço de Compra"
-                keyboardType="decimal-pad"
-                value={value}
-                errors={errors.costPrice?.message}
-              />
-            )}
-            rules={{
-              required: {
-                value: true,
-                message: "preço de compra é obrigatório",
-              },
-            }}
-          />
-          <Separator />
-          <Controller
-            control={control}
-            name="costPrice"
+            name="measuredUnit"
+            errors={errors.providerId?.message}
             render={({ onChange, onBlur, value }) => (
               <InputSelect
-                placeholder="Preço de Compra"
-                icon="ios-business"
-                onChangeText={(value) => onChange(value)}
-                label="Preço de Compra"
-                keyboardType="decimal-pad"
-                value={value}
-                errors={errors.costPrice?.message}
+                label="Unidade de Medida"
+                onSelected={(selected: any) => {
+                  onChange(selected.Name);
+                  return selected;
+                }}
+                selectedItemId={Object.values(MeasuredUnit).indexOf(value)}
+                values={Object.values(MeasuredUnit).map((item, index) => {
+                  return {
+                    Id: index,
+                    Name: item,
+                  };
+                })}
               />
             )}
             rules={{
               required: {
                 value: true,
-                message: "preço de compra é obrigatório",
+                message: "unidade de medida é obrigatório",
               },
             }}
           />
+          <Separator />
+          <Controller
+            control={control}
+            name="categoryId"
+            render={({ onChange, onBlur, value }) => (
+              <InputSelect
+                label="Categoria"
+                onSelected={(selected: any) => {
+                  onChange(selected.Id);
+                  return selected;
+                }}
+                selectedItemId={value}
+                errors={errors.categoryId?.message}
+                values={dataCategory.map((item: Category) => {
+                  return {
+                    Id: item.id,
+                    Name: item.name,
+                  };
+                })}
+              />
+            )}
+            rules={{
+              required: {
+                value: true,
+                message: "categoria é obrigatória",
+              },
+            }}
+          />
+          <Separator />
+          <Controller
+            control={control}
+            name="providerId"
+            errors={errors.providerId?.message}
+            render={({ onChange, onBlur, value }) => (
+              <InputSelect
+                label="Fornecedor"
+                onSelected={(selected: any) => {
+                  onChange(selected.Id);
+                  return selected;
+                }}
+                selectedItemId={value}
+                values={dataProvider.map((item: Provider) => {
+                  return {
+                    Id: item.id,
+                    Name: item.companyName,
+                  };
+                })}
+              />
+            )}
+            rules={{
+              required: {
+                value: true,
+                message: "fornecedor é obrigatório",
+              },
+            }}
+          />
+
           <Separator />
           <Controller
             control={control}
@@ -263,9 +355,13 @@ const NewEditProductScreen: React.FC = () => {
               />
             )}
           />
+          <Controller
+            control={control}
+            name="brand"
+            render={({ onChange, onBlur, value }) => <View />}
+          />
           <Separator />
-
-          <TextError error={sendError?.errorMessage} />
+          {sendError && <TextError error={sendError?.errorMessage} />}
           <Separator />
           <AppButton
             disabled={loading}
@@ -278,6 +374,11 @@ const NewEditProductScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  groupField: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+});
 
 export default NewEditProductScreen;

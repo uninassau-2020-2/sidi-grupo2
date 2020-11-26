@@ -8,9 +8,17 @@ export type Product = {
   salePrice: string;
   costPrice: string;
   measuredUnit: string;
-  category: string;
+  category: {
+    id: number;
+    name: string;
+  };
+  provider: {
+    id: number;
+    fantasyName: string;
+  };
   active: boolean;
-  barCorde: string;
+  barCode: string;
+  brand: string;
 };
 
 export type ProductRequest = {
@@ -20,9 +28,11 @@ export type ProductRequest = {
   salePrice: string;
   costPrice: string;
   measuredUnit: string;
-  category: string;
+  categoryId: number;
+  providerId: number;
   active: boolean;
-  barCorde: string;
+  barCode: string;
+  brand: string;
 };
 
 export interface Category {
@@ -97,4 +107,8 @@ export interface ProviderRequest {
 export interface IError {
   errorStatus: number;
   errorMessage: string;
+  errors?: Array<{
+    property: string;
+    constraints: {};
+  }> | null;
 }
