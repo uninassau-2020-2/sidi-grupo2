@@ -60,8 +60,16 @@ class UserController {
       res.status(409).json({ data: "e-mail já existente" });
       return;
     }
+
+    const userReturn = {
+      id: userx.id,
+      name: userx.name,
+      email: userx.email,
+      role: userx.role,
+    } as User;
+
     //If all ok, send 201 response
-    res.status(201).json(userx);
+    res.status(201).json(userReturn);
   };
 
   static editUser = async (req: Request, res: Response) => {
@@ -73,7 +81,7 @@ class UserController {
 
     //Try to find user on database
     const userRepository = getRepository(User);
-    let user: User;
+    let user: User; 
     try {
       user = await userRepository.findOneOrFail(id);
     } catch (error) {
@@ -81,7 +89,6 @@ class UserController {
       res.status(404).json({ data: "usuário não encontrado" });
       return;
     }
-    console.log("password", password);
     //Validate the new values on model
     name && (user.name = name);
     email && (user.email = email);
@@ -104,8 +111,17 @@ class UserController {
       res.status(409).send({ data: "e-mail de usuário já em uso" });
       return;
     }
+
+    const userReturn = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      password: user.password,
+    } as User;
+
     //After all send a 204 (no content, but accepted) response
-    res.status(200).json(user);
+    res.status(200).json(userReturn);
   };
 
   static deleteUser = async (req: Request, res: Response) => {
@@ -123,7 +139,7 @@ class UserController {
     userRepository.softDelete(id);
 
     //After all send a 204 (no content, but accepted) response
-    res.status(200).json(user);
+    res.status(200).json({ data: "Usuario deletado"});
   };
 }
 
