@@ -2,6 +2,7 @@ import React from "react";
 
 import { View, Text, StyleSheet, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AppButton } from "../../components";
 import { useAuth } from "../../context/auth.context";
 
 const ProfileScreen: React.FC = () => {
@@ -11,10 +12,7 @@ const ProfileScreen: React.FC = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>ProfileScreen</Text>
-        <Button title="Sign Out" onPress={handleSignOut} />
-      </View>
+      <AppButton title="Sair" width="80%" onPress={handleSignOut} />
     </SafeAreaView>
   );
 };
@@ -24,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#312e38",
+    backgroundColor: "#fff",
   },
   title: {
     fontWeight: "bold",
