@@ -19,3 +19,8 @@ export enum MeasuredUnit {
   PR = "porção",
   PT = "prato",
 }
+
+export enum FormOfPayment {
+  CREDIT_CARD = "credit_card",
+  CASH = "cash",
+}

@@ -1,4 +1,4 @@
-import { RoleUser } from "../enum";
+import { FormOfPayment, RoleUser } from "../enum";
 
 export type Product = {
   id: number;
@@ -104,6 +104,17 @@ export interface ProviderRequest {
   phone: string;
 }
 
+export interface SaleRequest {
+  formOfPayment: FormOfPayment;
+  total: string;
+  change: string;
+  products: Array<ProductCart>;
+}
+
+export interface ProductCart {
+  productId: number;
+  amount: number;
+}
 export interface IError {
   errorStatus: number;
   errorMessage: string;

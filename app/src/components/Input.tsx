@@ -14,7 +14,7 @@ interface InputProps extends TextInputProps {
   icon?: string;
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
-  errors?: string | Array<string>;
+  errors?: string | Array<string> | null;
   width?: number | string;
   label?: string;
   numberOfLines?: number;

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import {
   View,
@@ -8,45 +8,89 @@ import {
   FlatList,
   ListRenderItemInfo,
   TextInput,
+  Alert,
 } from "react-native";
+import SegmentedControl from "@react-native-community/segmented-control";
 import InputSpinner from "react-native-input-spinner";
-import { ProductType } from "../../../interface";
-import ProductData from "../../../data/ProductData.json";
+import { Modalize } from "react-native-modalize";
+import { Product, SaleRequest } from "../../../interface";
 import { AppContext } from "../../../context/shoppingCart.context";
 import { ShoppingCartType, Types } from "../../../reducer/shoppingCart.reducer";
-import { Modalize } from 'react-native-modalize';
-import { AppButton } from "../../../components";
+import { AppButton, Input } from "../../../components";
+import { loadRequestAction } from "../../../services/store/ducks/product/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreState } from "../../../services/store/createStore";
+import { FormOfPayment } from "../../../enum";
 
-const DATA_PRODUCTS: Array<ProductType> = ProductData;
-
+const INIT_SALE = {
+  formOfPayment: FormOfPayment.CREDIT_CARD,
+  total: "0.0",
+  change: "0.0",
+  products: [],
+};
 const ListComponent: React.FC = () => {
-  const { state, dispatch } = React.useContext(AppContext);
-  const [products, setProduct] = useState<ProductType | undefined>();
-
-  function calcTotal() {
-    let totalx = 0;
-    state.products.map((item) => {
-      totalx += item.product.price * item.amount;
-    });
-    return totalx;
-  }
+  const { state: stateProduct, dispatch } = useContext(AppContext);
+  const [products, setProduct] = useState<Product | undefined>();
+  const [sale, setSale] = useState<SaleRequest>(INIT_SALE);
+  const [change, setChange] = useState(0.0);
+  const [changeError, setChangeError] = useState<string | null>(null);
 
   const modalizeRef = useRef<Modalize>(null);
 
+  const dispatchApi = useDispatch();
+  const { data: productsData, loading, error } = useSelector(
+    (state: StoreState) => state.product
+  );
+
+  useEffect(() => {
+    if (productsData.length === 0) getProducts();
+    setSale({
+      ...sale,
+    } as SaleRequest);
+  }, []);
+
+  useEffect(() => {
+    if (sale.formOfPayment === FormOfPayment.CREDIT_CARD) {
+      setChangeError(null);
+      setChange(0);
+    }
+  }, [sale]);
+
+  useEffect(() => {
+    let totalx = 0;
+    stateProduct.products.map((item) => {
+      totalx += Number(item.product.salePrice) * item.amount;
+    });
+    setSale({ ...sale, total: String(totalx) } as SaleRequest);
+  }, [stateProduct]);
+
   const onOpen = () => {
+    setSale({
+      ...sale,
+      products: stateProduct.products.map((item) => {
+        return { amount: item.amount, productId: item.product.id };
+      }),
+    });
     modalizeRef.current?.open();
   };
 
-  function handleToNavigateToHome() {
+  function getProducts() {
+    dispatchApi(loadRequestAction());
   }
 
   const renderFooter = () => (
-    <View style={styles.cardSearch}>
+    <View style={{ ...styles.cardSearch, alignContent: "space-between" }}>
       <Text style={styles.footerTitle}>Total:</Text>
-      <Text style={{ color: "#83d79a" }}>R${calcTotal()}</Text>
-      <TouchableOpacity style={styles.buttonFinishShop} onPress={onOpen}>
-        <Text style={styles.buttonFinishShopText}>Finalizar compra</Text>
-      </TouchableOpacity>
+      <Text style={{ color: "#83d79a" }}>R${sale?.total || "--"}</Text>
+      <AppButton
+        // style={styles.buttonFinishShop}
+        // activeOpacity={0.7}
+        disabled={stateProduct.products.length === 0}
+        width="auto"
+        buttonStyle={{ paddingVertical: 8 }}
+        onPress={onOpen}
+        title="Finalizar compra"
+      />
     </View>
   );
 
@@ -58,31 +102,42 @@ const ListComponent: React.FC = () => {
             placeholder="Buscar produto"
             style={styles.inputSearch}
             onChangeText={(text) => {
-              setProduct(
-                DATA_PRODUCTS.find((product) => String(product.codigo) === text)
-              );
+              if (text) {
+                const product = productsData.find(
+                  (product) =>
+                    String(product.barCode).includes(text, 1) ||
+                    product.name.includes(text)
+                );
+                setProduct(product);
+              } else setProduct(undefined);
             }}
           />
         </View>
+        {products && (
+          <View style={styles.cardSearch}>
+            <Text style={styles.cardTitle}>{products?.name}</Text>
+            <Text style={styles.cardDescription}>{products?.barCode}</Text>
 
-        <View style={styles.cardSearch}>
-          <Text style={styles.cardTitle}>{products?.name}</Text>
-          <Text style={styles.cardDescription}>{products?.codigo}</Text>
-
-          <TouchableOpacity
-            style={styles.buttonAdd}
-            onPress={() => {
-              products && handlerAddProduct(products);
-            }}
-          >
-            <Text style={styles.buttonFinishShopText}>Adicionar</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.buttonAdd}
+              activeOpacity={0.7}
+              onPress={() => {
+                const equal = stateProduct.products.find(
+                  (item) => item.product.id === products?.id
+                );
+                if (!equal) products && handlerAddProduct(products);
+                else Alert.alert("Produto já adicionado");
+              }}
+            >
+              <Text style={styles.buttonFinishShopText}>Adicionar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   };
 
-  function handlerAddProduct(product: ProductType) {
+  function handlerAddProduct(product: Product) {
     dispatch({
       type: Types.Create,
       payload: {
@@ -109,10 +164,10 @@ const ListComponent: React.FC = () => {
           });
         }}
       >
-        <Text>{product.price}</Text>
+        <Text>{product.salePrice}</Text>
         <View style={{ marginLeft: 6, flex: 1 }}>
           <Text style={styles.cardTitle}>{product.name}</Text>
-          <Text style={styles.cardDescription}>{product.codigo}</Text>
+          <Text style={styles.cardDescription}>{product.barCode}</Text>
         </View>
         <View style={{ alignItems: "flex-end" }}>
           <InputSpinner
@@ -141,58 +196,118 @@ const ListComponent: React.FC = () => {
     );
   };
 
+  function renderCashAndChange() {
+    return (
+      <View
+        style={{
+          margin: 12,
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          <Input
+            label={"Dinheiro"}
+            placeholder={"Dinheiro"}
+            onChangeText={(cash) => {
+              const changex = Number(cash) - Number(sale.total);
+              if (Number(cash) < Number(sale.total)) {
+                setChange(0);
+                setChangeError("Não pode ser menor que o total");
+              } else {
+                setChangeError(null);
+                setChange(changex);
+              }
+
+              console.log("changeError", changeError);
+            }}
+            icon="md-cash"
+            errors={changeError}
+          />
+        </View>
+
+        <View style={{ width: "30%", marginHorizontal: 6 }}>
+          <Text style={styles.cardDescription}>Troco</Text>
+          <Text style={styles.cardTitle}>{`R$${change}`}</Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <>
       {renderHeader()}
       <View style={styles.containerList}>
         <FlatList
-          data={state.products}
+          data={stateProduct.products}
           style={{ padding: 12 }}
           keyExtractor={(item) => String(item.product.id)}
           renderItem={renderItemProduct}
-          />
+        />
       </View>
       {renderFooter()}
-      <Modalize 
-      ref={modalizeRef}
-      snapPoint={420}
+      <Modalize
+        ref={modalizeRef}
+        snapPoint={420}
+        // adjustToContentHeight
+        panGestureComponentEnabled
+        panGestureEnabled={false}
+        onClose={() => {
+          setChange(0);
+          setChangeError(null);
+          setSale({ ...sale, formOfPayment: INIT_SALE.formOfPayment });
+        }}
       >
-          <View style={styles.contentTitleModal}>
-            <Text style={{fontWeight: "bold", color: "#6a748d", fontSize:18}}>Finalizar Compra</Text>
-          </View>
+        <View style={styles.contentTitleModal}>
+          <Text style={{ fontWeight: "bold", color: "#6a748d", fontSize: 18 }}>
+            Finalizar Compra
+          </Text>
+        </View>
         <View style={styles.contentModal}>
           <View style={styles.contentCardModal}>
             <Text style={styles.titleCardModal}>Forma de pagamento</Text>
-
+            <SegmentedControl
+              values={["Cartão de Crédito", "Dinheiro"]}
+              selectedIndex={Object.values(FormOfPayment).indexOf(
+                sale?.formOfPayment
+              )}
+              onChange={(event) => {
+                const form = Object.values(FormOfPayment)[
+                  event.nativeEvent.selectedSegmentIndex
+                ];
+                if (form === FormOfPayment.CREDIT_CARD) {
+                  setSale({ ...sale, change: "0" });
+                } else {
+                  setChangeError("campo obrigatório");
+                }
+                setSale({ ...sale, formOfPayment: form as FormOfPayment });
+              }}
+            />
+            {/* 
             <View style={styles.CardModal}>
               <Text style={styles.titleCardModal}>Cartão</Text>
             </View>
-            <View style={styles.CardModal}>
+            <View style={stzyles.CardModal}>
               <Text style={styles.titleCardModal}>Dinheiro</Text>
-            </View>
+            </View> */}
           </View>
 
-          <View >
+          {sale.formOfPayment === FormOfPayment.CASH && renderCashAndChange()}
+          <View>
             <View style={styles.CardSalesModal}>
-              <Text style={styles.cardDescription}>SubTotal</Text>
-              <Text style={styles.cardDescription}>Desconto</Text>
-              <Text style={styles.cardDescription}>Troco</Text>
-                <View style={{ alignItems: "flex-end" }}>
-                  <Text style={styles.cardTitle}>R$ 100</Text>
-                  <Text style={styles.cardTitle}>R$ 100</Text>
-                  <Text style={styles.cardTitle}>R$ 100</Text>
-                </View>
+              <Text style={styles.cardDescription}>Total</Text>
+              <Text style={styles.cardTitle}>R${sale.total}</Text>
             </View>
           </View>
           <View style={styles.footer}>
             <View style={styles.button}>
-            <AppButton
-              title="Finalizar"
-              onPress={handleToNavigateToHome}
+              <AppButton
+                title="Finalizar"
+                disabled={changeError !== null}
+                onPress={() => {}}
               />
             </View>
           </View>
-
         </View>
       </Modalize>
     </>
@@ -236,12 +351,12 @@ const styles = StyleSheet.create({
   buttonFinishShopText: {
     color: "#fff",
   },
-  footer: {
-    borderTopWidth: 1,
-    borderColor: "#d5d5d5",
-    paddingVertical: 20,
-    backgroundColor: "#E1FBFC",
-  },
+  // footer: {
+  //   borderTopWidth: 1,
+  //   borderColor: "#d5d5d5",
+  //   paddingVertical: 20,
+  //   backgroundColor: "#E1FBFC",
+  // },
   footerTitle: {
     fontWeight: "bold",
     fontSize: 16,
@@ -291,57 +406,54 @@ const styles = StyleSheet.create({
     margin: 12,
     alignItems: "center",
   },
-  contentTitleModal:{
+  contentTitleModal: {
     backgroundColor: "#eef4fc",
     paddingVertical: 12,
     alignItems: "center",
   },
-  contentModal:{
+  contentModal: {
     marginTop: 8,
-    flex: 1
+    flex: 1,
   },
-  contentCardModal:
-  {
+  contentCardModal: {
     backgroundColor: "#eee",
     paddingHorizontal: 12,
     paddingVertical: 12,
     marginVertical: 6,
     justifyContent: "space-between",
   },
-  CardModal:{
+  CardModal: {
     backgroundColor: "#fff",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 5,
   },
-  CardSalesModal:{
+  CardSalesModal: {
     backgroundColor: "#eef4fc",
     paddingHorizontal: 12,
     paddingVertical: 12,
     marginVertical: 6,
     justifyContent: "space-between",
     flexDirection: "row",
-
   },
-  titleCardModal:
-  {
+  titleCardModal: {
     color: "#6a748d",
     fontWeight: "bold",
     fontSize: 12,
   },
   button: {
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 12,
   },
-  footer:{
+  footer: {
     flex: 2,
     backgroundColor: "white",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingVertical: 0,
     paddingHorizontal: 30,
-  }
+  },
 });
 
 export default ListComponent;

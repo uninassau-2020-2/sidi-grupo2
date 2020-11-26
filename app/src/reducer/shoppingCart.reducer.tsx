@@ -1,4 +1,4 @@
-import { ProductType } from "../interface";
+import { Product } from "../interface";
 import { ActionMap } from "../util";
 
 export enum Types {
@@ -8,13 +8,13 @@ export enum Types {
 }
 
 export type ShoppingCartType = {
-  product: ProductType;
+  product: Product;
   amount: number;
 };
 
 type ProductPayload = {
   [Types.Create]: {
-    product: ProductType;
+    product: Product;
     amount: number;
   };
   [Types.Delete]: {
@@ -26,9 +26,7 @@ type ProductPayload = {
   };
 };
 
-export type ProductActions = ActionMap<ProductPayload>[keyof ActionMap<
-  ProductPayload
->];
+export type ProductActions = ActionMap<ProductPayload>[keyof ActionMap<ProductPayload>];
 
 export const productReducer = (
   state: ShoppingCartType[],

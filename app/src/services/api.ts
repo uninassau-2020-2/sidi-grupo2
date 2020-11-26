@@ -20,8 +20,8 @@ const objectErros: IObjectErros = {
 };
 
 const api = axios.create({
-  baseURL: "http://localhost:8081",
-  // baseURL: "https://sidi-grupo2.herokuapp.com",
+  // baseURL: "http://localhost:8081",
+  baseURL: "https://sidi-grupo2.herokuapp.com",
   timeout: 3000,
   headers: {
     "Content-Type": "application/json",
