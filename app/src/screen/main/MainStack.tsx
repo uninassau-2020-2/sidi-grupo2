@@ -12,6 +12,7 @@ import Category from "./category/category.routes";
 import Product from "./products/products.routes";
 import Provider from "./provider/provider.routes";
 import Profile from "./ProfileScreen";
+import Sale from "./SalesScreen";
 export default function App() {
   return (
     <Navigator
@@ -29,7 +30,7 @@ export default function App() {
     >
       <Screen name="Dados Financeiro" component={Home} />
       <Screen name="Caixa" component={Cashier} />
-      <Screen name="Minhas Vendas" component={Home} />
+      <Screen name="Minhas Vendas" component={Sale} />
 
       <Screen
         name="Produtos"
