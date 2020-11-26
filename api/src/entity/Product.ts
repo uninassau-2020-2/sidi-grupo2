@@ -69,7 +69,7 @@ export class Product {
 
   @Column()
   @Length(13, 15)
-  barCorde: string;
+  barCode: string;
 
   @Column()
   @Length(3, 200)

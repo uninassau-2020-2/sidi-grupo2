@@ -5,15 +5,16 @@ import { validate } from "class-validator";
 import { Product } from "../entity/Product";
 import { User } from "../entity/User";
 import { Category } from "../entity/Category";
+import { Provider } from "../entity/Provider";
 
 class ProductController {
   static listAll = async (req: Request, res: Response) => {
     //Get products from database
     const productRepository = getRepository(Product);
     const products = await productRepository.find({
-      relations: ["user", "category"],
+      relations: ["user", "category", "provider"],
     });
-    
+
     const productsReturn = products.map((p: Product) => {
       return {
         id: p.id,
@@ -24,11 +25,18 @@ class ProductController {
         costPrice: p.costPrice,
         measuredUnit: p.measuredUnit,
         active: p.active,
-        barCorde: p.barCorde,
+        barCode: p.barCode,
         brand: p.brand,
         user: p.user.name,
-        category: p.category.name,
-      }
+        category: {
+          id: p.category.id,
+          name: p.category.name,
+        },
+        provider: {
+          id: p.provider.id,
+          fantasyName: p.provider.fantasyName,
+        },
+      };
     });
 
     //Send the products object
@@ -42,7 +50,7 @@ class ProductController {
     const productRepository = getRepository(Product);
     try {
       const product = await productRepository.findOneOrFail(id, {
-        relations: ["user", "category"],
+        relations: ["user", "category", "provider"],
       });
 
       const productsReturn = {
@@ -54,10 +62,17 @@ class ProductController {
         costPrice: product.costPrice,
         measuredUnit: product.measuredUnit,
         active: product.active,
-        barCorde: product.barCorde,
+        barCode: product.barCode,
         brand: product.brand,
         user: product.user.name,
-        category: product.category.name,
+        category: {
+          id: product.category.id,
+          name: product.category.name,
+        },
+        provider: {
+          id: product.provider.id,
+          fantasyName: product.provider.fantasyName,
+        },
       };
 
       res.json(productsReturn);
@@ -76,6 +91,7 @@ class ProductController {
       costPrice,
       measuredUnit,
       categoryId,
+      providerId,
       barCode,
       active = true,
       brand,
@@ -84,12 +100,15 @@ class ProductController {
     let product = new Product();
     product.name = name;
     product.description = description;
-    product.user = { id: res.locals.jwtPayload.userId, name: res.locals.jwtPayload.name } as User;
+    product.user = {
+      id: res.locals.jwtPayload.userId,
+      name: res.locals.jwtPayload.name,
+    } as User;
     product.amount = parseInt(amount);
     product.salePrice = salePrice;
     product.costPrice = costPrice;
     product.measuredUnit = measuredUnit;
-    product.barCorde = barCode;
+    product.barCode = barCode;
     product.brand = brand;
     product.active = active == "true";
 
@@ -101,9 +120,17 @@ class ProductController {
     }
     let category: Category;
     try {
-      category = await getRepository(Category).findOneOrFail(categoryId);
+      category = await getRepository(Category).findOneOrFail(categoryId || 0);
     } catch (e) {
-      return res.status(400).json({ data: "produto não encontrado" });
+      return res.status(400).json({ data: "categoria não encontrada" });
+    }
+
+    let provider: Provider;
+    try {
+      console.log("providerId", providerId);
+      provider = await getRepository(Provider).findOneOrFail(providerId || 0);
+    } catch (e) {
+      return res.status(400).json({ data: "fornecedor não encontrado" });
     }
 
     //Try to save. If fails, the product is already in use
@@ -111,6 +138,7 @@ class ProductController {
     try {
       //If all ok, send 201 response
       product.category = category;
+      product.provider = provider;
       const productCreate = await productRepository.save(product);
 
       const productsReturn = {
@@ -122,13 +150,20 @@ class ProductController {
         costPrice: productCreate.costPrice,
         measuredUnit: productCreate.measuredUnit,
         active: productCreate.active,
-        barCorde: productCreate.barCorde,
+        barCode: productCreate.barCode,
         brand: productCreate.brand,
         user: productCreate.user.name,
-        category: productCreate.category.name,
+        category: {
+          id: product.category.id,
+          name: product.category.name,
+        },
+        provider: {
+          id: product.provider.id,
+          fantasyName: product.provider.fantasyName,
+        },
       };
 
-      res.status(201).json(productsReturn);
+      res.status(201).json(productCreate);
     } catch (e) {
       res.status(409).json({ data: "produto já existe" });
       return;
@@ -148,6 +183,7 @@ class ProductController {
       costPrice,
       measuredUnit,
       categoryId,
+      providerId,
       barCode,
       active = true,
       brand,
@@ -171,7 +207,7 @@ class ProductController {
     salePrice && (product.salePrice = salePrice);
     costPrice && (product.costPrice = costPrice);
     measuredUnit && (product.measuredUnit = measuredUnit);
-    barCode && (product.barCorde = barCode);
+    barCode && (product.barCode = barCode);
     brand && (product.brand = brand);
     active && (product.active = active == "true");
 
@@ -182,34 +218,52 @@ class ProductController {
     }
 
     let category: Category;
-    try {
-      category = await getRepository(Category).findOneOrFail(categoryId);
-    } catch (e) {
-      return res.status(400).json({ data: "categoria não encontrada" });
+    let provider: Provider;
+    if (categoryId !== undefined) {
+      try {
+        category = await getRepository(Category).findOneOrFail(categoryId || 0);
+      } catch (e) {
+        return res.status(400).json({ data: "categoria não encontrada" });
+      }
+    }
+
+    if (providerId !== undefined) {
+      try {
+        provider = await getRepository(Provider).findOneOrFail(providerId || 0);
+      } catch (e) {
+        return res.status(400).json({ data: "categoria não encontrada" });
+      }
     }
 
     try {
       //If all ok, send 201 response
-      product.category = category;
+      category && (product.category = category);
+      provider && (product.provider = provider);
       const productCreate = await productRepository.save(product);
+      // product = await console.log(provider);
+      // const productsReturn = {
+      //   id: productCreate.id,
+      //   name: productCreate.name,
+      //   description: productCreate.description,
+      //   amount: productCreate.amount,
+      //   salePrice: productCreate.salePrice,
+      //   costPrice: productCreate.costPrice,
+      //   measuredUnit: productCreate.measuredUnit,
+      //   active: productCreate.active,
+      //   barCode: productCreate.barCode,
+      //   brand: productCreate.brand,
+      //   category: {
+      //     id: category.id,
+      //     name: category.name,
+      //   },
+      //   provider: {
+      //     id: provider.id,
+      //     fantasyName: provider.fantasyName,
+      //   },
+      // };
 
-      const productsReturn = {
-        id: productCreate.id,
-        name: productCreate.name,
-        description: productCreate.description,
-        amount: productCreate.amount,
-        salePrice: productCreate.salePrice,
-        costPrice: productCreate.costPrice,
-        measuredUnit: productCreate.measuredUnit,
-        active: productCreate.active,
-        barCorde: productCreate.barCorde,
-        brand: productCreate.brand,
-        category: productCreate.category.name,
-      };
-
-      res.json(productsReturn);
+      res.json(productCreate);
     } catch (e) {
-      console.log(e);
       res.status(409).json({ data: e.message });
       return;
     }
