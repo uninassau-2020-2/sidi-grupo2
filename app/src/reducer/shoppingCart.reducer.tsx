@@ -5,6 +5,7 @@ export enum Types {
   Create = "CREATE_PRODUCT",
   Delete = "DELETE_PRODUCT",
   Edit = "EDIT_PRODUCT",
+  Clean = "CLEAN_PRODUCT",
 }
 
 export type ShoppingCartType = {
@@ -24,6 +25,7 @@ type ProductPayload = {
     id: number;
     amount: number;
   };
+  [Types.Clean]: {};
 };
 
 export type ProductActions = ActionMap<ProductPayload>[keyof ActionMap<ProductPayload>];
@@ -45,6 +47,9 @@ export const productReducer = (
       return [
         ...state.filter((product) => product.product.id !== action.payload.id),
       ];
+
+    case Types.Clean:
+      return [...state.filter((product) => product.product.id === 1928192)];
 
     case Types.Edit:
       const objIndex = state.findIndex(

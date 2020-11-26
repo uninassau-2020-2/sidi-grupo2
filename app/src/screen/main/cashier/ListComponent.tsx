@@ -16,11 +16,12 @@ import { Modalize } from "react-native-modalize";
 import { Product, SaleRequest } from "../../../interface";
 import { AppContext } from "../../../context/shoppingCart.context";
 import { ShoppingCartType, Types } from "../../../reducer/shoppingCart.reducer";
-import { AppButton, Input } from "../../../components";
+import { AppButton, Input, ListEmpty } from "../../../components";
 import { loadRequestAction } from "../../../services/store/ducks/product/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreState } from "../../../services/store/createStore";
 import { FormOfPayment } from "../../../enum";
+import { doCreateSale } from "../../../services/sale";
 
 const INIT_SALE = {
   formOfPayment: FormOfPayment.CREDIT_CARD,
@@ -79,9 +80,19 @@ const ListComponent: React.FC = () => {
   }
 
   const renderFooter = () => (
-    <View style={{ ...styles.cardSearch, alignContent: "space-between" }}>
-      <Text style={styles.footerTitle}>Total:</Text>
-      <Text style={{ color: "#83d79a" }}>R${sale?.total || "--"}</Text>
+    <View
+      style={{
+        ...styles.cardSearch,
+        height: 100,
+        alignContent: "space-between",
+      }}
+    >
+      <View>
+        <Text style={styles.footerTitle}>Total:</Text>
+        <Text style={{ color: "#83d79a", fontSize: 24, fontWeight: "bold" }}>
+          R${sale?.total || "--"}
+        </Text>
+      </View>
       <AppButton
         // style={styles.buttonFinishShop}
         // activeOpacity={0.7}
@@ -218,14 +229,11 @@ const ListComponent: React.FC = () => {
                 setChangeError(null);
                 setChange(changex);
               }
-
-              console.log("changeError", changeError);
             }}
             icon="md-cash"
             errors={changeError}
           />
         </View>
-
         <View style={{ width: "30%", marginHorizontal: 6 }}>
           <Text style={styles.cardDescription}>Troco</Text>
           <Text style={styles.cardTitle}>{`R$${change}`}</Text>
@@ -234,15 +242,35 @@ const ListComponent: React.FC = () => {
     );
   }
 
+  function finished() {
+    try {
+      const response = doCreateSale(sale);
+      modalizeRef.current?.close();
+      Alert.alert("Compra feita com sucesso");
+      setSale(INIT_SALE);
+      setChange(0);
+      setChangeError(null);
+      dispatch({ type: Types.Clean, payload: {} });
+    } catch (err) {
+      console.log("err");
+    }
+  }
+
   return (
     <>
       {renderHeader()}
       <View style={styles.containerList}>
         <FlatList
-          data={stateProduct.products}
+          contentContainerStyle={{
+            flexGrow: 1,
+            marginHorizontal: 6,
+            marginTop: 12,
+          }}
+          data={stateProduct.products || []}
           style={{ padding: 12 }}
-          keyExtractor={(item) => String(item.product.id)}
+          keyExtractor={(item) => String(item.product.id) || "1"}
           renderItem={renderItemProduct}
+          ListEmptyComponent={<ListEmpty text="Carrinho vazio" />}
         />
       </View>
       {renderFooter()}
@@ -304,7 +332,7 @@ const ListComponent: React.FC = () => {
               <AppButton
                 title="Finalizar"
                 disabled={changeError !== null}
-                onPress={() => {}}
+                onPress={() => finished()}
               />
             </View>
           </View>
@@ -358,10 +386,10 @@ const styles = StyleSheet.create({
   //   backgroundColor: "#E1FBFC",
   // },
   footerTitle: {
-    fontWeight: "bold",
-    fontSize: 16,
+    // fontWeight: "bold",
+    fontSize: 12,
     color: "#6a748d",
-    margin: 12,
+    // margin: 12,
   },
   card: {
     backgroundColor: "#eef4fc",
